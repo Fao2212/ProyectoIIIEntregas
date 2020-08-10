@@ -1,6 +1,6 @@
 package mrdelivery.model.structures;
-
-import org.omg.CORBA.ARG_IN;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -9,7 +9,7 @@ public class Aplication {
     Grafo actualOriginal;
     Grafo actualModificado;
 
-    public void crearGrafo(JSObject object){
+    public void crearGrafo(JSONObject object){
 
         JSONArray vertices = object.getJSONArray("vertices");
         JSONArray aristas = object.getJSONArray("aristas");
@@ -21,12 +21,12 @@ public class Aplication {
         for (int i = 0; i < aristas.length();i++){
             //Si encuentra un nulo puede enviarse a errores
             //Si encuentra un nulo puede considerarse como que no tiene camino
-            JSObject arista = aristas.get(i);
-            Vertice origen = buscarVertice(arista.getString("origen"));
-            Vertice destino = buscarVertice(arista.getString("destino");
+            JSONObject arista = aristas.getJSONObject(i);
+            Vertice origen = buscarVertice(arista.getString("origen"),listaVertices);
+            Vertice destino = buscarVertice(arista.getString("destino"),listaVertices);
             Arista nuevaArista = new Arista(origen,destino,arista.getBoolean("activo"),
                     arista.getDouble("costo"),arista.getDouble("km"),
-                    arista.getDouble("minutos");
+                    arista.getDouble("minutos"));
             origen.addArista(nuevaArista);
             destino.addArista(nuevaArista);
             listaAristas.add(nuevaArista);

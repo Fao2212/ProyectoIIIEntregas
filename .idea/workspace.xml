@@ -1,7 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="12de69c9-b073-4677-959a-e42ce51d7bfc" name="Default Changelist" comment="" />
+    <list default="true" id="cf615a05-4bcb-4f0b-af06-d39a7216b165" name="Default Changelist" comment="Nuevo gitignore 1.1">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/ProyectoIIIEntregas.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ProyectoIIIEntregas.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/lib.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/lib.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datos/rutas/grafo1.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/datos/rutas/grafo2.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mrdelivery/model/structures/Aplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mrdelivery/model/structures/Aplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mrdelivery/model/structures/Vertice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mrdelivery/model/structures/Vertice.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -24,10 +52,12 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../javafx-sdk-11.0.2/lib" />
     <property name="project.structure.last.edited" value="Project" />
-    <property name="project.structure.proportion" value="0.15" />
-    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="project.structure.proportion" value="0.19235511" />
+    <property name="project.structure.side.proportion" value="0.27985075" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
@@ -39,14 +69,25 @@
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="mrdelivery.Main" />
       <module name="ProyectoIIIEntregas" />
-      <option name="VM_PARAMETERS" value="--module-path C:\Users\ACER\Documents\javafx-sdk-11.0.2\lib --add-modules javafx.controls,javafx.fxml" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src" />
+      <option name="VM_PARAMETERS" value="--module-path /Library/Java/JavaFX/javafx-sdk-11.0.2/lib --add-modules javafx.controls,javafx.fxml" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="mrdelivery.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -58,25 +99,53 @@
     </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="12de69c9-b073-4677-959a-e42ce51d7bfc" name="Default Changelist" comment="" />
+      <changelist id="cf615a05-4bcb-4f0b-af06-d39a7216b165" name="Default Changelist" comment="Nuevo gitignore 1.1" />
       <created>1597038469360</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1597038469360</updated>
+      <workItem from="1597077581023" duration="868000" />
     </task>
     <servers />
   </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
   <component name="WindowStateProjectService">
-    <state x="223" y="0" width="1089" height="824" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1597039959761">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state x="240" y="26" key="#Plugins" timestamp="1597082265548">
+      <screen x="0" y="23" width="1280" height="710" />
+    </state>
+    <state x="240" y="26" key="#Plugins/0.23.1280.710@0.23.1280.710" timestamp="1597082265548" />
+    <state x="0" y="23" width="1280" height="676" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1597077243640">
+      <screen x="0" y="23" width="1280" height="710" />
     </state>
     <state x="223" y="0" width="1089" height="824" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1597039959761" />
+    <state x="0" y="23" width="1280" height="676" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.1280.710@0.23.1280.710" timestamp="1597077243640" />
     <state x="574" y="96" key="#com.intellij.ide.util.MemberChooser" timestamp="1597037153819">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="574" y="96" key="#com.intellij.ide.util.MemberChooser/0.0.1536.824@0.0.1536.824" timestamp="1597037153819" />
+    <state x="328" y="121" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1597076394601">
+      <screen x="0" y="23" width="1280" height="710" />
+    </state>
+    <state x="328" y="121" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.23.1280.710@0.23.1280.710" timestamp="1597076394601" />
     <state x="576" y="283" key="DetectedRootsChooserDialog" timestamp="1597039154310">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -85,25 +154,34 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="473" y="154" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1597039754220" />
-    <state width="1493" height="210" key="GridCell.Tab.0.bottom" timestamp="1597038443759">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state width="1238" height="147" key="GridCell.Tab.0.bottom" timestamp="1597077510713">
+      <screen x="0" y="23" width="1280" height="710" />
     </state>
     <state width="1493" height="210" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1597038443759" />
-    <state width="1493" height="210" key="GridCell.Tab.0.center" timestamp="1597038443759">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state width="1238" height="147" key="GridCell.Tab.0.bottom/0.23.1280.710@0.23.1280.710" timestamp="1597077510713" />
+    <state width="1238" height="147" key="GridCell.Tab.0.center" timestamp="1597077510713">
+      <screen x="0" y="23" width="1280" height="710" />
     </state>
     <state width="1493" height="210" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1597038443759" />
-    <state width="1493" height="210" key="GridCell.Tab.0.left" timestamp="1597038443759">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state width="1238" height="147" key="GridCell.Tab.0.center/0.23.1280.710@0.23.1280.710" timestamp="1597077510713" />
+    <state width="1238" height="147" key="GridCell.Tab.0.left" timestamp="1597077510712">
+      <screen x="0" y="23" width="1280" height="710" />
     </state>
     <state width="1493" height="210" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1597038443759" />
-    <state width="1493" height="210" key="GridCell.Tab.0.right" timestamp="1597038443759">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state width="1238" height="147" key="GridCell.Tab.0.left/0.23.1280.710@0.23.1280.710" timestamp="1597077510712" />
+    <state width="1238" height="147" key="GridCell.Tab.0.right" timestamp="1597077510713">
+      <screen x="0" y="23" width="1280" height="710" />
     </state>
     <state width="1493" height="210" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1597038443759" />
-    <state x="261" y="0" key="SettingsEditor" timestamp="1597039953729">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state width="1238" height="147" key="GridCell.Tab.0.right/0.23.1280.710@0.23.1280.710" timestamp="1597077510713" />
+    <state x="218" y="23" width="997" height="710" key="SettingsEditor" timestamp="1597076884411">
+      <screen x="0" y="23" width="1280" height="710" />
     </state>
     <state x="261" y="0" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1597039953729" />
+    <state x="218" y="23" width="997" height="710" key="SettingsEditor/0.23.1280.710@0.23.1280.710" timestamp="1597076884411" />
+    <state x="244" y="98" key="git4idea.branch.GitSmartOperationDialog" timestamp="1597082455436">
+      <screen x="0" y="23" width="1280" height="710" />
+    </state>
+    <state x="244" y="98" key="git4idea.branch.GitSmartOperationDialog/0.23.1280.710@0.23.1280.710" timestamp="1597082455436" />
   </component>
 </project>

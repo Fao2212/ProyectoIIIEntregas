@@ -24,6 +24,8 @@
 hs_err_pid*
 
 # Cosas de Intellij IDEA
-.idea/*
-out/*
+/out/
+/.idea/
 
+# Archivo de macOS
+*.DS_Store
