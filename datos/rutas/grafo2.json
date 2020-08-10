@@ -1,0 +1,8 @@
+{
+	"vertices" : ["J","K","L","M","N"],
+	"aristas" : [
+		{"origen": "J", "destino": "L", "activo" : true, "costo": 34, "km" : 5.6, "minutos": 9},
+		{"origen": "K", "destino": "N", "activo" : false, "costo": 40, "km" : 0.7, "minutos": 2},
+		{"origen": "N", "destino": "M", "activo" : true, "costo": 0, "km" : 0.7, "minutos": 0.2}
+	]
+}
