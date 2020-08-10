@@ -26,7 +26,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../javafx-sdk-11.0.2/lib" />
     <property name="project.structure.last.edited" value="Project" />
-    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.proportion" value="0.15039062" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
@@ -40,7 +40,6 @@
       <option name="MAIN_CLASS_NAME" value="mrdelivery.Main" />
       <module name="ProyectoIIIEntregas" />
       <option name="VM_PARAMETERS" value="--module-path C:\Users\ACER\Documents\javafx-sdk-11.0.2\lib --add-modules javafx.controls,javafx.fxml" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="mrdelivery.*" />
@@ -69,10 +68,10 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state x="223" y="0" width="1089" height="824" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1597039959761">
+    <state x="175" y="0" width="1089" height="824" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1597075699217">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="223" y="0" width="1089" height="824" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1597039959761" />
+    <state x="175" y="0" width="1089" height="824" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1597075699217" />
     <state x="574" y="96" key="#com.intellij.ide.util.MemberChooser" timestamp="1597037153819">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -81,29 +80,29 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="576" y="283" key="DetectedRootsChooserDialog/0.0.1536.824@0.0.1536.824" timestamp="1597039154310" />
-    <state x="473" y="154" key="FileChooserDialogImpl" timestamp="1597039754220">
+    <state x="473" y="154" key="FileChooserDialogImpl" timestamp="1597075430752">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="473" y="154" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1597039754220" />
-    <state width="1493" height="210" key="GridCell.Tab.0.bottom" timestamp="1597038443759">
+    <state x="473" y="154" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1597075430752" />
+    <state width="1493" height="210" key="GridCell.Tab.0.bottom" timestamp="1597075640080">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="210" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1597038443759" />
-    <state width="1493" height="210" key="GridCell.Tab.0.center" timestamp="1597038443759">
+    <state width="1493" height="210" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1597075640080" />
+    <state width="1493" height="210" key="GridCell.Tab.0.center" timestamp="1597075640080">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="210" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1597038443759" />
-    <state width="1493" height="210" key="GridCell.Tab.0.left" timestamp="1597038443759">
+    <state width="1493" height="210" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1597075640080" />
+    <state width="1493" height="210" key="GridCell.Tab.0.left" timestamp="1597075640080">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="210" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1597038443759" />
-    <state width="1493" height="210" key="GridCell.Tab.0.right" timestamp="1597038443759">
+    <state width="1493" height="210" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1597075640080" />
+    <state width="1493" height="210" key="GridCell.Tab.0.right" timestamp="1597075640080">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="210" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1597038443759" />
-    <state x="261" y="0" key="SettingsEditor" timestamp="1597039953729">
+    <state width="1493" height="210" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1597075640080" />
+    <state x="299" y="0" key="SettingsEditor" timestamp="1597075502814">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="261" y="0" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1597039953729" />
+    <state x="299" y="0" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1597075502814" />
   </component>
 </project>

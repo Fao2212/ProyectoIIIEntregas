@@ -22,5 +22,6 @@ public class Vertice {
     }
 
     public boolean buscarCamino(Vertice vertice2) {
+        return false;
     }
 }
