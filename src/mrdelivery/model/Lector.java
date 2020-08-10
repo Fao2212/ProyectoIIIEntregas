@@ -1,4 +1,5 @@
-package mrdelivery.controller;
+package mrdelivery.model;
 
 public interface Lector {
+    void leer();
 }

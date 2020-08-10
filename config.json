@@ -1,6 +1,7 @@
 {
 	"nombre_app" : "MrDelivery",
-	"carpeta_datos" : "/datos",
-	"carpeta_errores" : "/errores",
-	"archivo_fxml" : "/view/gui.fxml"
+	"archivo_fxml" : "/view/gui.fxml",
+	"carpeta_errores" : "/datos/errores",
+	"carpeta_rutas" : "/datos/rutas",
+	"carpeta_leidos" : "/datos/leidos"
 }
