@@ -12,6 +12,12 @@ public class Camino {
         currentIndex = 0;
     }
 
+    Camino(Camino copiar){
+        camino = new ArrayList<>();
+        camino.addAll(copiar.camino);
+        currentIndex = 0;
+    }
+
     public void addCamino(Vertice vertice){
         camino.add(vertice);
     }
@@ -35,6 +41,14 @@ public class Camino {
     public  void retrocederCamino(){
         if(currentIndex > 0)
             currentIndex--;
+    }
+
+    public boolean compararCamino(Camino camino){
+        return true;
+    }
+
+    public boolean caminoValido(Vertice start,Vertice end){
+        return false;
     }
 
 

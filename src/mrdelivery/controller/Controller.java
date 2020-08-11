@@ -1,13 +1,17 @@
 package mrdelivery.controller;
 
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import mrdelivery.model.structures.Grafo;
 
-public class Controller implements ViewController {
+public class Controller implements ViewController, EventHandler {
 
     // Constantes
     public static final int ALTO = 10;
@@ -29,6 +33,7 @@ public class Controller implements ViewController {
         return boton;
     }
 
+
     private GridPane crearCuadricula(){
         GridPane cuadricula = new GridPane();
         cuadricula.setAlignment(Pos.CENTER);
@@ -49,6 +54,23 @@ public class Controller implements ViewController {
         }
         vbxGrafoOriginal.getChildren().add(1,grdGrafoOriginal); // Index 1, porque es el segundo elemento en el vbox
         vbxGrafoActual.getChildren().add(1,grdGrafoActual);
+        btnSiguienteGrafo.addEventHandler(MouseEvent.MOUSE_CLICKED,this);
     }
 
+    public void cargarGrafo(Grafo grafo){
+
+    }
+
+    public void cargarGrafoOriginal(Grafo grafo){
+
+    }
+
+    public void cargarGrafoActual(Grafo grafo){
+
+    }
+
+    @Override
+    public void handle(Event event) {
+        System.out.println("HOLA");
+    }
 }

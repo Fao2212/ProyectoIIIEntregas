@@ -6,7 +6,11 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import mrdelivery.Main;
 import mrdelivery.controller.ViewController;
+import mrdelivery.model.structures.Arista;
+import mrdelivery.model.structures.Grafo;
+import mrdelivery.model.structures.Vertice;
 import mrdelivery.view.Out;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -19,6 +23,9 @@ public class App {
     public static Pane ventanaPrincipal;
     public static Stage stage;
     public static ThreadLector threadLector;
+    ArrayList<Grafo> ejecutados;
+    Grafo actualOriginal;
+    Grafo actualModificado;
 
     // Constructor
     public App (Stage _stage){
@@ -75,5 +82,46 @@ public class App {
         stage.show();
     }
 
+    public void crearGrafo(JSONObject object){
+        if(object != null) {
+            JSONArray vertices = object.getJSONArray("vertices");
+            JSONArray aristas = object.getJSONArray("aristas");
+            ArrayList<Vertice> listaVertices = new ArrayList<Vertice>();
+            ArrayList<Arista> listaAristas = new ArrayList<>();
+            for (int i = 0; i < vertices.length(); i++) {
+                listaVertices.add(new Vertice(vertices.getString(i)));
+            }
+            for (int i = 0; i < aristas.length(); i++) {
+                //Si encuentra un nulo puede enviarse a errores
+                //Si encuentra un nulo puede considerarse como que no tiene camino
+                JSONObject arista = aristas.getJSONObject(i);
+                Vertice origen = buscarVertice(arista.getString("origen"), listaVertices);
+                Vertice destino = buscarVertice(arista.getString("destino"), listaVertices);
+                Arista nuevaArista = new Arista(origen, destino, arista.getBoolean("activo"),
+                        arista.getDouble("costo"), arista.getDouble("km"),
+                        arista.getDouble("minutos"));
+                origen.addArista(nuevaArista);
+                destino.addArista(nuevaArista);
+                listaAristas.add(nuevaArista);
+            }
+            actualOriginal = new Grafo(listaVertices, listaAristas);
+            actualModificado = actualOriginal.clonarGrafo();
+        }
+    }
+
+    public Vertice buscarVertice(String nombre,ArrayList<Vertice> vertices){
+        for (Vertice vertice:vertices){
+            if(vertice.getNombre().equals(nombre))
+                return vertice;
+        }
+        return null;
+    }
+
+    public JSONObject getNextJson(){
+        ArrayList<JSONObject> archivos = threadLector.lectorJSON.getArchivosJson();
+        if(!archivos.isEmpty())
+            return archivos.remove(0);
+        return null;
+    }
 
 }

@@ -8,10 +8,11 @@ public class Grafo {
 
     ArrayList<Vertice> vertices;
     ArrayList<Arista> aristas;
-    int[][] representacionMatriz;
+    Arista[][] representacionMatriz;
 
-    Grafo(ArrayList<Vertice> vertices,ArrayList<Arista> aristas){
+    public Grafo(ArrayList<Vertice> vertices,ArrayList<Arista> aristas){
         this.vertices = vertices;
+        grafoAMatriz();
     }
 
     public Grafo clonarGrafo(){
@@ -31,21 +32,39 @@ public class Grafo {
         return new Grafo(copiaVertices,copiaAristas);
     }
 
-    public void grafoAMatriz(){
-        int size = vertices.size();
-        this.representacionMatriz = new int[size][size];
-        for (int i = 0;i<size;i++){
-            for (int j = 0;i<size;i++){
-                representacionMatriz[i][j] = realcion(vertices.get(i),vertices.get(j));
+    public void grafoAMatriz(){//Cuidar aristas repetidas? setear a null los vertices que no existen?
+        for (Vertice vertice:vertices) {
+            for (Arista arista : aristas) {
+                if (arista.isActivo())
+                    representacionMatriz[indexVertice(arista.origen)][indexVertice(arista.destino)] = arista;
             }
         }
     }
 
-    private int realcion(Vertice vertice1, Vertice vertice2) {
-        if(vertice1.buscarCamino(vertice2))
-            return 1;
-        else
-            return 0;
+    public ArrayList<Camino> todosLosCaminos(Vertice inicio,Vertice destino){
+        ArrayList<Camino> caminos = new ArrayList<>();
+        return buscarCamino(inicio,inicio,destino,caminos,new Camino(),true);
+    }
+
+    private ArrayList<Camino> buscarCamino(Vertice original,Vertice inicio, Vertice destino, ArrayList<Camino> caminos, Camino camino,boolean first) {
+        if(!first && inicio == original)
+            return null;
+        camino.addCamino(inicio);
+        if (inicio == destino) {//Hace falta probar y la condicion inicio == null
+            caminos.add(camino);
+        }
+        for(Arista arista: inicio.aristas){
+            if(arista.activo)
+                buscarCamino(original,arista.destino,destino,caminos,new Camino(camino),false);
+        }
+        return caminos;
+    }
+    //Toma el origen y encola todas las aristas o vertices
+    //Agrega al camino y busca en el siguiente vertice
+    //Al llegar a un final(Null o nodo objetivo)
+
+    private void ordenarCaminos(int index/*Peso peso*/){
+
     }
 
     private Vertice buscarVertice(Vertice vertice,ArrayList<Vertice> vertices){
@@ -54,6 +73,14 @@ public class Grafo {
                 return ver;
         }
         return null;
+    }
+
+    private int indexVertice(Vertice vertice){
+        for(Vertice ver:vertices){
+            if(ver.equals(vertice))
+                return vertices.indexOf(ver);
+        }
+        return -1;
     }
 
 }
