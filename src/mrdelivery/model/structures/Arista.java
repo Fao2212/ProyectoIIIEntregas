@@ -10,11 +10,21 @@ public class Arista {
     boolean activo;
 
     public Arista(Vertice origen,Vertice destino,boolean activo,double distancia,double tiempo,double precio){
-
+        this.origen = origen;
+        this.destino =destino;
+        this.distancia = distancia;
+        this.precio = precio;
+        this.tiempo = tiempo;
+        this.activo = activo;
     }
 
     public Arista(Vertice origen,Vertice destino,String activo,String distancia,String tiempo,String precio){
-
+        this.origen = origen;
+        this.destino =destino;
+        this.distancia = Double.parseDouble(distancia);
+        this.precio = Double.parseDouble(precio);
+        this.tiempo = Double.parseDouble(tiempo);
+        this.activo = Boolean.parseBoolean(activo);
     }
 
     public Arista(Vertice origen,Vertice destino,Arista arista){

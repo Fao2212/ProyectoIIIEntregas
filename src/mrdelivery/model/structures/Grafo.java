@@ -12,6 +12,7 @@ public class Grafo {
 
     public Grafo(ArrayList<Vertice> vertices,ArrayList<Arista> aristas){
         this.vertices = vertices;
+        this.aristas = aristas;
         grafoAMatriz();
     }
 
@@ -33,8 +34,9 @@ public class Grafo {
     }
 
     public void grafoAMatriz(){//Cuidar aristas repetidas? setear a null los vertices que no existen?
+        this.representacionMatriz = new Arista[vertices.size()][vertices.size()];
         for (Vertice vertice:vertices) {
-            for (Arista arista : aristas) {
+            for (Arista arista : vertice.aristas) {
                 if (arista.isActivo())
                     representacionMatriz[indexVertice(arista.origen)][indexVertice(arista.destino)] = arista;
             }
@@ -47,11 +49,14 @@ public class Grafo {
     }
 
     private ArrayList<Camino> buscarCamino(Vertice original,Vertice inicio, Vertice destino, ArrayList<Camino> caminos, Camino camino,boolean first) {
-        if(!first && inicio == original)
+        System.out.println(inicio.nombre);
+        if(!first && inicio == original) {
             return null;
+        }
         camino.addCamino(inicio);
         if (inicio == destino) {//Hace falta probar y la condicion inicio == null
             caminos.add(camino);
+            return null;
         }
         for(Arista arista: inicio.aristas){
             if(arista.activo)
@@ -82,5 +87,7 @@ public class Grafo {
         }
         return -1;
     }
+
+
 
 }

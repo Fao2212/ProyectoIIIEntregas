@@ -51,5 +51,11 @@ public class Camino {
         return false;
     }
 
+    public void imprimirCamino(){
+        for (Vertice vertice:camino){
+            System.out.print(vertice.nombre+"-");
+        }
+
+    }
 
 }
