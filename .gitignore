@@ -27,3 +27,5 @@ hs_err_pid*
 .idea/*
 out/*
 
+# Para no afectar el entorno de trabajo de cada participante
+workspace.xml
