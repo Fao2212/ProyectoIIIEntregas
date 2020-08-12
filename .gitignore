@@ -29,3 +29,6 @@ hs_err_pid*
 
 # Archivo de macOS
 *.DS_Store
+
+# Para no afectar el entorno de trabajo
+workspace.xml
