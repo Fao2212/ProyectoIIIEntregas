@@ -54,7 +54,7 @@ public class Grafo {
             return null;
         }
         camino.addCamino(inicio);
-        if (inicio == destino) {//Hace falta probar y la condicion inicio == null
+        if (inicio == destino) {
             caminos.add(camino);
             return null;
         }
