@@ -89,5 +89,7 @@ public class Grafo {
     }
 
 
-
+    public Arista[][] getMatriz() {
+        return representacionMatriz;
+    }
 }

@@ -4,8 +4,14 @@ import org.json.JSONObject;
 import java.io.FileReader;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+
+import static java.nio.file.StandardCopyOption.ATOMIC_MOVE;
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 public class LectorJSON implements Lector {
     // Atributos
@@ -65,14 +71,20 @@ public class LectorJSON implements Lector {
             JSONObject json = new JSONObject(datos.toString());
             archivosJson.add(json);
             System.out.println("Leyo: " + archivo.getName());
-
+            lector.close();
             // Despues de haber leido el archivo, se mueve a la carpeta de leidos si es un lector continuo
             if (lecturaContinua) {
-                String nuevaUbicacion = String.valueOf(Paths.get(".",rutaLeidos+"/"+archivo.getName()));
-                if (archivo.renameTo(new File(nuevaUbicacion)))
-                    archivo.delete();
-                else
+                String nuevaUbicacion = String.valueOf(Paths.get("",rutaLeidos.substring(1,rutaLeidos.length())+"/"+archivo.getName()));
+                try {
+                    Files.copy(archivo.toPath(), Path.of(nuevaUbicacion),REPLACE_EXISTING);
+
+                    Files.delete(archivo.toPath());
+
+                }
+                catch (Exception e){
+                    System.out.println(e.toString());
                     System.out.println("No se pudo mandar el archivo a los leidos");
+                }
             }
         }
         else
