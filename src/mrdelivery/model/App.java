@@ -42,8 +42,9 @@ public class App {
             }
         });
     }
-
     // Metodos
+
+
     public Grafo getActualOriginal() {
         return actualOriginal;
     }
@@ -113,19 +114,14 @@ public class App {
                                                     arista.getDouble("costo"), arista.getDouble("km"),
                                                     arista.getDouble("minutos"));
                     origen.addArista(nuevaArista);
-//                    destino.addArista(nuevaArista);
+                    destino.addArista(nuevaArista);
                     listaAristas.add(nuevaArista);
                 }
             }
             actualOriginal = new Grafo(listaVertices, listaAristas);
             actualModificado = actualOriginal.clonarGrafo();
-            System.out.println("Original");
-            actualOriginal.imprimirListaAdyacenciaGrafo();
-            System.out.println("Actual");
-            actualModificado.imprimirListaAdyacenciaGrafo();
         }
     }
-
     public boolean validarArista(Vertice origen,Vertice destino){
         return origen != null && destino != null;
         //TODO:Se puede agregar mas validadcion aca. lo de estar repetido

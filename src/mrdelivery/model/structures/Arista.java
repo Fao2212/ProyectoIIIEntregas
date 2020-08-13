@@ -86,6 +86,23 @@ public class Arista {
         this.activo = activo;
     }
 
+
+    public String toStringConexion() {
+        return "Conexion:" + origen.getNombre() + "-" + destino.getNombre();
+    }
+    public String toStringToolTip() {
+        return toStringConexion()+"\n"+toString();
+    }
+    public String toString(){
+        return "Estado: " + toStringActivo() + "Km: "+ distancia + " Tiempo: " + tiempo + " Costo: $" + precio;
+    }
+
+    private String toStringActivo() {
+        if (activo == true)
+            return "Activo";
+        return "Inactivo";
+    }
+
     public double getPonderacion(int tipo){
         switch (tipo){
             case Const.PRECIO: return precio;

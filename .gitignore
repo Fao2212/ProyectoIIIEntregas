@@ -27,8 +27,10 @@ hs_err_pid*
 /out/
 /.idea/
 
+# Para no afectar el entorno de trabajo de cada participante
 # Archivo de macOS
 *.DS_Store
 
 # Para no afectar el entorno de trabajo
 .idea/workspace.xml
+workspace.xml

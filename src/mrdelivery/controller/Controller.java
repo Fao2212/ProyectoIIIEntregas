@@ -16,9 +16,7 @@ import mrdelivery.model.structures.Grafo;
 import mrdelivery.view.Out;
 import org.json.JSONObject;
 
-import javax.swing.plaf.IconUIResource;
-
-public class Controller implements ViewController {
+public class Controller implements ViewController, EventHandler {
 
     // Constantes
     boolean ponderacionActiva[] = {false,false,false};
@@ -92,59 +90,35 @@ public class Controller implements ViewController {
         this.app = app;
     }
 
-    public void cargarGrafo(Grafo grafo){
-        Arista[][] matriz = grafo.getMatriz();
-        for (int i = 0; i < matriz.length; i++){
-            StringBuilder s = new StringBuilder();
-            for (int j = 0; j < matriz.length; j++)
-                if (matriz[i][j] != null)
-                    s.append("["+matriz[i][j].isActivo()+"]");
-                else
-                    s.append("[ ]");
-            System.out.println(s);
-        }
-        reloadGrids(matriz);
+    public void cargarGrafos(Grafo grafoOriginal,Grafo grafoActual){
+        cargarGrafoOriginal(grafoOriginal);
+        cargarGrafoActual(grafoActual);
     }
 
     public void cargarGrafoOriginal(Grafo grafo){
-
+        reloadGrid(grafo,grdGrafoOriginal,vbxGrafoOriginal);
     }
 
     public void cargarGrafoActual(Grafo grafo){
-
+        reloadGrid(grafo,grdGrafoActual,vbxGrafoActual);
     }
 
-    public void reloadGrids(Arista[][] matriz){
-        grdGrafoOriginal = crearCuadricula();
-        grdGrafoActual = crearCuadricula();
-        hbxVerticesOriginal = crearFila();
-        hbxVerticesActual = crearFila();
-        int ponderacionActiva = getPonderacionActiva();
+    private void reloadGrid(Grafo grafo,GridPane gridPane,VBox vbox){
+        gridPane = crearCuadricula();
+        Arista [][] matriz = grafo.getMatriz();
         for (int fila = 0; fila < matriz.length; fila++) {
-            Button btnVerticeOriginal = new Boton(Const.BTN_ALTO,Const.BTN_ANCHO).getButton();
-            Button btnVerticeActual = new Boton(Const.BTN_ALTO,Const.BTN_ANCHO).getButton();
-            hbxVerticesOriginal.getChildren().add(btnVerticeOriginal);
-            hbxVerticesActual.getChildren().add(btnVerticeActual);
             for (int columna = 0; columna < matriz.length; columna++) {
-                Button btnAristaOriginal = new Boton(Const.BTN_ALTO,Const.BTN_ANCHO).getButton();
-                Button btnAristaActual = new Boton(Const.BTN_ALTO,Const.BTN_ANCHO).getButton();
-
-                String ponderacionArista = matriz[fila][columna].getPonderacionString(ponderacionActiva);
-                btnAristaOriginal.setText(ponderacionArista);
-                btnAristaActual.setText(ponderacionArista);
-
-                grdGrafoOriginal.add(btnAristaOriginal,fila,columna);
-                grdGrafoActual.add(btnAristaActual,fila,columna);
+                Button btn= crearBoton(40,40, fila, columna);
+                btn.getTooltip().setText(showVerticeToolTip(grafo.getVertices().get(fila),grafo.getVertices().get(columna)));
+                if(matriz[fila][columna] != null) {
+                    btn.getTooltip().setText(matriz[fila][columna].toStringToolTip());
+                    btn.setText("1");
+                }
+                gridPane.add(btn,fila,columna);
             }
         }
-        vbxGrafoOriginal.getChildren().set(1,hbxVerticesOriginal);
-        vbxGrafoActual.getChildren().set(1,hbxVerticesActual);
-        vbxGrafoOriginal.getChildren().set(2,grdGrafoOriginal);
-        vbxGrafoActual.getChildren().set(2,grdGrafoActual);
-//        vbxGrafoOriginal.getChildren().remove(2);
-//        vbxGrafoActual.getChildren().remove(2);
-//        vbxGrafoOriginal.getChildren().add(1,hbxVerticesOriginal); // Index 1, porque es el segundo elemento en el vbox
-//        vbxGrafoActual.getChildren().add(1,hbxVerticesActual);
+        vbox.getChildren().remove(1);
+        vbox.getChildren().add(1,gridPane); // Index 1, porque es el segundo elemento en el vbox
     }
 
     // ACCIONES DESDE LA INTERFAZ
@@ -210,7 +184,7 @@ public class Controller implements ViewController {
         if (json != null){
             app.crearGrafo(json);
             if (app.getActualModificado() != null){
-                cargarGrafo(app.getActualOriginal());
+                cargarGrafos(app.getActualOriginal(), app.getActualModificado());
             }
             else
                 System.out.println("El grafo actual esta nulo");
@@ -220,4 +194,9 @@ public class Controller implements ViewController {
                     " no esta vacia", Alert.AlertType.ERROR);
         }
     }
+
+    public String showVerticeToolTip(Vertice v1, Vertice v2){
+        return "Fila: " + v1.getNombre() + " Columna: " + v2.getNombre();
+    }
+
 }

@@ -28,9 +28,8 @@ public class Vertice {
         return false;
     }
 
-    public void resaltarEnPantalla(){
-        //TODO:Usa la referencia a pantalla para resaltarla de un color mostrando asi el camino
-    }
+    public void resaltarEnPantalla() {
+        //Usa la referencia a pantalla para resaltarla de un color mostrando asi el camino
 
     public void setVisitado(boolean value){
         this.visitado = value;

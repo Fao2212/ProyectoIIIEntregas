@@ -18,6 +18,10 @@ public class Grafo {
         grafoAMatriz();
     }
 
+    public ArrayList<Vertice> getVertices(){
+        return this.vertices;
+    }
+
     public Grafo clonarGrafo(){
         ArrayList<Vertice> copiaVertices = new ArrayList<>();
         ArrayList<Arista> copiaAristas = new ArrayList<>();
@@ -28,7 +32,7 @@ public class Grafo {
             Vertice clonOrigen = buscarVertice(arista.origen,copiaVertices);
             Vertice clonDestino = buscarVertice(arista.destino,copiaVertices);
             Arista copiaArista = new Arista(clonOrigen,clonDestino,arista.activo, arista.distancia, arista.tiempo, arista.precio);
-//            clonDestino.addArista(copiaArista);   //TODO:Revisar si se debe poner o no
+            clonDestino.addArista(copiaArista);
             clonOrigen.addArista(copiaArista);
             copiaAristas.add(copiaArista);
         }
@@ -39,14 +43,10 @@ public class Grafo {
         representacionMatriz = new Arista[vertices.size()][vertices.size()];
         for (Vertice vertice : vertices) {
             for (Arista arista : vertice.aristas) {
-                System.out.println(arista.getOrigen().getNombre() + " a " + arista.getDestino().getNombre() + " con precio de " +
-                                    arista.getPrecio());
                 if (arista.isActivo())
                     representacionMatriz[indexVertice(arista.origen)][indexVertice(arista.destino)] = arista;
-//                representacionMatriz[indexVertice(arista.origen)][indexVertice(arista.destino)] = null; //TODO: Revisar
             }
         }
-        System.out.println("Se paso el grafo a una matriz");
     }
 
     public void imprimirListaAdyacenciaGrafo(){
@@ -82,7 +82,9 @@ public class Grafo {
         }
         for(Arista arista: inicio.aristas){
             if(arista.activo)
+
                 buscarCamino(original,arista.destino,destino, caminos,new CaminoVertices(camino),false);
+
         }
         return caminos;
     }
@@ -110,10 +112,12 @@ public class Grafo {
         return -1;
     }
 
+
+
     public Arista[][] getMatriz() {
         return representacionMatriz;
     }
-    
+
     public boolean esConexo(){
         for (Vertice vertice : vertices){
             // Hay que verificar que se puede llegar a todos los demas vertices
