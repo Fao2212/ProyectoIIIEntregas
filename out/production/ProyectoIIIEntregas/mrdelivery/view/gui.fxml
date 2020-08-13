@@ -235,7 +235,7 @@
                         <Font name="Courier" size="13.0" />
                      </font>
                   </TextField>
-                  <Button mnemonicParsing="false" text="Obtener camino">
+                  <Button mnemonicParsing="false" text="Obtener caminoVertices">
                      <VBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
@@ -275,7 +275,7 @@
                         </TextField>
                      </children>
                   </HBox>
-                  <Button mnemonicParsing="false" text="Todos los caminos">
+                  <Button mnemonicParsing="false" text="Todos los caminoVertices">
                      <VBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
