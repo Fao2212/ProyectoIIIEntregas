@@ -19,7 +19,8 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cf615a05-4bcb-4f0b-af06-d39a7216b165" name="Default Changelist" comment="Nuevo gitignore 1.1">
+    <list default="true" id="12de69c9-b073-4677-959a-e42ce51d7bfc" name="Default Changelist" comment="Implementacion de un algoritmo para saber si el grafo es conexo (faltan hacer pruebas), y el algoritmo de Dijkstra (faltan hacer pruebas)">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -35,6 +36,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="Austin" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1ftXfhV8nMHqiTrhV3xRvXpExhn" />
@@ -57,7 +63,7 @@
       <recent name="mrdelivery.model.structures" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.Test">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="mrdelivery.Main" />
       <module name="ProyectoIIIEntregas" />
@@ -73,8 +79,35 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Test" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="mrdelivery.model.structures.Test" />
+      <module name="ProyectoIIIEntregas" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="mrdelivery.model.structures.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="CLASS" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Test" />
         <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
@@ -85,13 +118,21 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="cf615a05-4bcb-4f0b-af06-d39a7216b165" name="Default Changelist" comment="Nuevo gitignore 1.1" />
+      <changelist id="12de69c9-b073-4677-959a-e42ce51d7bfc" name="Default Changelist" comment="" />
       <created>1597038469360</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1597038469360</updated>
       <workItem from="1597077581023" duration="868000" />
     </task>
+    <task id="LOCAL-00001" summary="Implementacion de un algoritmo para saber si el grafo es conexo (faltan hacer pruebas), y el algoritmo de Dijkstra (faltan hacer pruebas)">
+      <created>1597291899716</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1597291899716</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -109,6 +150,11 @@
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Merge con DesarrolloGrafo" />
+    <MESSAGE value="Implementacion de un algoritmo para saber si el grafo es conexo (faltan hacer pruebas), y el algoritmo de Dijkstra (faltan hacer pruebas)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implementacion de un algoritmo para saber si el grafo es conexo (faltan hacer pruebas), y el algoritmo de Dijkstra (faltan hacer pruebas)" />
+  </component>
   <component name="WindowStateProjectService">
     <state x="240" y="26" key="#Plugins" timestamp="1597082265548">
       <screen x="0" y="23" width="1280" height="710" />
@@ -119,14 +165,19 @@
     </state>
     <state x="223" y="0" width="1089" height="824" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1597039959761" />
     <state x="0" y="23" width="1280" height="676" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.1280.710@0.23.1280.710" timestamp="1597266857524" />
-    <state x="574" y="96" key="#com.intellij.ide.util.MemberChooser" timestamp="1597037153819">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state x="478" y="106" key="#com.intellij.ide.util.MemberChooser" timestamp="1597291218021">
+      <screen x="0" y="23" width="1280" height="710" />
     </state>
     <state x="574" y="96" key="#com.intellij.ide.util.MemberChooser/0.0.1536.824@0.0.1536.824" timestamp="1597037153819" />
+    <state x="478" y="106" key="#com.intellij.ide.util.MemberChooser/0.23.1280.710@0.23.1280.710" timestamp="1597291218021" />
     <state x="328" y="121" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1597076394601">
       <screen x="0" y="23" width="1280" height="710" />
     </state>
     <state x="328" y="121" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.23.1280.710@0.23.1280.710" timestamp="1597076394601" />
+    <state x="0" y="23" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1597286996812">
+      <screen x="0" y="23" width="1280" height="710" />
+    </state>
+    <state x="0" y="23" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.23.1280.710@0.23.1280.710" timestamp="1597286996812" />
     <state x="576" y="283" key="DetectedRootsChooserDialog" timestamp="1597039154310">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -135,34 +186,62 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="473" y="154" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1597039754220" />
-    <state width="1238" height="147" key="GridCell.Tab.0.bottom" timestamp="1597077510713">
+    <state width="1238" height="201" key="GridCell.Tab.0.bottom" timestamp="1597291402910">
       <screen x="0" y="23" width="1280" height="710" />
     </state>
     <state width="1493" height="210" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1597038443759" />
-    <state width="1238" height="147" key="GridCell.Tab.0.bottom/0.23.1280.710@0.23.1280.710" timestamp="1597077510713" />
-    <state width="1238" height="147" key="GridCell.Tab.0.center" timestamp="1597077510713">
+    <state width="1238" height="201" key="GridCell.Tab.0.bottom/0.23.1280.710@0.23.1280.710" timestamp="1597291402910" />
+    <state width="1238" height="201" key="GridCell.Tab.0.center" timestamp="1597291402909">
       <screen x="0" y="23" width="1280" height="710" />
     </state>
     <state width="1493" height="210" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1597038443759" />
-    <state width="1238" height="147" key="GridCell.Tab.0.center/0.23.1280.710@0.23.1280.710" timestamp="1597077510713" />
-    <state width="1238" height="147" key="GridCell.Tab.0.left" timestamp="1597077510712">
+    <state width="1238" height="201" key="GridCell.Tab.0.center/0.23.1280.710@0.23.1280.710" timestamp="1597291402909" />
+    <state width="1238" height="201" key="GridCell.Tab.0.left" timestamp="1597291402908">
       <screen x="0" y="23" width="1280" height="710" />
     </state>
     <state width="1493" height="210" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1597038443759" />
-    <state width="1238" height="147" key="GridCell.Tab.0.left/0.23.1280.710@0.23.1280.710" timestamp="1597077510712" />
-    <state width="1238" height="147" key="GridCell.Tab.0.right" timestamp="1597077510713">
+    <state width="1238" height="201" key="GridCell.Tab.0.left/0.23.1280.710@0.23.1280.710" timestamp="1597291402908" />
+    <state width="1238" height="201" key="GridCell.Tab.0.right" timestamp="1597291402909">
       <screen x="0" y="23" width="1280" height="710" />
     </state>
     <state width="1493" height="210" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1597038443759" />
-    <state width="1238" height="147" key="GridCell.Tab.0.right/0.23.1280.710@0.23.1280.710" timestamp="1597077510713" />
+    <state width="1238" height="201" key="GridCell.Tab.0.right/0.23.1280.710@0.23.1280.710" timestamp="1597291402909" />
+    <state width="1238" height="219" key="GridCell.Tab.1.bottom" timestamp="1597269322101">
+      <screen x="0" y="23" width="1280" height="710" />
+    </state>
+    <state width="1238" height="219" key="GridCell.Tab.1.bottom/0.23.1280.710@0.23.1280.710" timestamp="1597269322101" />
+    <state width="1238" height="219" key="GridCell.Tab.1.center" timestamp="1597269322100">
+      <screen x="0" y="23" width="1280" height="710" />
+    </state>
+    <state width="1238" height="219" key="GridCell.Tab.1.center/0.23.1280.710@0.23.1280.710" timestamp="1597269322100" />
+    <state width="1238" height="219" key="GridCell.Tab.1.left" timestamp="1597269322100">
+      <screen x="0" y="23" width="1280" height="710" />
+    </state>
+    <state width="1238" height="219" key="GridCell.Tab.1.left/0.23.1280.710@0.23.1280.710" timestamp="1597269322100" />
+    <state width="1238" height="219" key="GridCell.Tab.1.right" timestamp="1597269322101">
+      <screen x="0" y="23" width="1280" height="710" />
+    </state>
+    <state width="1238" height="219" key="GridCell.Tab.1.right/0.23.1280.710@0.23.1280.710" timestamp="1597269322101" />
     <state x="218" y="23" width="997" height="710" key="SettingsEditor" timestamp="1597266907308">
       <screen x="0" y="23" width="1280" height="710" />
     </state>
     <state x="261" y="0" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1597039953729" />
     <state x="218" y="23" width="997" height="710" key="SettingsEditor/0.23.1280.710@0.23.1280.710" timestamp="1597266907308" />
+    <state x="232" y="118" key="Vcs.Push.Dialog.v2" timestamp="1597291912816">
+      <screen x="0" y="23" width="1280" height="710" />
+    </state>
+    <state x="232" y="118" key="Vcs.Push.Dialog.v2/0.23.1280.710@0.23.1280.710" timestamp="1597291912816" />
     <state x="244" y="98" key="git4idea.branch.GitSmartOperationDialog" timestamp="1597082455436">
       <screen x="0" y="23" width="1280" height="710" />
     </state>
     <state x="244" y="98" key="git4idea.branch.GitSmartOperationDialog/0.23.1280.710@0.23.1280.710" timestamp="1597082455436" />
+    <state x="331" y="155" key="refactoring.ChangeSignatureDialog" timestamp="1597272186814">
+      <screen x="0" y="23" width="1280" height="710" />
+    </state>
+    <state x="331" y="155" key="refactoring.ChangeSignatureDialog/0.23.1280.710@0.23.1280.710" timestamp="1597272186814" />
+    <state x="297" y="57" width="670" height="676" key="search.everywhere.popup" timestamp="1597272227860">
+      <screen x="0" y="23" width="1280" height="710" />
+    </state>
+    <state x="297" y="57" width="670" height="676" key="search.everywhere.popup/0.23.1280.710@0.23.1280.710" timestamp="1597272227860" />
   </component>
 </project>
