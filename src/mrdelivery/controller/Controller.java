@@ -14,6 +14,7 @@ import mrdelivery.model.structures.Arista;
 import mrdelivery.model.structures.Grafo;
 import mrdelivery.model.structures.Vertice;
 
+
 public class Controller implements ViewController, EventHandler {
 
     // Constantes
@@ -37,6 +38,7 @@ public class Controller implements ViewController, EventHandler {
         boton.setAlignment(Pos.CENTER);
         return boton;
     }
+
 
     private GridPane crearCuadricula(){
         GridPane cuadricula = new GridPane();
@@ -102,6 +104,5 @@ public class Controller implements ViewController, EventHandler {
         app.crearGrafo(app.getNextJson());
         cargarGrafos(app.getActualOriginal(),app.getActualModificado());
     }
-
 
 }

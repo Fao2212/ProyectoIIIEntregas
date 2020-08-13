@@ -119,7 +119,6 @@ public class App {
             actualModificado = actualOriginal.clonarGrafo();
         }
     }
-
     public boolean validarArista(Vertice origen,Vertice destino){
         return origen != null && destino != null;//Se puede agregar mas validadcion aca. lo de estar repetido
     }

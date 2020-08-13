@@ -11,11 +11,13 @@ public class Vertice {
     public Vertice(String nombre){
         this.nombre = nombre;
         this.aristas = new ArrayList<>();
+        this.visitado = false;
     }
 
     public Vertice(Vertice vertice){//Paso el vertice completo por si luego se le agregan mas atributos que asignar
         this.nombre = vertice.nombre;
         this.aristas = new ArrayList<>();
+        this.visitado = false;
     }
 
     public void addArista(Arista arista){

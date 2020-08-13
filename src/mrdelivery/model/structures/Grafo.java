@@ -1,8 +1,7 @@
 package mrdelivery.model.structures;
 
-import netscape.javascript.JSObject;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Grafo {
 
@@ -43,14 +42,17 @@ public class Grafo {
         }
     }
 
-    public ArrayList<Camino> todosLosCaminos(Vertice inicio,Vertice destino){
-        ArrayList<Camino> caminos = new ArrayList<>();
-        return buscarCamino(inicio,inicio,destino,caminos,new Camino(),true);
+
+    public ArrayList<CaminoVertices> todosLosCaminos(Vertice inicio, Vertice destino){
+        ArrayList<CaminoVertices> caminoVertices = new ArrayList<>();
+        return buscarCamino(inicio,inicio,destino, caminoVertices,new CaminoVertices(),true);
     }
 
-    private ArrayList<Camino> buscarCamino(Vertice original,Vertice inicio, Vertice destino, ArrayList<Camino> caminos, Camino camino,boolean first) {
+    private ArrayList<CaminoVertices> buscarCamino(Vertice original, Vertice inicio, Vertice destino, ArrayList<CaminoVertices> caminos, CaminoVertices camino, boolean primero) {
         System.out.println(inicio.nombre);
-        if(!first && inicio == original) {
+        // Caso en que el origen y el destino sean iguales, no se permiten lazos
+        if(!primero && (inicio == original)) {
+
             return null;
         }
         camino.addCamino(inicio);
@@ -60,7 +62,9 @@ public class Grafo {
         }
         for(Arista arista: inicio.aristas){
             if(arista.activo)
-                buscarCamino(original,arista.destino,destino,caminos,new Camino(camino),false);
+
+                buscarCamino(original,arista.destino,destino, caminos,new CaminoVertices(camino),false);
+
         }
         return caminos;
     }
@@ -89,7 +93,91 @@ public class Grafo {
     }
 
 
+
     public Arista[][] getMatriz() {
         return representacionMatriz;
     }
+
+    public boolean esConexo(){
+        for (Vertice vertice : vertices){
+            // Hay que verificar que se puede llegar a todos los demas vertices
+            ArrayList<Vertice> conexos = new ArrayList<>();
+            conexos.add(vertice);
+            return tieneCaminosConTodos(vertice,conexos);
+        }
+        return true;
+    }
+
+    private boolean tieneCaminosConTodos(Vertice actual,ArrayList<Vertice> conexos){
+        if (vertices.size() == conexos.size())
+            return true;
+        for (Arista arista : actual.aristas){
+            if (buscarVertice(arista.destino,conexos) == null){
+                conexos.add(arista.destino);
+                return tieneCaminosConTodos(arista.destino,conexos);
+            }
+        }
+        return false;
+    }
+
+    private void reestablecerVisitados(){
+        for (Vertice vertice : vertices)
+            vertice.visitado = false;
+    }
+
+    public Vertice getMinimo(Vertice origen, HashMap<Vertice,CaminoAristas> minimos){
+        double menor = Double.MAX_VALUE;
+        Vertice verticeConCaminoMinimo = null;
+        for (Vertice vertice : minimos.keySet()) {
+            // Se valida que sea la distancia minima desde el origen, no puede ser el mismo
+            // origen porque la distancia desde este siempre es 0.
+            if ((menor > minimos.get(vertice).getDistanciaTotal()) && !vertice.equals(origen)) {
+                menor = minimos.get(vertice).getDistanciaTotal();
+                verticeConCaminoMinimo = vertice;
+            }
+        }
+        return verticeConCaminoMinimo;
+    }
+
+    public HashMap<Vertice,CaminoAristas> caminosMinimos(Vertice origen, int tipoPonderacion){
+
+            HashMap<Vertice,CaminoAristas> minimos = new HashMap<>();
+            // Se prepara la lista de adyacencia de distancias minimas
+            for (Vertice vertice : vertices) {
+                if (vertice.equals(origen))
+                    minimos.put(vertice,new CaminoAristas(0.0));
+                else
+                    minimos.put(vertice, new CaminoAristas(Double.MAX_VALUE));
+            }
+            // Algoritmo de Dijkstra
+            int i = 0;
+            Vertice actual = origen;
+            double distanciaAcumulada = 0.0;
+            double nuevaDistancia = 0.0;
+
+            while (i < vertices.size()) {
+                actual.setVisitado(true);
+                for (Arista arista : actual.aristas){
+                    if (!arista.destino.visitado){
+                        distanciaAcumulada = minimos.get(arista.destino).getDistanciaTotal();
+                        nuevaDistancia = minimos.get(actual).getDistanciaTotal() + arista.getPonderacion(tipoPonderacion);
+                        if (nuevaDistancia < distanciaAcumulada)
+                        {
+                            minimos.get(arista.destino).addCamino(arista);
+                            minimos.get(arista.destino).setDistanciaTotal(nuevaDistancia);  // Se actualiza la distancia desde el origen al vertice
+                        }
+                    }
+                }
+                actual = getMinimo(origen, minimos);
+                i++;
+            }
+            //TODO: Impresion para desarrollo, borrar luego
+            System.out.println("RESULTADO FINAL DE LA TABLA - ALGORITMO DE DIJKSTRA");
+            for (Vertice vertice : minimos.keySet()) {
+                System.out.println(vertice.nombre + " " + minimos.get(vertice).getDistanciaTotal());
+            }
+            return minimos;
+    }
+
+
 }

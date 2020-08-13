@@ -1,5 +1,7 @@
 package mrdelivery.model.structures;
 
+import mrdelivery.model.Const;
+
 public class Arista {
 
     Vertice origen;
@@ -29,7 +31,7 @@ public class Arista {
 
     public Arista(Vertice origen,Vertice destino,Arista arista){
         this.origen = origen;
-        this.destino =destino;
+        this.destino = destino;
         this.distancia = arista.distancia;
         this.precio = arista.precio;
         this.tiempo = arista.tiempo;
@@ -84,6 +86,7 @@ public class Arista {
         this.activo = activo;
     }
 
+
     public String toStringConexion() {
         return "Conexion:" + origen.getNombre() + "-" + destino.getNombre();
     }
@@ -98,5 +101,17 @@ public class Arista {
         if(activo == true)
             return  "Activo";
         return "Inactivo";
+
+    public double getPonderacion(int tipo){
+        switch (tipo){
+            case Const.PRECIO: return precio;
+            case Const.DISTANCIA: return distancia;
+            case Const.TIEMPO: return tiempo;
+            default: return 0;
+        }
+    }
+
+    public void resaltarEnPantalla(){
+        //TODO:Usa la referencia a pantalla para resaltarla de un color mostrando asi el camino
     }
 }
