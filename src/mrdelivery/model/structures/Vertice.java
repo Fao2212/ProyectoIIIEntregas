@@ -1,6 +1,7 @@
 package mrdelivery.model.structures;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Vertice {
 
