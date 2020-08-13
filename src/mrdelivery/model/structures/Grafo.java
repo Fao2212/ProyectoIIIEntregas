@@ -1,5 +1,7 @@
 package mrdelivery.model.structures;
 
+import netscape.javascript.JSObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 

@@ -42,6 +42,16 @@ public class App {
         });
     }
     // Metodos
+
+
+    public Grafo getActualOriginal() {
+        return actualOriginal;
+    }
+
+    public Grafo getActualModificado() {
+        return actualModificado;
+    }
+
     public void leerConfiguracion(){
         LectorJSON lector = new LectorJSON("config.json");
         lector.leer();
@@ -59,6 +69,7 @@ public class App {
 
             ViewController controller = loader.<ViewController> getController();
             controller.prepararVentana();
+            controller.setApp(this);
         } catch (IOException e) {
             Out.msg("No se pudo cargar " + rutaRelativa,e);
             e.printStackTrace();
@@ -83,30 +94,39 @@ public class App {
     }
 
     public void crearGrafo(JSONObject object){
+        System.out.println(object);
         if(object != null) {
             JSONArray vertices = object.getJSONArray("vertices");
             JSONArray aristas = object.getJSONArray("aristas");
             ArrayList<Vertice> listaVertices = new ArrayList<Vertice>();
-            ArrayList<Arista> listaAristas = new ArrayList<>();
+            ArrayList<Arista> listaAristas = new ArrayList<Arista>();
             for (int i = 0; i < vertices.length(); i++) {
+                System.out.println(vertices.getString(i));
                 listaVertices.add(new Vertice(vertices.getString(i)));
             }
+            System.out.println(listaVertices);
             for (int i = 0; i < aristas.length(); i++) {
                 //Si encuentra un nulo puede enviarse a errores
                 //Si encuentra un nulo puede considerarse como que no tiene camino
                 JSONObject arista = aristas.getJSONObject(i);
                 Vertice origen = buscarVertice(arista.getString("origen"), listaVertices);
                 Vertice destino = buscarVertice(arista.getString("destino"), listaVertices);
-                Arista nuevaArista = new Arista(origen, destino, arista.getBoolean("activo"),
-                        arista.getDouble("costo"), arista.getDouble("km"),
-                        arista.getDouble("minutos"));
-                origen.addArista(nuevaArista);
-                destino.addArista(nuevaArista);
-                listaAristas.add(nuevaArista);
+                if(validarArista(origen,destino)) {
+                    Arista nuevaArista = new Arista(origen, destino, arista.getBoolean("activo"),
+                            arista.getDouble("costo"), arista.getDouble("km"),
+                            arista.getDouble("minutos"));
+                    origen.addArista(nuevaArista);
+                    destino.addArista(nuevaArista);
+                    listaAristas.add(nuevaArista);
+                }
             }
             actualOriginal = new Grafo(listaVertices, listaAristas);
             actualModificado = actualOriginal.clonarGrafo();
         }
+    }
+
+    public boolean validarArista(Vertice origen,Vertice destino){
+        return origen != null && destino != null;//Se puede agregar mas validadcion aca. lo de estar repetido
     }
 
     public Vertice buscarVertice(String nombre,ArrayList<Vertice> vertices){

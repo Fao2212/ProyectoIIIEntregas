@@ -1,7 +1,5 @@
 package mrdelivery.model.structures;
 
-import mrdelivery.model.Const;
-
 public class Arista {
 
     Vertice origen;
