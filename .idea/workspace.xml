@@ -19,9 +19,18 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12de69c9-b073-4677-959a-e42ce51d7bfc" name="Default Changelist" comment="Implementacion de un algoritmo para saber si el grafo es conexo (faltan hacer pruebas), y el algoritmo de Dijkstra (faltan hacer pruebas)">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="12de69c9-b073-4677-959a-e42ce51d7bfc" name="Default Changelist" comment="Actaulizacion de .gitignore y workspace.xml">
+      <change afterPath="$PROJECT_DIR$/src/mrdelivery/view/componentes/Boton.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datos/leidos/grafo1.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/datos/leidos/grafo2.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mrdelivery/controller/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mrdelivery/controller/Controller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mrdelivery/model/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mrdelivery/model/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mrdelivery/model/Const.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mrdelivery/model/Const.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mrdelivery/model/structures/Arista.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mrdelivery/model/structures/Arista.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mrdelivery/model/structures/Grafo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mrdelivery/model/structures/Grafo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mrdelivery/model/structures/Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mrdelivery/model/structures/Test.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mrdelivery/view/gui.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/mrdelivery/view/gui.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,8 +71,12 @@
     <key name="CreateClassDialog.RecentsKey">
       <recent name="mrdelivery.model.structures" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/datos/rutas" />
+      <recent name="$PROJECT_DIR$/datos/datos" />
+    </key>
   </component>
-  <component name="RunManager" selected="Application.Test">
+  <component name="RunManager" selected="Application.Main">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="mrdelivery.Main" />
       <module name="ProyectoIIIEntregas" />
@@ -92,23 +105,21 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
           <option name="containerStateName" value="" />
         </value>
       </option>
-      <option name="TEST_OBJECT" value="CLASS" />
-      <properties />
-      <listeners />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Test" />
         <item itemvalue="Application.Main" />
+        <item itemvalue="Application.Test" />
       </list>
     </recent_temporary>
   </component>
@@ -124,6 +135,7 @@
       <option name="presentableId" value="Default" />
       <updated>1597038469360</updated>
       <workItem from="1597077581023" duration="868000" />
+      <workItem from="1597329345166" duration="9746000" />
     </task>
     <task id="LOCAL-00001" summary="Implementacion de un algoritmo para saber si el grafo es conexo (faltan hacer pruebas), y el algoritmo de Dijkstra (faltan hacer pruebas)">
       <created>1597291899716</created>
@@ -132,7 +144,14 @@
       <option name="project" value="LOCAL" />
       <updated>1597291899716</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Actaulizacion de .gitignore y workspace.xml">
+      <created>1597292184607</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1597292184607</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -153,7 +172,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Merge con DesarrolloGrafo" />
     <MESSAGE value="Implementacion de un algoritmo para saber si el grafo es conexo (faltan hacer pruebas), y el algoritmo de Dijkstra (faltan hacer pruebas)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Implementacion de un algoritmo para saber si el grafo es conexo (faltan hacer pruebas), y el algoritmo de Dijkstra (faltan hacer pruebas)" />
+    <MESSAGE value="Actaulizacion de .gitignore y workspace.xml" />
+    <option name="LAST_COMMIT_MESSAGE" value="Actaulizacion de .gitignore y workspace.xml" />
   </component>
   <component name="WindowStateProjectService">
     <state x="240" y="26" key="#Plugins" timestamp="1597082265548">
@@ -165,11 +185,11 @@
     </state>
     <state x="223" y="0" width="1089" height="824" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1597039959761" />
     <state x="0" y="23" width="1280" height="676" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.1280.710@0.23.1280.710" timestamp="1597266857524" />
-    <state x="478" y="106" key="#com.intellij.ide.util.MemberChooser" timestamp="1597291218021">
+    <state x="478" y="106" key="#com.intellij.ide.util.MemberChooser" timestamp="1597332608355">
       <screen x="0" y="23" width="1280" height="710" />
     </state>
     <state x="574" y="96" key="#com.intellij.ide.util.MemberChooser/0.0.1536.824@0.0.1536.824" timestamp="1597037153819" />
-    <state x="478" y="106" key="#com.intellij.ide.util.MemberChooser/0.23.1280.710@0.23.1280.710" timestamp="1597291218021" />
+    <state x="478" y="106" key="#com.intellij.ide.util.MemberChooser/0.23.1280.710@0.23.1280.710" timestamp="1597332608355" />
     <state x="328" y="121" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1597076394601">
       <screen x="0" y="23" width="1280" height="710" />
     </state>
@@ -186,26 +206,30 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="473" y="154" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1597039754220" />
-    <state width="1238" height="201" key="GridCell.Tab.0.bottom" timestamp="1597291402910">
-      <screen x="0" y="23" width="1280" height="710" />
+    <state width="1238" height="353" key="GridCell.Tab.0.bottom" timestamp="1597340611790">
+      <screen x="0" y="0" width="1280" height="800" />
     </state>
+    <state width="1238" height="353" key="GridCell.Tab.0.bottom/0.0.1280.800@0.0.1280.800" timestamp="1597340611790" />
     <state width="1493" height="210" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1597038443759" />
-    <state width="1238" height="201" key="GridCell.Tab.0.bottom/0.23.1280.710@0.23.1280.710" timestamp="1597291402910" />
-    <state width="1238" height="201" key="GridCell.Tab.0.center" timestamp="1597291402909">
-      <screen x="0" y="23" width="1280" height="710" />
+    <state width="1238" height="353" key="GridCell.Tab.0.bottom/0.23.1280.710@0.23.1280.710" timestamp="1597340575518" />
+    <state width="1238" height="353" key="GridCell.Tab.0.center" timestamp="1597340611789">
+      <screen x="0" y="0" width="1280" height="800" />
     </state>
+    <state width="1238" height="353" key="GridCell.Tab.0.center/0.0.1280.800@0.0.1280.800" timestamp="1597340611789" />
     <state width="1493" height="210" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1597038443759" />
-    <state width="1238" height="201" key="GridCell.Tab.0.center/0.23.1280.710@0.23.1280.710" timestamp="1597291402909" />
-    <state width="1238" height="201" key="GridCell.Tab.0.left" timestamp="1597291402908">
-      <screen x="0" y="23" width="1280" height="710" />
+    <state width="1238" height="353" key="GridCell.Tab.0.center/0.23.1280.710@0.23.1280.710" timestamp="1597340575515" />
+    <state width="1238" height="353" key="GridCell.Tab.0.left" timestamp="1597340611788">
+      <screen x="0" y="0" width="1280" height="800" />
     </state>
+    <state width="1238" height="353" key="GridCell.Tab.0.left/0.0.1280.800@0.0.1280.800" timestamp="1597340611788" />
     <state width="1493" height="210" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1597038443759" />
-    <state width="1238" height="201" key="GridCell.Tab.0.left/0.23.1280.710@0.23.1280.710" timestamp="1597291402908" />
-    <state width="1238" height="201" key="GridCell.Tab.0.right" timestamp="1597291402909">
-      <screen x="0" y="23" width="1280" height="710" />
+    <state width="1238" height="353" key="GridCell.Tab.0.left/0.23.1280.710@0.23.1280.710" timestamp="1597340575514" />
+    <state width="1238" height="353" key="GridCell.Tab.0.right" timestamp="1597340611790">
+      <screen x="0" y="0" width="1280" height="800" />
     </state>
+    <state width="1238" height="353" key="GridCell.Tab.0.right/0.0.1280.800@0.0.1280.800" timestamp="1597340611790" />
     <state width="1493" height="210" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1597038443759" />
-    <state width="1238" height="201" key="GridCell.Tab.0.right/0.23.1280.710@0.23.1280.710" timestamp="1597291402909" />
+    <state width="1238" height="353" key="GridCell.Tab.0.right/0.23.1280.710@0.23.1280.710" timestamp="1597340575516" />
     <state width="1238" height="219" key="GridCell.Tab.1.bottom" timestamp="1597269322101">
       <screen x="0" y="23" width="1280" height="710" />
     </state>
@@ -222,6 +246,14 @@
       <screen x="0" y="23" width="1280" height="710" />
     </state>
     <state width="1238" height="219" key="GridCell.Tab.1.right/0.23.1280.710@0.23.1280.710" timestamp="1597269322101" />
+    <state x="0" y="23" width="1280" height="710" key="MergeDialog" timestamp="1597292652035">
+      <screen x="0" y="23" width="1280" height="710" />
+    </state>
+    <state x="0" y="23" width="1280" height="710" key="MergeDialog/0.23.1280.710@0.23.1280.710" timestamp="1597292652035" />
+    <state x="278" y="146" key="MultipleFileMergeDialog" timestamp="1597292652083">
+      <screen x="0" y="23" width="1280" height="710" />
+    </state>
+    <state x="278" y="146" key="MultipleFileMergeDialog/0.23.1280.710@0.23.1280.710" timestamp="1597292652083" />
     <state x="218" y="23" width="997" height="710" key="SettingsEditor" timestamp="1597266907308">
       <screen x="0" y="23" width="1280" height="710" />
     </state>
@@ -231,10 +263,18 @@
       <screen x="0" y="23" width="1280" height="710" />
     </state>
     <state x="232" y="118" key="Vcs.Push.Dialog.v2/0.23.1280.710@0.23.1280.710" timestamp="1597291912816" />
-    <state x="244" y="98" key="git4idea.branch.GitSmartOperationDialog" timestamp="1597082455436">
+    <state x="438" y="299" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1597292107864">
       <screen x="0" y="23" width="1280" height="710" />
     </state>
-    <state x="244" y="98" key="git4idea.branch.GitSmartOperationDialog/0.23.1280.710@0.23.1280.710" timestamp="1597082455436" />
+    <state x="438" y="299" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.23.1280.710@0.23.1280.710" timestamp="1597292107864" />
+    <state x="378" y="147" key="extract.method.dialog" timestamp="1597293255149">
+      <screen x="0" y="23" width="1280" height="710" />
+    </state>
+    <state x="378" y="147" key="extract.method.dialog/0.23.1280.710@0.23.1280.710" timestamp="1597293255149" />
+    <state x="244" y="98" key="git4idea.branch.GitSmartOperationDialog" timestamp="1597292157730">
+      <screen x="0" y="23" width="1280" height="710" />
+    </state>
+    <state x="244" y="98" key="git4idea.branch.GitSmartOperationDialog/0.23.1280.710@0.23.1280.710" timestamp="1597292157730" />
     <state x="331" y="155" key="refactoring.ChangeSignatureDialog" timestamp="1597272186814">
       <screen x="0" y="23" width="1280" height="710" />
     </state>

@@ -2,6 +2,7 @@ package mrdelivery.model;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import mrdelivery.Main;
@@ -41,9 +42,8 @@ public class App {
             }
         });
     }
+
     // Metodos
-
-
     public Grafo getActualOriginal() {
         return actualOriginal;
     }
@@ -94,39 +94,41 @@ public class App {
     }
 
     public void crearGrafo(JSONObject object){
-        System.out.println(object);
         if(object != null) {
             JSONArray vertices = object.getJSONArray("vertices");
             JSONArray aristas = object.getJSONArray("aristas");
             ArrayList<Vertice> listaVertices = new ArrayList<Vertice>();
             ArrayList<Arista> listaAristas = new ArrayList<Arista>();
             for (int i = 0; i < vertices.length(); i++) {
-                System.out.println(vertices.getString(i));
                 listaVertices.add(new Vertice(vertices.getString(i)));
             }
-            System.out.println(listaVertices);
             for (int i = 0; i < aristas.length(); i++) {
-                //Si encuentra un nulo puede enviarse a errores
-                //Si encuentra un nulo puede considerarse como que no tiene camino
+                //TODO:Si encuentra un nulo puede enviarse a errores
+                //TODO:Si encuentra un nulo puede considerarse como que no tiene camino
                 JSONObject arista = aristas.getJSONObject(i);
                 Vertice origen = buscarVertice(arista.getString("origen"), listaVertices);
                 Vertice destino = buscarVertice(arista.getString("destino"), listaVertices);
                 if(validarArista(origen,destino)) {
                     Arista nuevaArista = new Arista(origen, destino, arista.getBoolean("activo"),
-                            arista.getDouble("costo"), arista.getDouble("km"),
-                            arista.getDouble("minutos"));
+                                                    arista.getDouble("costo"), arista.getDouble("km"),
+                                                    arista.getDouble("minutos"));
                     origen.addArista(nuevaArista);
-                    destino.addArista(nuevaArista);
+//                    destino.addArista(nuevaArista);
                     listaAristas.add(nuevaArista);
                 }
             }
             actualOriginal = new Grafo(listaVertices, listaAristas);
             actualModificado = actualOriginal.clonarGrafo();
+            System.out.println("Original");
+            actualOriginal.imprimirListaAdyacenciaGrafo();
+            System.out.println("Actual");
+            actualModificado.imprimirListaAdyacenciaGrafo();
         }
     }
 
     public boolean validarArista(Vertice origen,Vertice destino){
-        return origen != null && destino != null;//Se puede agregar mas validadcion aca. lo de estar repetido
+        return origen != null && destino != null;
+        //TODO:Se puede agregar mas validadcion aca. lo de estar repetido
     }
 
     public Vertice buscarVertice(String nombre,ArrayList<Vertice> vertices){

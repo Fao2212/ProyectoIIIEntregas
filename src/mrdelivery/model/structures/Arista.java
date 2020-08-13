@@ -1,5 +1,7 @@
 package mrdelivery.model.structures;
 
+import mrdelivery.model.Const;
+
 public class Arista {
 
     Vertice origen;
@@ -90,6 +92,14 @@ public class Arista {
             case Const.DISTANCIA: return distancia;
             case Const.TIEMPO: return tiempo;
             default: return 0;
+        }
+    }
+    public String getPonderacionString(int tipo){
+        switch (tipo){
+            case Const.PRECIO: return "$"+precio;
+            case Const.DISTANCIA: return distancia+" km";
+            case Const.TIEMPO: return tiempo+" min";
+            default: return "";
         }
     }
 

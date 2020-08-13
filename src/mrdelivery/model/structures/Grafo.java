@@ -1,5 +1,6 @@
 package mrdelivery.model.structures;
 
+import mrdelivery.model.Const;
 import netscape.javascript.JSObject;
 
 import java.util.ArrayList;
@@ -27,20 +28,39 @@ public class Grafo {
             Vertice clonOrigen = buscarVertice(arista.origen,copiaVertices);
             Vertice clonDestino = buscarVertice(arista.destino,copiaVertices);
             Arista copiaArista = new Arista(clonOrigen,clonDestino,arista.activo, arista.distancia, arista.tiempo, arista.precio);
-            clonDestino.addArista(copiaArista);
+//            clonDestino.addArista(copiaArista);   //TODO:Revisar si se debe poner o no
             clonOrigen.addArista(copiaArista);
             copiaAristas.add(copiaArista);
         }
         return new Grafo(copiaVertices,copiaAristas);
     }
 
-    public void grafoAMatriz(){//Cuidar aristas repetidas? setear a null los vertices que no existen?
-        this.representacionMatriz = new Arista[vertices.size()][vertices.size()];
-        for (Vertice vertice:vertices) {
+    public void grafoAMatriz(){ //TODO: Cuidar aristas repetidas? setear a null los vertices que no existen?
+        representacionMatriz = new Arista[vertices.size()][vertices.size()];
+        for (Vertice vertice : vertices) {
             for (Arista arista : vertice.aristas) {
+                System.out.println(arista.getOrigen().getNombre() + " a " + arista.getDestino().getNombre() + " con precio de " +
+                                    arista.getPrecio());
                 if (arista.isActivo())
                     representacionMatriz[indexVertice(arista.origen)][indexVertice(arista.destino)] = arista;
+//                representacionMatriz[indexVertice(arista.origen)][indexVertice(arista.destino)] = null; //TODO: Revisar
             }
+        }
+        System.out.println("Se paso el grafo a una matriz");
+    }
+
+    public void imprimirListaAdyacenciaGrafo(){
+        System.out.println("LISTA DE ADYACENCIA DEL GRAFO");
+        for (Vertice vertice : vertices){
+            StringBuffer s = new StringBuffer();
+            s.append(vertice.getNombre()).append(" ");
+            for (Arista arista : vertice.aristas){
+                if (arista.isActivo())
+                    s.append("[").append(arista.getDestino().getNombre()+" ").append(arista.getPonderacion(Const.PRECIO)).append("]");
+                else
+                    s.append("["+arista.getDestino().getNombre()+" ").append("inactivo]");
+            }
+            System.out.println(s);
         }
     }
 
@@ -90,6 +110,10 @@ public class Grafo {
         return -1;
     }
 
+    public Arista[][] getMatriz() {
+        return representacionMatriz;
+    }
+    
     public boolean esConexo(){
         for (Vertice vertice : vertices){
             // Hay que verificar que se puede llegar a todos los demas vertices

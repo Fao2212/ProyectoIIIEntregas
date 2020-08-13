@@ -43,8 +43,8 @@ public class Test {
         aristas.add(a8);
         Grafo grafo = new Grafo(vertices,aristas);
         System.out.println("HOla");
-        ArrayList<Camino> caminos = grafo.todosLosCaminos(v1,v4);
-        for (Camino camino:caminos){
+        ArrayList<CaminoVertices> caminos = grafo.todosLosCaminos(v1,v4);
+        for (CaminoVertices camino:caminos){
             camino.imprimirCamino();
             System.out.println();
         }
