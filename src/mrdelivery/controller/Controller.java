@@ -69,25 +69,25 @@ public class Controller implements ViewController, EventHandler {
     }
 
     public void cargarGrafos(Grafo grafoOriginal,Grafo grafoActual){
-        Arista[][] matrizOriginal = grafoOriginal.getMatriz();
-        Arista[][] matrizActual = grafoActual.getMatriz();
-        cargarGrafoOriginal(matrizOriginal);
-        cargarGrafoActual(matrizActual);
+        cargarGrafoOriginal(grafoOriginal);
+        cargarGrafoActual(grafoActual);
     }
 
-    public void cargarGrafoOriginal(Arista[][] matriz){
-        reloadGrid(matriz,grdGrafoOriginal,vbxGrafoOriginal);
+    public void cargarGrafoOriginal(Grafo grafo){
+        reloadGrid(grafo,grdGrafoOriginal,vbxGrafoOriginal);
     }
 
-    public void cargarGrafoActual(Arista[][] matriz){
-        reloadGrid(matriz,grdGrafoActual,vbxGrafoActual);
+    public void cargarGrafoActual(Grafo grafo){
+        reloadGrid(grafo,grdGrafoActual,vbxGrafoActual);
     }
 
-    private void reloadGrid(Arista[][] matriz,GridPane gridPane,VBox vbox){
+    private void reloadGrid(Grafo grafo,GridPane gridPane,VBox vbox){
         gridPane = crearCuadricula();
+        Arista [][] matriz = grafo.getMatriz();
         for (int fila = 0; fila < matriz.length; fila++) {
             for (int columna = 0; columna < matriz.length; columna++) {
                 Button btn= crearBoton(40,40, fila, columna);
+                btn.getTooltip().setText(showVerticeToolTip(grafo.getVertices().get(fila),grafo.getVertices().get(columna)));
                 if(matriz[fila][columna] != null) {
                     btn.getTooltip().setText(matriz[fila][columna].toStringToolTip());
                     btn.setText("1");
@@ -103,6 +103,10 @@ public class Controller implements ViewController, EventHandler {
     public void handle(Event event) {
         app.crearGrafo(app.getNextJson());
         cargarGrafos(app.getActualOriginal(),app.getActualModificado());
+    }
+    
+    public String showVerticeToolTip(Vertice v1, Vertice v2){
+        return "Fila: " + v1.getNombre() + " Columna: " + v2.getNombre();
     }
 
 }

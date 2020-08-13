@@ -97,10 +97,11 @@ public class Arista {
         return "Estado: " + toStringActivo() + "Km: "+ distancia + " Tiempo: " + tiempo + " Costo: $" + precio;
     }
 
-    private String toStringActivo(){
-        if(activo == true)
-            return  "Activo";
+    private String toStringActivo() {
+        if (activo == true)
+            return "Activo";
         return "Inactivo";
+    }
 
     public double getPonderacion(int tipo){
         switch (tipo){

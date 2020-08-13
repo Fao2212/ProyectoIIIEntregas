@@ -15,6 +15,10 @@ public class Grafo {
         grafoAMatriz();
     }
 
+    public ArrayList<Vertice> getVertices(){
+        return this.vertices;
+    }
+
     public Grafo clonarGrafo(){
         ArrayList<Vertice> copiaVertices = new ArrayList<>();
         ArrayList<Arista> copiaAristas = new ArrayList<>();
