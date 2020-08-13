@@ -5,24 +5,37 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 import mrdelivery.model.App;
 import mrdelivery.model.Const;
-import mrdelivery.view.componentes.Boton;
+import mrdelivery.model.structures.Vertice;
 import mrdelivery.model.structures.Arista;
 import mrdelivery.model.structures.Grafo;
 import mrdelivery.view.Out;
+import mrdelivery.view.componentes.Boton;
+import mrdelivery.view.componentes.BotonArista;
+import mrdelivery.view.componentes.BotonVertice;
 import org.json.JSONObject;
 
-public class Controller implements ViewController, EventHandler {
+public class Controller implements ViewController {
 
     // Constantes
-    boolean ponderacionActiva[] = {false,false,false};
+//    boolean ponderacionGrafoOriginalActiva[] = {false,false,false};
+//    boolean ponderacionGrafoActualActiva[] = {false,false,false};
 
     // Objetos generados por fxml
-    @FXML private VBox vbxGrafoOriginal, vbxGrafoActual;
+    @FXML private VBox vbxGrafoOriginal, vbxGrafoActual, vbxAristasGrafoOriginal,vbxAristasGrafoActual;
+
+    @FXML private HBox hbxVerticesGrafoOriginal,hbxVerticesGrafoActual;
+
+    @FXML private GridPane grdGrafoOriginal, grdGrafoActual;
 
     @FXML private Button btnAvanzarOriginal, btnAvanzarActual, btnSiguienteGrafo,
                          btnActivarVertice, btnDesactivarVertice, btnObtenerCaminoMinimo,
@@ -30,12 +43,14 @@ public class Controller implements ViewController, EventHandler {
                          btnCalcularAEM;
 
     @FXML private TextField tfdVerticeAlterado, tfdDesdeCaminosMinimos, tfdOrigenTodosLosCaminos,
-                      tfdDestinoTodosLosCaminos, tfdRecorridosDesde;
+                            tfdDestinoTodosLosCaminos, tfdRecorridosDesde;
 
 
-    @FXML private RadioButton rdbPrecio, rdbDistancia, rdbTiempo;
+    @FXML private RadioButton rdbPrecio, rdbDistancia, rdbTiempo, rdbPrecioGrafoOriginal,
+                              rdbDistanciaGrafoOriginal, rdbTiempoGrafoOriginal, rdbPrecioGrafoActual,
+                              rdbDistanciaGrafoActual, rdbTiempoGrafoActual;
 
-    @FXML private ToggleGroup CostoDesdeOpciones;
+    @FXML private ToggleGroup CostoDesdeOpciones, PonderacionGrafoOriginal, PonderacionGrafoActual;
 
     @FXML private TextArea tarCaminosMinimo, tarRecorridoProfundidad, tarRecorridoAnchura,
                      tarArbolExpansionMinima;
@@ -44,8 +59,6 @@ public class Controller implements ViewController, EventHandler {
     @FXML
     private ListView<?> lstCaminoAvanzado;
 
-    private GridPane grdGrafoOriginal, grdGrafoActual;
-    private HBox hbxVerticesOriginal, hbxVerticesActual;
     private App app;
 
     private GridPane crearCuadricula(){
@@ -57,32 +70,12 @@ public class Controller implements ViewController, EventHandler {
     private HBox crearFila(){
         HBox fila = new HBox();
         fila.setAlignment(Pos.CENTER);
-        fila.setMargin(vbxGrafoActual,new Insets(5,5,5,10));
+//        HBox.setMargin(vbxGrafoActual,new Insets(10,10,10,10));
         return fila;
-    }
-
-    private int getPonderacionActiva(){
-        for (int i = 0; i < ponderacionActiva.length; i++){
-            if(ponderacionActiva[i])
-                return i;
-        }
-        return -1;  // Ninguno esta activo
     }
 
     @Override
     public void prepararVentana(){
-        grdGrafoOriginal = crearCuadricula();
-        grdGrafoActual = crearCuadricula();
-        for (int fila = 0; fila < 10; fila++) {
-            for (int columna = 0; columna < 10; columna++) {
-                Button btnAristaOriginal = new Boton(40,40).getButton();
-                Button btnAristaActual = new Boton(40,40).getButton();
-                grdGrafoOriginal.add(btnAristaOriginal,fila,columna);
-                grdGrafoActual.add(btnAristaActual,fila,columna);
-            }
-        }
-        vbxGrafoOriginal.getChildren().add(1,grdGrafoOriginal); // Index 1, porque es el segundo elemento en el vbox
-        vbxGrafoActual.getChildren().add(1,grdGrafoActual);
     }
 
     @Override
@@ -96,29 +89,48 @@ public class Controller implements ViewController, EventHandler {
     }
 
     public void cargarGrafoOriginal(Grafo grafo){
-        reloadGrid(grafo,grdGrafoOriginal,vbxGrafoOriginal);
+        reloadGrid(grafo,grdGrafoOriginal,vbxGrafoOriginal,hbxVerticesGrafoOriginal);
     }
 
     public void cargarGrafoActual(Grafo grafo){
-        reloadGrid(grafo,grdGrafoActual,vbxGrafoActual);
+        reloadGrid(grafo,grdGrafoActual,vbxGrafoActual,hbxVerticesGrafoActual);
     }
 
-    private void reloadGrid(Grafo grafo,GridPane gridPane,VBox vbox){
+    private void decorarBotonArista(BotonArista btnArista){
+        btnArista.getStyleClass().add("arista");
+    }
+
+    private void decorarBotonVertice(BotonVertice btnVertice){
+        btnVertice.getStyleClass().add("vertice");
+    }
+    private void reloadGrid(Grafo grafo, GridPane gridPane, VBox vbox, HBox hbox){
         gridPane = crearCuadricula();
+        hbox = crearFila();
         Arista [][] matriz = grafo.getMatriz();
         for (int fila = 0; fila < matriz.length; fila++) {
+            BotonVertice btnVertice = new BotonVertice(Const.BTN_ALTO,Const.BTN_ANCHO, grafo.getVertices().get(fila));
+            btnVertice.getTooltip().setText(showVerticeToolTip(grafo.getVertices().get(fila)));
+            btnVertice.setText(grafo.getVertices().get(fila).getNombre());
+            decorarBotonVertice(btnVertice);
+            hbox.getChildren().add(btnVertice);
+            HBox.setMargin(btnVertice,new Insets(10,0,20,0));
             for (int columna = 0; columna < matriz.length; columna++) {
-                Button btn= crearBoton(40,40, fila, columna);
-                btn.getTooltip().setText(showVerticeToolTip(grafo.getVertices().get(fila),grafo.getVertices().get(columna)));
+                BotonArista btnArista = new BotonArista(Const.BTN_ALTO,Const.BTN_ANCHO,matriz[fila][columna]);
+                btnArista.getTooltip().setText(showAristaToolTip(grafo.getVertices().get(fila),grafo.getVertices().get(columna)));
                 if(matriz[fila][columna] != null) {
-                    btn.getTooltip().setText(matriz[fila][columna].toStringToolTip());
-                    btn.setText("1");
+                    btnArista.getTooltip().setText(matriz[fila][columna].toStringToolTip());
+                    btnArista.setFont(Font.font("Courier", FontWeight.NORMAL, FontPosture.REGULAR,10.5));
+                    btnArista.setText(matriz[fila][columna].getPonderacionString(grafo.getPonderacionActiva()));
+                    btnArista.setWrapText(true);
+                    decorarBotonArista(btnArista);
                 }
-                gridPane.add(btn,fila,columna);
+                gridPane.add(btnArista,fila,columna);
             }
         }
-        vbox.getChildren().remove(1);
-        vbox.getChildren().add(1,gridPane); // Index 1, porque es el segundo elemento en el vbox
+//        vbox.getChildren().remove(2);
+        vbox.getChildren().set(1,hbox);
+//        vbox.getChildren().remove(3);
+        vbox.getChildren().set(2,gridPane);
     }
 
     // ACCIONES DESDE LA INTERFAZ
@@ -130,17 +142,42 @@ public class Controller implements ViewController, EventHandler {
     @FXML
     void actualizarPesaje(ActionEvent event) {
         if (rdbPrecio.isSelected()){
-            ponderacionActiva[Const.PRECIO] = true;
-            System.out.println("Se activo el prceio");
+            app.getActualModificado().setPonderacionActiva(Const.PRECIO);
+            app.getActualOriginal().setPonderacionActiva(Const.PRECIO);
+            System.out.println("Se activo el precio");
         }
         else if (rdbDistancia.isSelected()){
-            ponderacionActiva[Const.DISTANCIA] = true;
+            app.getActualModificado().setPonderacionActiva(Const.DISTANCIA);
+            app.getActualOriginal().setPonderacionActiva(Const.DISTANCIA);
             System.out.println("Se activo la distancia");
         }
         else if (rdbTiempo.isSelected()){
-            ponderacionActiva[Const.TIEMPO] = true;
+            app.getActualModificado().setPonderacionActiva(Const.DISTANCIA);
+            app.getActualOriginal().setPonderacionActiva(Const.DISTANCIA);
             System.out.println("Se activo el tiempo");
         }
+    }
+
+    @FXML
+    void setPonderacionGrafoActual(ActionEvent event) {
+        if (rdbPrecioGrafoActual.isSelected())
+            app.getActualModificado().setPonderacionActiva(Const.PRECIO);
+        else if (rdbDistanciaGrafoActual.isSelected())
+            app.getActualModificado().setPonderacionActiva(Const.DISTANCIA);
+        else if (rdbTiempoGrafoActual.isSelected())
+            app.getActualModificado().setPonderacionActiva(Const.TIEMPO);
+        cargarGrafoActual(app.getActualModificado());
+    }
+
+    @FXML
+    void setPonderacionGrafoOriginal(ActionEvent event) {
+        if (rdbPrecioGrafoOriginal.isSelected())
+            app.getActualOriginal().setPonderacionActiva(Const.PRECIO);
+        else if (rdbDistanciaGrafoOriginal.isSelected())
+            app.getActualOriginal().setPonderacionActiva(Const.DISTANCIA);
+        else if (rdbTiempoGrafoOriginal.isSelected())
+            app.getActualOriginal().setPonderacionActiva(Const.TIEMPO);
+        cargarGrafoOriginal(app.getActualOriginal());
     }
 
     @FXML
@@ -190,13 +227,16 @@ public class Controller implements ViewController, EventHandler {
                 System.out.println("El grafo actual esta nulo");
         }
         else{
-            Out.msg("Error en carga de rutas","Por favor verifique que la carpeta de rutas"+
-                    " no esta vacia", Alert.AlertType.ERROR);
+            Out.msg("No se encontraron grafos","Por favor verifique que la carpeta de rutas"+
+                    " no esta vacia", Alert.AlertType.INFORMATION);
         }
     }
 
-    public String showVerticeToolTip(Vertice v1, Vertice v2){
+    public String showAristaToolTip(Vertice v1, Vertice v2){
         return "Fila: " + v1.getNombre() + " Columna: " + v2.getNombre();
+    }
+    public String showVerticeToolTip(Vertice v1){
+        return "Vertice: " + v1.getNombre();
     }
 
 }

@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mrdelivery.controller.Controller">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" stylesheets="@css/estilos.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mrdelivery.controller.Controller">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -44,21 +44,80 @@
                   <Font name="Courier" size="20.0" />
                </font>
             </Label>
-            <Button fx:id="btnAvanzarOriginal" alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" text="Avanzar">
-               <font>
-                  <Font name="Courier" size="13.0" />
-               </font>
+            <HBox fx:id="hbxVerticesGrafoOriginal" alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <VBox.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </VBox.margin>
-               <graphic>
-                  <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@imgs/img_next.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
+            </HBox>
+            <GridPane fx:id="grdGrafoOriginal" alignment="CENTER">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
+            <HBox alignment="CENTER" prefHeight="47.0" prefWidth="515.0">
+               <children>
+                  <RadioButton fx:id="rdbPrecioGrafoOriginal" mnemonicParsing="false" onAction="#setPonderacionGrafoOriginal" textAlignment="CENTER" wrapText="true">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="PonderacionGrafoOriginal" />
+                     </toggleGroup>
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@imgs/img_cost.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </RadioButton>
+                  <RadioButton fx:id="rdbDistanciaGrafoOriginal" mnemonicParsing="false" onAction="#setPonderacionGrafoOriginal" textAlignment="CENTER" toggleGroup="$PonderacionGrafoOriginal" wrapText="true">
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@imgs/img_distance.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </RadioButton>
+                  <RadioButton fx:id="rdbTiempoGrafoOriginal" mnemonicParsing="false" onAction="#setPonderacionGrafoOriginal" textAlignment="CENTER" toggleGroup="$PonderacionGrafoOriginal" wrapText="true">
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@imgs/img_time.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </RadioButton>
+                  <Button fx:id="btnAvanzarOriginal" alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#avanzarGrafoOriginal" text="Avanzar">
+                     <font>
+                        <Font name="Courier" size="13.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@imgs/img_next.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
          </children>
       </VBox>
       <VBox fx:id="vbxGrafoActual" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="4" GridPane.columnSpan="3" GridPane.rowSpan="3">
@@ -71,26 +130,85 @@
                   <Font name="Courier" size="20.0" />
                </font>
             </Label>
-            <Button fx:id="btnAvanzarActual" contentDisplay="RIGHT" mnemonicParsing="false" text="Avanzar">
-               <font>
-                  <Font name="Courier" size="13.0" />
-               </font>
+            <HBox fx:id="hbxVerticesGrafoActual" alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <VBox.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </VBox.margin>
-               <graphic>
-                  <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@imgs/img_next.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
+            </HBox>
+            <GridPane fx:id="grdGrafoActual" alignment="CENTER">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
+            <HBox alignment="CENTER" prefHeight="38.0" prefWidth="513.0">
+               <children>
+                  <RadioButton fx:id="rdbPrecioGrafoActual" mnemonicParsing="false" onAction="#setPonderacionGrafoActual">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="PonderacionGrafoActual" />
+                     </toggleGroup>
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@imgs/img_cost.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </RadioButton>
+                  <RadioButton fx:id="rdbDistanciaGrafoActual" mnemonicParsing="false" onAction="#setPonderacionGrafoActual" toggleGroup="$PonderacionGrafoActual">
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@imgs/img_distance.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </RadioButton>
+                  <RadioButton fx:id="rdbTiempoGrafoActual" mnemonicParsing="false" onAction="#setPonderacionGrafoActual" toggleGroup="$PonderacionGrafoActual">
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@imgs/img_time.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </RadioButton>
+                  <Button fx:id="btnAvanzarActual" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#avanzarGrafoActual" text="Avanzar">
+                     <font>
+                        <Font name="Courier" size="13.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@imgs/img_next.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
          </children>
       </VBox>
       <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.halignment="CENTER" GridPane.rowSpan="4" GridPane.valignment="CENTER">
          <children>
-            <Button fx:id="btnSiguienteGrafo" contentDisplay="TOP" mnemonicParsing="false" prefHeight="27.0" prefWidth="186.0" text="Siguiente grafo">
+            <Button fx:id="btnSiguienteGrafo" contentDisplay="TOP" mnemonicParsing="false" onAction="#siguienteGrafo" prefHeight="27.0" prefWidth="186.0" text="Siguiente grafo">
                <VBox.margin>
                   <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
                </VBox.margin>
@@ -117,7 +235,7 @@
                   </Label>
                   <HBox alignment="CENTER" prefHeight="42.0" prefWidth="168.0">
                      <children>
-                        <TextField promptText="Vertice">
+                        <TextField fx:id="tfdVerticeAlterado" promptText="Vertice">
                            <HBox.margin>
                               <Insets left="10.0" right="10.0" />
                            </HBox.margin>
@@ -125,7 +243,7 @@
                               <Font name="Courier" size="13.0" />
                            </font>
                         </TextField>
-                        <Button mnemonicParsing="false" textAlignment="JUSTIFY">
+                        <Button fx:id="btnActivarVertice" mnemonicParsing="false" onAction="#activarVertice" textAlignment="JUSTIFY">
                            <graphic>
                               <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -137,7 +255,7 @@
                               <Insets bottom="2.0" left="2.0" right="2.0" />
                            </HBox.margin>
                         </Button>
-                        <Button mnemonicParsing="false">
+                        <Button fx:id="btnDesactivarVertice" mnemonicParsing="false" onAction="#desactivarVertice">
                            <graphic>
                               <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -168,7 +286,7 @@
                   </Label>
                   <HBox alignment="CENTER" prefHeight="47.0" prefWidth="163.0">
                      <children>
-                        <RadioButton contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="35.0" prefWidth="54.0">
+                        <RadioButton fx:id="rdbPrecio" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#actualizarPesaje" prefHeight="35.0" prefWidth="54.0">
                            <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </HBox.margin>
@@ -183,7 +301,7 @@
                               <ToggleGroup fx:id="CostoDesdeOpciones" />
                            </toggleGroup>
                         </RadioButton>
-                        <RadioButton mnemonicParsing="false">
+                        <RadioButton fx:id="rdbDistancia" mnemonicParsing="false" onAction="#actualizarPesaje" toggleGroup="$CostoDesdeOpciones">
                            <graphic>
                               <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -195,7 +313,7 @@
                               <Insets bottom="5.0" right="5.0" top="5.0" />
                            </HBox.margin>
                         </RadioButton>
-                        <RadioButton mnemonicParsing="false">
+                        <RadioButton fx:id="rdbTiempo" mnemonicParsing="false" onAction="#actualizarPesaje" toggleGroup="$CostoDesdeOpciones">
                            <graphic>
                               <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -227,7 +345,7 @@
                         <Insets bottom="2.0" left="2.0" right="2.0" top="5.0" />
                      </VBox.margin>
                   </Label>
-                  <TextField promptText="Desde">
+                  <TextField fx:id="tfdDesdeCaminosMinimos" promptText="Desde">
                      <VBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
@@ -235,7 +353,7 @@
                         <Font name="Courier" size="13.0" />
                      </font>
                   </TextField>
-                  <Button mnemonicParsing="false" text="Obtener caminoVertices">
+                  <Button fx:id="btnObtenerCaminoMinimo" mnemonicParsing="false" onAction="#obtenerCaminosMinimos" text="Obtener camino">
                      <VBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
@@ -243,7 +361,7 @@
                         <Font name="Courier" size="13.0" />
                      </font>
                   </Button>
-                  <TextArea prefHeight="200.0" prefWidth="200.0">
+                  <TextArea fx:id="tarCaminosMinimo" prefHeight="200.0" prefWidth="200.0">
                      <VBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
@@ -257,7 +375,7 @@
                <children>
                   <HBox prefHeight="38.0" prefWidth="163.0">
                      <children>
-                        <TextField promptText="Origen">
+                        <TextField fx:id="tfdOrigenTodosLosCaminos" promptText="Origen">
                            <HBox.margin>
                               <Insets bottom="10.0" left="5.0" right="10.0" top="10.0" />
                            </HBox.margin>
@@ -265,7 +383,7 @@
                               <Font name="Courier" size="13.0" />
                            </font>
                         </TextField>
-                        <TextField promptText="Destino">
+                        <TextField fx:id="tfdDestinoTodosLosCaminos" promptText="Destino">
                            <HBox.margin>
                               <Insets bottom="10.0" right="5.0" top="10.0" />
                            </HBox.margin>
@@ -275,7 +393,7 @@
                         </TextField>
                      </children>
                   </HBox>
-                  <Button mnemonicParsing="false" text="Todos los caminoVertices">
+                  <Button fx:id="btnTodosLosCaminos" mnemonicParsing="false" onAction="#obtenerTodosLosCaminos" text="Todos los caminos">
                      <VBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
@@ -283,7 +401,7 @@
                         <Font name="Courier" size="13.0" />
                      </font>
                   </Button>
-                  <Button mnemonicParsing="false" text="Camino óptimo">
+                  <Button fx:id="btnCaminoOptimo" mnemonicParsing="false" onAction="#obtenerCaminoOptimo" text="Camino óptimo">
                      <VBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
@@ -291,7 +409,7 @@
                         <Font name="Courier" size="13.0" />
                      </font>
                   </Button>
-                  <ListView prefHeight="200.0" prefWidth="200.0">
+                  <ListView fx:id="lstCaminos" prefHeight="200.0" prefWidth="200.0">
                      <VBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
@@ -315,7 +433,7 @@
             </Label>
             <HBox prefHeight="37.0" prefWidth="332.0">
                <children>
-                  <TextField prefHeight="24.0" prefWidth="231.0" promptText="Desde">
+                  <TextField fx:id="tfdRecorridosDesde" prefHeight="24.0" prefWidth="231.0" promptText="Desde">
                      <font>
                         <Font name="Courier" size="13.0" />
                      </font>
@@ -323,7 +441,7 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </HBox.margin>
                   </TextField>
-                  <Button mnemonicParsing="false" text="Calcular">
+                  <Button fx:id="btnCalcularRecorrido" mnemonicParsing="false" onAction="#calcularRecorrido" text="Calcular">
                      <HBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </HBox.margin>
@@ -342,7 +460,7 @@
                               <Font name="Courier" size="13.0" />
                            </font>
                         </Label>
-                        <TextArea prefHeight="200.0" prefWidth="200.0">
+                        <TextArea fx:id="tarRecorridoProfundidad" prefHeight="200.0" prefWidth="200.0">
                            <VBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </VBox.margin>
@@ -356,7 +474,7 @@
                               <Font name="Courier" size="13.0" />
                            </font>
                         </Label>
-                        <TextArea prefHeight="200.0" prefWidth="200.0">
+                        <TextArea fx:id="tarRecorridoAnchura" prefHeight="200.0" prefWidth="200.0">
                            <VBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </VBox.margin>
@@ -382,7 +500,7 @@
                         <Font name="Courier" size="13.0" />
                      </font>
                   </Label>
-                  <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="80.0" text="Calcular">
+                  <Button fx:id="btnCalcularAEM" mnemonicParsing="false" prefHeight="40.0" prefWidth="80.0" text="Calcular">
                      <HBox.margin>
                         <Insets bottom="2.0" left="2.0" right="5.0" top="5.0" />
                      </HBox.margin>
@@ -392,7 +510,7 @@
                   </Button>
                </children>
             </HBox>
-            <TextArea prefHeight="200.0" prefWidth="200.0">
+            <TextArea fx:id="tarArbolExpansionMinima" prefHeight="200.0" prefWidth="200.0">
                <VBox.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </VBox.margin>
@@ -415,7 +533,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </VBox.margin>
             </Label>
-            <ListView prefHeight="200.0" prefWidth="200.0">
+            <ListView fx:id="lstCaminoAvanzado" prefHeight="200.0" prefWidth="200.0">
                <VBox.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </VBox.margin>

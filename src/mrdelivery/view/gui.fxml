@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mrdelivery.controller.Controller">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" stylesheets="@css/estilos.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mrdelivery.controller.Controller">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -44,21 +44,80 @@
                   <Font name="Courier" size="20.0" />
                </font>
             </Label>
-            <Button fx:id="btnAvanzarOriginal" alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#avanzarGrafoOriginal" text="Avanzar">
-               <font>
-                  <Font name="Courier" size="13.0" />
-               </font>
+            <HBox fx:id="hbxVerticesGrafoOriginal" alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <VBox.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </VBox.margin>
-               <graphic>
-                  <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../../MrDelivery/src/mrdelivery/view/imgs/img_next.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
+            </HBox>
+            <GridPane fx:id="grdGrafoOriginal" alignment="CENTER">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
+            <HBox alignment="CENTER" prefHeight="47.0" prefWidth="515.0">
+               <children>
+                  <RadioButton fx:id="rdbPrecioGrafoOriginal" mnemonicParsing="false" onAction="#setPonderacionGrafoOriginal" textAlignment="CENTER" wrapText="true">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="PonderacionGrafoOriginal" />
+                     </toggleGroup>
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@imgs/img_cost.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </RadioButton>
+                  <RadioButton fx:id="rdbDistanciaGrafoOriginal" mnemonicParsing="false" onAction="#setPonderacionGrafoOriginal" textAlignment="CENTER" toggleGroup="$PonderacionGrafoOriginal" wrapText="true">
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@imgs/img_distance.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </RadioButton>
+                  <RadioButton fx:id="rdbTiempoGrafoOriginal" mnemonicParsing="false" onAction="#setPonderacionGrafoOriginal" textAlignment="CENTER" toggleGroup="$PonderacionGrafoOriginal" wrapText="true">
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@imgs/img_time.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </RadioButton>
+                  <Button fx:id="btnAvanzarOriginal" alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#avanzarGrafoOriginal" text="Avanzar">
+                     <font>
+                        <Font name="Courier" size="13.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@imgs/img_next.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
          </children>
       </VBox>
       <VBox fx:id="vbxGrafoActual" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="4" GridPane.columnSpan="3" GridPane.rowSpan="3">
@@ -71,21 +130,80 @@
                   <Font name="Courier" size="20.0" />
                </font>
             </Label>
-            <Button fx:id="btnAvanzarActual" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#avanzarGrafoActual" text="Avanzar">
-               <font>
-                  <Font name="Courier" size="13.0" />
-               </font>
+            <HBox fx:id="hbxVerticesGrafoActual" alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <VBox.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </VBox.margin>
-               <graphic>
-                  <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../../MrDelivery/src/mrdelivery/view/imgs/img_next.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
+            </HBox>
+            <GridPane fx:id="grdGrafoActual" alignment="CENTER">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
+            <HBox alignment="CENTER" prefHeight="38.0" prefWidth="513.0">
+               <children>
+                  <RadioButton fx:id="rdbPrecioGrafoActual" mnemonicParsing="false" onAction="#setPonderacionGrafoActual">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="PonderacionGrafoActual" />
+                     </toggleGroup>
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@imgs/img_cost.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </RadioButton>
+                  <RadioButton fx:id="rdbDistanciaGrafoActual" mnemonicParsing="false" onAction="#setPonderacionGrafoActual" toggleGroup="$PonderacionGrafoActual">
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@imgs/img_distance.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </RadioButton>
+                  <RadioButton fx:id="rdbTiempoGrafoActual" mnemonicParsing="false" onAction="#setPonderacionGrafoActual" toggleGroup="$PonderacionGrafoActual">
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@imgs/img_time.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </RadioButton>
+                  <Button fx:id="btnAvanzarActual" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#avanzarGrafoActual" text="Avanzar">
+                     <font>
+                        <Font name="Courier" size="13.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@imgs/img_next.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
          </children>
       </VBox>
       <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.halignment="CENTER" GridPane.rowSpan="4" GridPane.valignment="CENTER">
@@ -100,7 +218,7 @@
                <graphic>
                   <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../MrDelivery/src/mrdelivery/view/imgs/img_graph.png" />
+                        <Image url="@imgs/img_graph.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -129,7 +247,7 @@
                            <graphic>
                               <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../MrDelivery/src/mrdelivery/view/imgs/img_on.png" />
+                                    <Image url="@imgs/img_on.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -141,7 +259,7 @@
                            <graphic>
                               <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../MrDelivery/src/mrdelivery/view/imgs/img_off.png" />
+                                    <Image url="@imgs/img_off.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -175,7 +293,7 @@
                            <graphic>
                               <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../MrDelivery/src/mrdelivery/view/imgs/img_cost.png" />
+                                    <Image url="@imgs/img_cost.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -183,11 +301,11 @@
                               <ToggleGroup fx:id="CostoDesdeOpciones" />
                            </toggleGroup>
                         </RadioButton>
-                        <RadioButton fx:id="rdbDistancia" mnemonicParsing="false" onAction="#actualizarPesaje">
+                        <RadioButton fx:id="rdbDistancia" mnemonicParsing="false" onAction="#actualizarPesaje" toggleGroup="$CostoDesdeOpciones">
                            <graphic>
                               <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../MrDelivery/src/mrdelivery/view/imgs/img_distance.png" />
+                                    <Image url="@imgs/img_distance.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -195,11 +313,11 @@
                               <Insets bottom="5.0" right="5.0" top="5.0" />
                            </HBox.margin>
                         </RadioButton>
-                        <RadioButton fx:id="rdbTiempo" mnemonicParsing="false" onAction="#actualizarPesaje">
+                        <RadioButton fx:id="rdbTiempo" mnemonicParsing="false" onAction="#actualizarPesaje" toggleGroup="$CostoDesdeOpciones">
                            <graphic>
                               <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../MrDelivery/src/mrdelivery/view/imgs/img_time.png" />
+                                    <Image url="@imgs/img_time.png" />
                                  </image>
                               </ImageView>
                            </graphic>

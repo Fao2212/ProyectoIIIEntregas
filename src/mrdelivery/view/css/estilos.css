@@ -1,0 +1,48 @@
+.arista{
+    -fx-background-color: 
+        #000000,
+        linear-gradient(#7ebcea, #2f4b8f),
+        linear-gradient(#426ab7, #263e75),
+        linear-gradient(#395cab, #223768);
+    -fx-background-radius: 3,2,2,2;
+    -fx-background-insets: 0,1,2,3;
+    -fx-text-fill: white;
+    -fx-font-size: 10px;
+}
+
+.arista:hover {
+    -fx-background-color: 
+        #000000,
+        linear-gradient(#9FCBEC, #4D6AB1),
+        linear-gradient(#668CD4, #38569B),
+        linear-gradient(#5379CF, #2F4A88);
+    -fx-background-radius: 3,2,2,2;
+    -fx-background-insets: 0,1,2,3;
+    -fx-text-fill: white;
+    -fx-font-size: 10px;
+}
+
+
+.vertice{
+    -fx-background-color: 
+        #000000,
+        linear-gradient(#7DB863, #447A21),
+        linear-gradient(#44A43A, #15541E),
+        linear-gradient(#389B3E, #1E4C1A);
+    -fx-background-radius: 3,2,2,2;
+    -fx-background-insets: 0,1,2,3;
+    -fx-text-fill: white;
+    -fx-font-size: 10px;
+}
+
+.vertice:hover {
+    -fx-background-color: 
+        #000000,
+        linear-gradient(#B5E2A2, #74A555),
+        linear-gradient(#64BA5B, #417E4A),
+        linear-gradient(#6DCD73, #40753A);
+    -fx-background-radius: 3,2,2,2;
+    -fx-background-insets: 0,1,2,3;
+    -fx-text-fill: white;
+    -fx-font-size: 10px;
+}

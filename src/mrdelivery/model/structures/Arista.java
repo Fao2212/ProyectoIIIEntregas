@@ -94,7 +94,7 @@ public class Arista {
         return toStringConexion()+"\n"+toString();
     }
     public String toString(){
-        return "Estado: " + toStringActivo() + "Km: "+ distancia + " Tiempo: " + tiempo + " Costo: $" + precio;
+        return "Estado: " + toStringActivo() + " Km: "+ distancia + " Tiempo: " + tiempo + " Costo: $" + precio;
     }
 
     private String toStringActivo() {

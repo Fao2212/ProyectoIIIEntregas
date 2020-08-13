@@ -11,10 +11,12 @@ public class Grafo {
     ArrayList<Vertice> vertices;
     ArrayList<Arista> aristas;
     Arista[][] representacionMatriz;
+    int ponderacionActiva;
 
     public Grafo(ArrayList<Vertice> vertices,ArrayList<Arista> aristas){
         this.vertices = vertices;
         this.aristas = aristas;
+        ponderacionActiva = 0;
         grafoAMatriz();
     }
 
@@ -47,6 +49,13 @@ public class Grafo {
                     representacionMatriz[indexVertice(arista.origen)][indexVertice(arista.destino)] = arista;
             }
         }
+    }
+
+    public int getPonderacionActiva(){
+        return ponderacionActiva;
+    }
+    public void setPonderacionActiva(int tipo){
+        ponderacionActiva = tipo;
     }
 
     public void imprimirListaAdyacenciaGrafo(){
@@ -111,7 +120,6 @@ public class Grafo {
         }
         return -1;
     }
-
 
 
     public Arista[][] getMatriz() {
