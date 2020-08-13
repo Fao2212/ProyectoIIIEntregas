@@ -83,4 +83,20 @@ public class Arista {
     public void setActivo(boolean activo) {
         this.activo = activo;
     }
+
+    public String toStringConexion() {
+        return "Conexion:" + origen.getNombre() + "-" + destino.getNombre();
+    }
+    public String toStringToolTip() {
+        return toStringConexion()+"\n"+toString();
+    }
+    public String toString(){
+        return "Estado: " + toStringActivo() + "Km: "+ distancia + " Tiempo: " + tiempo + " Costo: $" + precio;
+    }
+
+    private String toStringActivo(){
+        if(activo == true)
+            return  "Activo";
+        return "Inactivo";
+    }
 }

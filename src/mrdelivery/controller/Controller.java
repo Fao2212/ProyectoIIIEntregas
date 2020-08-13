@@ -32,12 +32,11 @@ public class Controller implements ViewController, EventHandler {
         tooltip.setText("Fila: " + x + " Columna: " + y);
         tooltip.setWrapText(true);
         boton.setTooltip(tooltip);
+        boton.setText("0");
         boton.setPrefSize(alto,ancho);
         boton.setAlignment(Pos.CENTER);
         return boton;
     }
-
-
 
     private GridPane crearCuadricula(){
         GridPane cuadricula = new GridPane();
@@ -67,49 +66,42 @@ public class Controller implements ViewController, EventHandler {
         this.app = app;
     }
 
-    public void cargarGrafo(Grafo grafo){
-        Arista[][] matriz = grafo.getMatriz();
-        reloadGrids(matriz.length);
-        int cont = 0;
-        for(int i = 0;i< matriz.length;i++){
-            for (int j = 0;j< matriz.length;j++){
-                if(matriz[i][j] != null) {
-                    //Button tempButton = (Button) grid.getChildren().get(cont);
-                    //tempButton.setText("1");
+    public void cargarGrafos(Grafo grafoOriginal,Grafo grafoActual){
+        Arista[][] matrizOriginal = grafoOriginal.getMatriz();
+        Arista[][] matrizActual = grafoActual.getMatriz();
+        cargarGrafoOriginal(matrizOriginal);
+        cargarGrafoActual(matrizActual);
+    }
+
+    public void cargarGrafoOriginal(Arista[][] matriz){
+        reloadGrid(matriz,grdGrafoOriginal,vbxGrafoOriginal);
+    }
+
+    public void cargarGrafoActual(Arista[][] matriz){
+        reloadGrid(matriz,grdGrafoActual,vbxGrafoActual);
+    }
+
+    private void reloadGrid(Arista[][] matriz,GridPane gridPane,VBox vbox){
+        gridPane = crearCuadricula();
+        for (int fila = 0; fila < matriz.length; fila++) {
+            for (int columna = 0; columna < matriz.length; columna++) {
+                Button btn= crearBoton(40,40, fila, columna);
+                if(matriz[fila][columna] != null) {
+                    btn.getTooltip().setText(matriz[fila][columna].toStringToolTip());
+                    btn.setText("1");
                 }
-                cont++;
+                gridPane.add(btn,fila,columna);
             }
         }
-    }
-
-    public void cargarGrafoOriginal(Grafo grafo){
-
-    }
-
-    public void cargarGrafoActual(Grafo grafo){
-
-    }
-
-    public void reloadGrids(int size){
-        grdGrafoOriginal = crearCuadricula();
-        grdGrafoActual = crearCuadricula();
-        for (int fila = 0; fila < size; fila++) {
-            for (int columna = 0; columna < size; columna++) {
-                Button btnOriginal = crearBoton(40,40, fila, columna);
-                Button btnActual = crearBoton(40,40, fila, columna);
-                grdGrafoOriginal.add(btnOriginal,fila,columna);
-                grdGrafoActual.add(btnActual,fila,columna);//TODO:AGREGAR AL TOOLTIP LOS DATOS DE DE LAS ARISTAS MOSTRAR EL PESAJE EN LA MATRIZ
-            }
-        }
-        vbxGrafoOriginal.getChildren().remove(1);
-        vbxGrafoActual.getChildren().remove(1);
-        vbxGrafoOriginal.getChildren().add(1,grdGrafoOriginal); // Index 1, porque es el segundo elemento en el vbox
-        vbxGrafoActual.getChildren().add(1,grdGrafoActual);
+        vbox.getChildren().remove(1);
+        vbox.getChildren().add(1,gridPane); // Index 1, porque es el segundo elemento en el vbox
     }
 
     @Override
     public void handle(Event event) {
         app.crearGrafo(app.getNextJson());
-        cargarGrafo(app.getActualOriginal());
+        cargarGrafos(app.getActualOriginal(),app.getActualModificado());
     }
+
+
 }

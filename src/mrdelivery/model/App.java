@@ -94,20 +94,15 @@ public class App {
     }
 
     public void crearGrafo(JSONObject object){
-        System.out.println(object);
         if(object != null) {
             JSONArray vertices = object.getJSONArray("vertices");
             JSONArray aristas = object.getJSONArray("aristas");
             ArrayList<Vertice> listaVertices = new ArrayList<Vertice>();
             ArrayList<Arista> listaAristas = new ArrayList<Arista>();
             for (int i = 0; i < vertices.length(); i++) {
-                System.out.println(vertices.getString(i));
                 listaVertices.add(new Vertice(vertices.getString(i)));
             }
-            System.out.println(listaVertices);
             for (int i = 0; i < aristas.length(); i++) {
-                //Si encuentra un nulo puede enviarse a errores
-                //Si encuentra un nulo puede considerarse como que no tiene camino
                 JSONObject arista = aristas.getJSONObject(i);
                 Vertice origen = buscarVertice(arista.getString("origen"), listaVertices);
                 Vertice destino = buscarVertice(arista.getString("destino"), listaVertices);

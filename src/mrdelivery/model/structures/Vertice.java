@@ -37,4 +37,5 @@ public class Vertice {
     public Object getNombre() {
         return nombre;
     }
+
 }
