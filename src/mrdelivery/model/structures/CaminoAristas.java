@@ -2,7 +2,7 @@ package mrdelivery.model.structures;
 
 import java.util.ArrayList;
 
-public class CaminoAristas {
+public class CaminoAristas implements Comparable<CaminoAristas>{
 
     public ArrayList<Arista> camino;
     double distanciaTotal;
@@ -77,4 +77,13 @@ public class CaminoAristas {
         }
     }
 
+    @Override
+    public int compareTo(CaminoAristas o) {
+        if(distanciaTotal == o.distanciaTotal)
+            return 0;
+        else if(distanciaTotal > o.distanciaTotal)
+            return 1;
+        else
+            return -1;
+    }
 }
