@@ -2,7 +2,7 @@ package mrdelivery.model.structures;
 
 import mrdelivery.model.Const;
 
-public class Arista {
+public class Arista implements  Comparable<Arista>{
 
     Vertice origen;
     Vertice destino;
@@ -10,6 +10,7 @@ public class Arista {
     double tiempo;
     double precio;
     boolean activo;
+    Peso peso;
 
     public Arista(Vertice origen,Vertice destino,boolean activo,double distancia,double tiempo,double precio){
         this.origen = origen;
@@ -36,6 +37,10 @@ public class Arista {
         this.precio = arista.precio;
         this.tiempo = arista.tiempo;
         this.activo = arista.activo;
+    }
+
+    public void setPeso(Peso peso) {
+        this.peso = peso;
     }
 
     public Vertice getOrigen() {
@@ -122,5 +127,30 @@ public class Arista {
 
     public void resaltarEnPantalla(){
         //TODO:Usa la referencia a pantalla para resaltarla de un color mostrando asi el camino
+    }
+
+
+    @Override
+    public int compareTo(Arista o) {
+        double comp1 = 0;
+        double comp2 = 0;
+        if(peso == Peso.DISTANCIA){
+            comp1 = distancia;
+            comp2 = o.getDistancia();
+        }
+        else if(peso == Peso.PRECIO){
+            comp1 = precio;
+            comp2 = o.getPrecio();
+        }
+        else if(peso == Peso.TIEMPO){
+            comp1 = tiempo;
+            comp2 = o.getTiempo();
+        }
+        if(comp1 == comp2)
+            return 0;
+        else if(comp1 > comp2)
+            return 1;
+        else
+            return -1;
     }
 }
