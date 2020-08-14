@@ -234,4 +234,34 @@ public class Grafo {
         return true;
     }
 
+    public CaminoAristas recorridoEnProfundidad(Vertice origen){
+        reestablecerVisitados();
+        CaminoAristas camino = new CaminoAristas();
+        recorridoEnProfundidad(origen,camino);
+        return camino;
+    }
+
+    public void recorridoEnProfundidad(Vertice vertice,CaminoAristas camino){
+        if(vertice.aristas.isEmpty())
+            return;
+        for (Arista arista: vertice.aristas){
+            if (!arista.destino.visitado){
+                arista.origen.setVisitado(true);
+                arista.destino.setVisitado(true);
+                camino.addCamino(arista);
+                recorridoEnProfundidad(arista.destino,camino);
+                if(todosVisitados())
+                    return;
+            }
+        }
+    }
+
+    private boolean todosVisitados() {
+        for (Vertice vertice:vertices){
+            if (!vertice.visitado)
+                return false;
+        }
+        return true;
+    }
+
 }

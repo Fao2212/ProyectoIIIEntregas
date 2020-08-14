@@ -56,14 +56,21 @@ public class Test {
 //            camino.imprimirCamino();
 //            System.out.println();
 //        }
-        grafo.prim(Peso.DISTANCIA);
-        for (Vertice vertice: grafo.vertices){
+
+        //Prueba prim
+        //grafo.prim(Peso.DISTANCIA);
+        /*for (Vertice vertice: grafo.vertices){
             if(vertice.visitado)
                 System.out.println(vertice.nombre);
         }
         for (Arista arista: grafo.aristas){
             if(arista.activo)
                 System.out.println(arista.toStringToolTip());
+        }*/
+        //Prueba profundidad
+        CaminoAristas ca = grafo.recorridoEnProfundidad(v1);
+        for(Arista arista:ca.camino){
+            System.out.println(arista.toStringConexion());
         }
     }
 
