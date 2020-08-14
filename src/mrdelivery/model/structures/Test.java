@@ -68,7 +68,7 @@ public class Test {
                 System.out.println(arista.toStringToolTip());
         }*/
         //Prueba profundidad
-        CaminoAristas ca = grafo.recorridoEnProfundidad(v1);
+        CaminoAristas ca = grafo.recorridoEnAnchura(v3);
         for(Arista arista:ca.camino){
             System.out.println(arista.toStringConexion());
         }

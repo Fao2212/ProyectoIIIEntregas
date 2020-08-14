@@ -288,4 +288,30 @@ public class Grafo {
         return true;
     }
 
+    public CaminoAristas recorridoEnAnchura(Vertice origen){
+        reestablecerVisitados();
+        CaminoAristas camino = new CaminoAristas();
+        recorridoEnAnchura(origen,camino);
+        return camino;
+    }
+
+    public void recorridoEnAnchura(Vertice vertice,CaminoAristas camino){
+        if(vertice.aristas.isEmpty())
+            return;
+        for (Arista arista: vertice.aristas){
+            if(!arista.destino.visitado) {
+                System.out.println(arista.toStringToolTip());
+                arista.origen.setVisitado(true);;
+                camino.addCamino(arista);
+            }
+        }
+        CaminoAristas caminoTemp = new CaminoAristas(camino);
+        for (Arista arista: caminoTemp.camino){
+            if(!arista.destino.visitado){
+                arista.destino.setVisitado(true);
+                recorridoEnProfundidad(arista.destino,camino);
+            }
+        }
+    }
+
 }

@@ -13,6 +13,8 @@ import mrdelivery.model.structures.Vertice;
 import mrdelivery.view.Out;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import javax.swing.text.html.CSS;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -67,6 +69,7 @@ public class App {
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource(Paths.get(".",rutaRelativa).toString()));
             ventanaPrincipal = loader.load();
+            ventanaPrincipal.getStylesheets().add(Main.class.getResource("estilos.css").toExternalForm());
             ViewController controller = loader.<ViewController> getController();
             controller.prepararVentana();
             controller.setApp(this);
