@@ -5,6 +5,9 @@ import mrdelivery.view.Out;
 
 import java.lang.reflect.Array;
 import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 
 public class Grafo {
 
@@ -263,5 +266,113 @@ public class Grafo {
             }
     }
 
+    public void prim(Peso peso){
+        if(esConexo()){
+            System.out.println("Es conexo");
+            desactivarAristas();
+            reestablecerVisitados();
+            for (int i = 0;i<vertices.size()-1;i++){
+                Arista menor = menorAristaPrim(peso);
+                menor.destino.setVisitado(true);
+                menor.setActivo(true);
+                menor.origen.setVisitado(true);
+            }
+        }
+        else {
+            System.out.println("No es conexo");
+        }
+    }
+
+    private void desactivarAristas(){
+        for (Arista arista:aristas){
+            arista.setActivo(false);
+        }
+    }
+    //profundidad busca un nodo no marcado
+    //
+
+
+    private Arista menorAristaPrim(Peso peso) {//No deberia dar problemas con posibles vacios por ser conexo
+        ArrayList<Arista> posibles = new ArrayList<>();
+        if(ningunoSinVisitar()){
+            for (Arista arista:vertices.get(0).aristas) {
+                arista.setPeso(peso);
+            }
+            return Collections.min(vertices.get(0).aristas);
+        }
+        else {
+            for (Arista arista : aristas) {
+                if (!arista.isActivo() && arista.origen.visitado && !arista.destino.visitado) {
+                    arista.setPeso(peso);
+                    posibles.add(arista);
+                }
+            }
+        }
+        return Collections.min(posibles);
+    }
+
+    public boolean ningunoSinVisitar(){
+        for (Vertice vertice:vertices){
+            if(vertice.visitado)
+                return false;
+        }
+        return true;
+    }
+
+    public CaminoAristas recorridoEnProfundidad(Vertice origen){
+        reestablecerVisitados();
+        CaminoAristas camino = new CaminoAristas();
+        recorridoEnProfundidad(origen,camino);
+        return camino;
+    }
+
+    public void recorridoEnProfundidad(Vertice vertice,CaminoAristas camino){
+        if(vertice.aristas.isEmpty())
+            return;
+        for (Arista arista: vertice.aristas){
+            if (!arista.destino.visitado){
+                arista.origen.setVisitado(true);
+                arista.destino.setVisitado(true);
+                camino.addCamino(arista);
+                recorridoEnProfundidad(arista.destino,camino);
+                if(todosVisitados())
+                    return;
+            }
+        }
+    }
+
+    private boolean todosVisitados() {
+        for (Vertice vertice:vertices){
+            if (!vertice.visitado)
+                return false;
+        }
+        return true;
+    }
+
+    public CaminoAristas recorridoEnAnchura(Vertice origen){
+        reestablecerVisitados();
+        CaminoAristas camino = new CaminoAristas();
+        recorridoEnAnchura(origen,camino);
+        return camino;
+    }
+
+    public void recorridoEnAnchura(Vertice vertice,CaminoAristas camino){
+        if(vertice.aristas.isEmpty())
+            return;
+        for (Arista arista: vertice.aristas){
+            if(!arista.destino.visitado) {
+                System.out.println(arista.toStringToolTip());
+                arista.origen.setVisitado(true);;
+                camino.addCamino(arista);
+            }
+        }
+        CaminoAristas caminoTemp = new CaminoAristas(camino);
+        for (Arista arista: caminoTemp.camino){
+            if(!arista.destino.visitado){
+                arista.destino.setVisitado(true);
+                recorridoEnProfundidad(arista.destino,camino);
+            }
+        }
+    }
 
 }

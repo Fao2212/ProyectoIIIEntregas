@@ -4,7 +4,7 @@ import mrdelivery.model.Const;
 
 import java.util.ArrayList;
 
-public class CaminoAristas {
+public class CaminoAristas implements Comparable<CaminoAristas>{
 
     public ArrayList<Arista> camino;
     double distanciaTotal;
@@ -23,6 +23,7 @@ public class CaminoAristas {
     }
 
     CaminoAristas(CaminoAristas copiar){
+        // TODO: Chequear si lo de sumaParcial esta bien
         camino = new ArrayList<Arista>();
         int sumaParcial = 0;
         for (Arista arista : copiar.camino){
@@ -126,4 +127,13 @@ public class CaminoAristas {
         return s.toString();
     }
 
+    @Override
+    public int compareTo(CaminoAristas o) {
+        if(distanciaTotal == o.distanciaTotal)
+            return 0;
+        else if(distanciaTotal > o.distanciaTotal)
+            return 1;
+        else
+            return -1;
+    }
 }
