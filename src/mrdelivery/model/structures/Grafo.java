@@ -15,6 +15,7 @@ public class Grafo {
     ArrayList<Arista> aristas;
     Arista[][] representacionMatriz;
     int ponderacionActiva;
+    CaminoAristas caminoPorRecorrer;
 
     public Grafo(ArrayList<Vertice> vertices,ArrayList<Arista> aristas){
         this.vertices = vertices;
@@ -25,6 +26,14 @@ public class Grafo {
 
     public ArrayList<Vertice> getVertices(){
         return this.vertices;
+    }
+
+    public CaminoAristas getRecorridoActual() {
+        return caminoPorRecorrer;
+    }
+
+    public void setRecorridoActual(CaminoAristas recorridoActual) {
+        this.caminoPorRecorrer = recorridoActual;
     }
 
     public Grafo clonarGrafo(){

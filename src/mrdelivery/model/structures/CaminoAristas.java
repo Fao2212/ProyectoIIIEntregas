@@ -10,19 +10,19 @@ public class CaminoAristas implements Comparable<CaminoAristas>{
     double distanciaTotal;
     int currentIndex;
 
-    CaminoAristas(){
+    public CaminoAristas(){
         camino = new ArrayList<>();
         currentIndex = 0;
         distanciaTotal = 0.0;
     }
 
-    CaminoAristas(double _distanciaTotal){
+    public CaminoAristas(double _distanciaTotal){
         camino = new ArrayList<Arista>();
         currentIndex = 0;
         distanciaTotal = _distanciaTotal;
     }
 
-    CaminoAristas(CaminoAristas copiar){
+    public CaminoAristas(CaminoAristas copiar){
         // TODO: Chequear si lo de sumaParcial esta bien
         camino = new ArrayList<Arista>();
         int sumaParcial = 0;
@@ -38,6 +38,10 @@ public class CaminoAristas implements Comparable<CaminoAristas>{
         camino.add(arista);
     }
 
+    public void join(CaminoAristas aristas){
+        this.camino.addAll(aristas.camino);
+    }
+
     public void recorridoCompleto(){
         for (Arista arista : camino){
             arista.resaltarEnPantalla();
@@ -48,9 +52,22 @@ public class CaminoAristas implements Comparable<CaminoAristas>{
         camino.get(currentIndex).resaltarEnPantalla();
     }
 
-    public void avanzarCamino(){
+    public Paso avanzarCamino(){
+        Arista anterior;
+        Arista siguiente;
+        Arista actual = camino.get(currentIndex);
+        if(currentIndex == 0)
+            anterior = null;
+        else
+            anterior = camino.get(currentIndex-1);
+        if(currentIndex == camino.size())
+            siguiente = null;
+        else
+            siguiente = camino.get(currentIndex+1);
+        Paso paso = new Paso(actual,siguiente,anterior);
         if(currentIndex < camino.size())
             currentIndex++;
+        return paso;
     }
 
     public void retrocederCamino(){

@@ -69,7 +69,7 @@ public class App {
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource(Paths.get(".",rutaRelativa).toString()));
             ventanaPrincipal = loader.load();
-            ventanaPrincipal.getStylesheets().add(Main.class.getResource("estilos.css").toExternalForm());
+            //ventanaPrincipal.getStylesheets().add(Main.class.getResource("estilos.css").toExternalForm());
             ViewController controller = loader.<ViewController> getController();
             controller.prepararVentana();
             controller.setApp(this);

@@ -1,5 +1,8 @@
 package mrdelivery.model.structures;
 
+import mrdelivery.view.componentes.Boton;
+import mrdelivery.view.componentes.BotonVertice;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -9,6 +12,7 @@ public class Vertice {
     ArrayList<Arista> aristas;
     boolean visitado;
     boolean activo;
+    Boton boton;
 
     public Vertice(String nombre){
         this.nombre = nombre;
@@ -33,7 +37,7 @@ public class Vertice {
     }
 
     public void resaltarEnPantalla() {
-        //Usa la referencia a pantalla para resaltarla de un color mostrando asi el camino
+        boton.resaltar();
     }
 
     public boolean isVisitado() {
@@ -58,5 +62,9 @@ public class Vertice {
 
     public void setActivo(boolean activo) {
         this.activo = activo;
+    }
+
+    public void setBoton(BotonVertice btnVertice) {
+        this.boton = btnVertice;
     }
 }

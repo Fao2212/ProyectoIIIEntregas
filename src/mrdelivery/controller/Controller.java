@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -97,6 +98,7 @@ public class Controller implements ViewController {
         Arista [][] matriz = grafo.getMatriz();
         for (int fila = 0; fila < matriz.length; fila++) {
             BotonVertice btnVertice = new BotonVertice(Const.BTN_ALTO,Const.BTN_ANCHO, grafo.getVertices().get(fila));
+            grafo.getVertices().get(fila).setBoton(btnVertice);
             btnVertice.getTooltip().setText(showVerticeToolTip(grafo.getVertices().get(fila)));
             btnVertice.setText(grafo.getVertices().get(fila).getNombre());
             hbox.getChildren().add(btnVertice);
@@ -106,6 +108,7 @@ public class Controller implements ViewController {
                 BotonArista btnArista = new BotonArista(Const.BTN_ALTO,Const.BTN_ANCHO,matriz[fila][columna]);
                 btnArista.getTooltip().setText(showAristaToolTip(grafo.getVertices().get(fila),grafo.getVertices().get(columna)));
                 if(matriz[fila][columna] != null) {
+                    matriz[fila][columna].setBoton(btnArista);
                     btnArista.getTooltip().setText(matriz[fila][columna].toStringToolTip());
                     btnArista.setText(matriz[fila][columna].getPonderacionString(grafo.getPonderacionActiva()));
                 }
@@ -178,6 +181,20 @@ public class Controller implements ViewController {
 
     @FXML
     void avanzarGrafoActual(ActionEvent event) {
+        CaminoAristas camino = app.getActualModificado().getRecorridoActual();
+        if(camino != null){
+            Paso paso = camino.avanzarCamino();
+            if(paso.getAristaSiguiente() != null) {
+                paso.getOrigen().resaltarEnPantalla();
+                paso.getAristaActual().resaltarEnPantalla();
+                paso.getDestino().resaltarEnPantalla();
+            }
+            else
+                Out.msg("Fin del camino");
+        }
+        else
+            Out.msg("No se creado ningun camino para recorrer");
+
     }
 
     @FXML
@@ -203,6 +220,7 @@ public class Controller implements ViewController {
     @FXML
     void obtenerCaminosMinimos(ActionEvent event) {
         String origen = tfdDesdeCaminosMinimos.getText();
+        CaminoAristas caminoTotal = new CaminoAristas();
         if (!origen.equals("")){
             // Se verifica que el vertice ingresado existe
             Vertice vertice = app.getActualModificado().buscarVertice(origen);
@@ -214,6 +232,7 @@ public class Controller implements ViewController {
                     for (Vertice vert : verticesDelGrafo) {
                         System.out.println("Camino hacia el vertice "+vert.getNombre());
                         caminosMinimos.add(caminos.get(vert));
+                        caminoTotal.join(caminos.get(vert));
                         for (Arista arista : caminos.get(vert).camino){
                             System.out.println(arista.toStringConexion());
                         }
@@ -223,6 +242,7 @@ public class Controller implements ViewController {
                     lstCaminosMinimos.setItems(caminoAristasObservable);
                     lstCaminosMinimos.refresh();
                     lstCaminosMinimos.setCellFactory(caminoVerticesListView -> new VistaCamino());
+                    app.getActualModificado().setRecorridoActual(caminoTotal);
                 }
             }
             else
