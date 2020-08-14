@@ -35,6 +35,14 @@ public class Vertice {
         //Usa la referencia a pantalla para resaltarla de un color mostrando asi el camino
     }
 
+    public boolean isVisitado() {
+        return visitado;
+    }
+
+    public boolean isVisitadoActivo(){
+        return visitado && activo;
+    }
+
     public void setVisitado(boolean value){
         this.visitado = value;
     }

@@ -1,5 +1,7 @@
 package mrdelivery.model.structures;
 
+import mrdelivery.model.Const;
+
 import java.util.ArrayList;
 
 public class CaminoAristas {
@@ -15,13 +17,13 @@ public class CaminoAristas {
     }
 
     CaminoAristas(double _distanciaTotal){
-        camino = new ArrayList<>();
+        camino = new ArrayList<Arista>();
         currentIndex = 0;
         distanciaTotal = _distanciaTotal;
     }
 
     CaminoAristas(CaminoAristas copiar){
-        camino = new ArrayList<>();
+        camino = new ArrayList<Arista>();
         int sumaParcial = 0;
         for (Arista arista : copiar.camino){
             sumaParcial += arista.getPonderacionActual();
@@ -50,7 +52,7 @@ public class CaminoAristas {
             currentIndex++;
     }
 
-    public  void retrocederCamino(){
+    public void retrocederCamino(){
         if(currentIndex > 0)
             currentIndex--;
     }
@@ -96,6 +98,18 @@ public class CaminoAristas {
         return s.toString();
     }
 
+    private String getPonderacionConSimbolo(Arista arista, double total){
+        switch (arista.ponderacionActual){
+            case (Const.PRECIO):
+                return "$" + total;
+            case(Const.DISTANCIA):
+                return total+" km";
+            case(Const.TIEMPO):
+                return total+" min";
+            default:
+                return "";
+        }
+    }
     public String toStringResumen(){
         StringBuilder s = new StringBuilder();
         for (int i = 0; i < camino.size(); i++){
@@ -105,8 +119,10 @@ public class CaminoAristas {
             else
                 s.append("-("+arista.getDestino().getNombre()+")");
         }
-        if (camino.get(0) != null)
-            s.append("Total: " +distanciaTotal + camino.get(0).getPonderacionActualString());
+        if (camino.size() > 0){
+            s.append(" Total: " +getPonderacionConSimbolo(camino.get(0),distanciaTotal));
+        }
+
         return s.toString();
     }
 

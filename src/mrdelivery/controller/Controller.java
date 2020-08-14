@@ -15,12 +15,14 @@ import mrdelivery.model.App;
 import mrdelivery.model.Const;
 import mrdelivery.model.structures.*;
 import mrdelivery.view.Out;
+import mrdelivery.view.componentes.Boton;
 import mrdelivery.view.componentes.BotonArista;
 import mrdelivery.view.componentes.BotonVertice;
 import mrdelivery.view.componentes.VistaCamino;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Controller implements ViewController {
 
@@ -49,7 +51,7 @@ public class Controller implements ViewController {
     @FXML private TextArea tarCaminosMinimo, tarRecorridoProfundidad, tarRecorridoAnchura,
                      tarArbolExpansionMinima;
 
-    @FXML private ListView<CaminoAristas> lstCaminos;
+    @FXML private ListView<CaminoAristas> lstCaminos, lstCaminosMinimos;
     @FXML
     private ListView<?> lstCaminoAvanzado;
 
@@ -106,7 +108,6 @@ public class Controller implements ViewController {
                 if(matriz[fila][columna] != null) {
                     btnArista.getTooltip().setText(matriz[fila][columna].toStringToolTip());
                     btnArista.setText(matriz[fila][columna].getPonderacionString(grafo.getPonderacionActiva()));
-                    btnArista.getStyleClass().add("arista");
                 }
                 gridPane.add(btnArista,fila,columna);
             }
@@ -195,8 +196,40 @@ public class Controller implements ViewController {
     }
 
     @FXML
-    void obtenerCaminosMinimos(ActionEvent event) {
+    void mostrarCaminoMinimoDetallado(MouseEvent event) {
 
+    }
+
+    @FXML
+    void obtenerCaminosMinimos(ActionEvent event) {
+        String origen = tfdDesdeCaminosMinimos.getText();
+        if (!origen.equals("")){
+            // Se verifica que el vertice ingresado existe
+            Vertice vertice = app.getActualModificado().buscarVertice(origen);
+            if (vertice != null){
+                HashMap<Vertice,CaminoAristas> caminos = app.getActualModificado().caminosMinimos(vertice,app.getActualModificado().getPonderacionActiva());
+                if (caminos != null) {
+                    ArrayList<Vertice> verticesDelGrafo = app.getActualModificado().getVertices();
+                    ArrayList<CaminoAristas> caminosMinimos = new ArrayList<>();
+                    for (Vertice vert : verticesDelGrafo) {
+                        System.out.println("Camino hacia el vertice "+vert.getNombre());
+                        caminosMinimos.add(caminos.get(vert));
+                        for (Arista arista : caminos.get(vert).camino){
+                            System.out.println(arista.toStringConexion());
+                        }
+                    }
+                    ObservableList<CaminoAristas> caminoAristasObservable = FXCollections.observableArrayList();
+                    caminoAristasObservable.addAll(caminosMinimos);
+                    lstCaminosMinimos.setItems(caminoAristasObservable);
+                    lstCaminosMinimos.refresh();
+                    lstCaminosMinimos.setCellFactory(caminoVerticesListView -> new VistaCamino());
+                }
+            }
+            else
+                Out.msg("Algo anda mal ...","Por favor ingrese un vertice valido");
+        }
+        else
+            Out.msg("Algo anda mal ...","Por favor ingrese el origen para obtener los caminos desde alguna parte");
     }
 
     @FXML
@@ -220,13 +253,11 @@ public class Controller implements ViewController {
                 lstCaminos.setItems(caminoAristasObservable);
                 lstCaminos.setCellFactory(caminoVerticesListView -> new VistaCamino());
             }
-            else {
+            else
                 Out.msg("Algo anda mal ...","Por favor ingrese un origen y destino validos");
-            }
         }
-        else{
+        else
             Out.msg("Algo anda mal ...","Por favor ingrese el origen y el destino para obtener todos los caminos");
-        }
     }
 
     @FXML

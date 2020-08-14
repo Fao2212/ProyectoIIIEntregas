@@ -41,7 +41,15 @@ public class Arista {
         this.activo = arista.activo;
         this.ponderacionActual = 0;
     }
-
+    public Arista(Arista _arista){
+        this.origen = _arista.origen;
+        this.destino = _arista.destino;;
+        this.distancia = _arista.distancia;
+        this.precio = _arista.precio;
+        this.tiempo = _arista.tiempo;
+        this.activo = _arista.activo;
+        this.ponderacionActual = _arista.ponderacionActual;
+    }
     public Vertice getOrigen() {
         return origen;
     }
@@ -130,15 +138,6 @@ public class Arista {
     }
     public String getPonderacionString(int tipo){
         switch (tipo){
-            case Const.PRECIO: return "$"+precio;
-            case Const.DISTANCIA: return distancia+" km";
-            case Const.TIEMPO: return tiempo+" min";
-            default: return "";
-        }
-    }
-
-    public String getPonderacionActualString(){
-        switch (ponderacionActual){
             case Const.PRECIO: return "$"+precio;
             case Const.DISTANCIA: return distancia+" km";
             case Const.TIEMPO: return tiempo+" min";

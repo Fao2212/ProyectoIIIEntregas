@@ -1,9 +1,10 @@
 package mrdelivery.model.structures;
 
 import mrdelivery.model.Const;
+import mrdelivery.view.Out;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.lang.reflect.Array;
+import java.util.*;
 
 public class Grafo {
 
@@ -63,7 +64,7 @@ public class Grafo {
             s.append(vertice.getNombre()).append(" ");
             for (Arista arista : vertice.aristas){
                 if (arista.isActivo())
-                    s.append("[").append(arista.getDestino().getNombre()+" ").append(arista.getPonderacion(Const.PRECIO)).append("]");
+                    s.append("[").append(arista.getDestino().getNombre()+" ").append(arista.getPonderacionActual()).append("]");
                 else
                     s.append("["+arista.getDestino().getNombre()+" ").append("inactivo]");
             }
@@ -107,9 +108,9 @@ public class Grafo {
 
     }
 
-    private Vertice buscarVertice(Vertice vertice,ArrayList<Vertice> vertices){
-        for(Vertice ver:vertices){
-            if(ver.nombre.equals(vertice.nombre))
+    private Vertice buscarVertice(Vertice vertice,ArrayList<Vertice> _vertices){
+        for(Vertice ver:_vertices){
+            if (ver.nombre.equals(vertice.nombre) && ver.isActivo())
                 return ver;
         }
         return null;
@@ -117,7 +118,8 @@ public class Grafo {
 
     public Vertice buscarVertice(String nombreVertice){
         for (Vertice vertice : vertices){
-            if (vertice.getNombre().equals(nombreVertice))
+            // TODO: Verificar si se ocupa saber si el vertice esta activo siempre o si hay casos en los que no
+            if (vertice.getNombre().equals(nombreVertice) && vertice.isActivo())
                 return vertice;
         }
         return null;
@@ -137,39 +139,55 @@ public class Grafo {
     }
 
     public boolean esConexo(){
+        boolean sigueConexo;
         for (Vertice vertice : vertices){
-            // Hay que verificar que se puede llegar a todos los demas vertices
             ArrayList<Vertice> conexos = new ArrayList<>();
             conexos.add(vertice);
-            return tieneCaminosConTodos(vertice,conexos);
+            // Hay que verificar que se puede llegar a todos los demas vertices
+            reestablecerVisitados();
+            sigueConexo = tieneCaminosConTodos(vertice,conexos);
+            if (!sigueConexo)
+                return false;
         }
+        reestablecerVisitados();
         return true;
     }
 
     private boolean tieneCaminosConTodos(Vertice actual,ArrayList<Vertice> conexos){
+        boolean tieneCaminoConTodos = true;
+        if (!actual.isVisitado())
+            actual.setVisitado(true);
         if (vertices.size() == conexos.size())
             return true;
+        if (actual.aristas.size() == 0) // Si no tiene aristas automaticamente es un grafo no conexo
+            return false;
         for (Arista arista : actual.aristas){
-            if (buscarVertice(arista.destino,conexos) == null){
-                conexos.add(arista.destino);
-                return tieneCaminosConTodos(arista.destino,conexos);
+            if (arista.destino.isActivo()){ // Tiene que estar activo
+                if (buscarVertice(arista.destino,conexos) == null) {
+                    conexos.add(arista.destino);
+                    tieneCaminoConTodos = tieneCaminoConTodos && tieneCaminosConTodos(arista.destino, conexos);
+                }
             }
         }
-        return false;
+        //System.out.println("Estan todos visitados? "+estanTodosVisitados()+" vertices.size() != conexos.size()? "+(vertices.size() != conexos.size()));
+        if (estanTodosVisitados() && (vertices.size() != conexos.size()))
+            return false;
+        return tieneCaminoConTodos;
     }
 
     private void reestablecerVisitados(){
         for (Vertice vertice : vertices)
-            vertice.visitado = false;
+            vertice.setVisitado(false);
     }
 
-    public Vertice getMinimo(Vertice origen, HashMap<Vertice,CaminoAristas> minimos){
+    public Vertice getMinimoNoVisitado(HashMap<Vertice,CaminoAristas> minimos){
         double menor = Double.MAX_VALUE;
         Vertice verticeConCaminoMinimo = null;
         for (Vertice vertice : minimos.keySet()) {
-            // Se valida que sea la distancia minima desde el origen, no puede ser el mismo
-            // origen porque la distancia desde este siempre es 0.
-            if ((menor > minimos.get(vertice).getDistanciaTotal()) && !vertice.equals(origen)) {
+            /*  Se valida que:
+                - El vertice no este visitado
+                - Que el minimo sea menor al minimo actual */
+            if (!vertice.isVisitadoActivo() && (menor > minimos.get(vertice).getDistanciaTotal())) {
                 menor = minimos.get(vertice).getDistanciaTotal();
                 verticeConCaminoMinimo = vertice;
             }
@@ -177,44 +195,72 @@ public class Grafo {
         return verticeConCaminoMinimo;
     }
 
+    public boolean estanTodosVisitados(){
+        int numVisitados = 0;
+        for (Vertice vertice : vertices) {
+            if (vertice.isVisitadoActivo())
+                numVisitados++;
+        }
+        return numVisitados == vertices.size();
+    }
+
     public HashMap<Vertice,CaminoAristas> caminosMinimos(Vertice origen, int tipoPonderacion){
+            // Valida que el grafo sea conexo
+            if (esConexo()) {
+                HashMap<Vertice,CaminoAristas> minimos = new HashMap<>();
+                HashMap<Vertice,Arista> previos = new HashMap<>();
 
-            HashMap<Vertice,CaminoAristas> minimos = new HashMap<>();
-            // Se prepara la lista de adyacencia de distancias minimas
-            for (Vertice vertice : vertices) {
-                if (vertice.equals(origen))
-                    minimos.put(vertice,new CaminoAristas(0.0));
-                else
+                // Se prepara la lista de adyacencia de distancias minimas
+                for (Vertice vertice : vertices)
                     minimos.put(vertice, new CaminoAristas(Double.MAX_VALUE));
-            }
-            // Algoritmo de Dijkstra
-            int i = 0;
-            Vertice actual = origen;
-            double distanciaAcumulada = 0.0;
-            double nuevaDistancia = 0.0;
-
-            while (i < vertices.size()) {
-                actual.setVisitado(true);
-                for (Arista arista : actual.aristas){
-                    if (!arista.destino.visitado){
-                        distanciaAcumulada = minimos.get(arista.destino).getDistanciaTotal();
-                        nuevaDistancia = minimos.get(actual).getDistanciaTotal() + arista.getPonderacion(tipoPonderacion);
-                        if (nuevaDistancia < distanciaAcumulada)
-                        {
-                            minimos.get(arista.destino).addCamino(arista);
-                            minimos.get(arista.destino).setDistanciaTotal(nuevaDistancia);  // Se actualiza la distancia desde el origen al vertice
+                minimos.put(origen,new CaminoAristas(0.0));
+                // Algoritmo de Dijkstra
+                Vertice actual = origen;    // Se pone el actual como el origen seleccionado para hacer el algoritmo
+                double ponderacionAcumulada = 0.0;
+                double nuevaPonderacion = 0.0;
+                while (!estanTodosVisitados()) {
+                    actual.setVisitado(true);
+                    for (Arista arista : actual.aristas){
+                        if (!arista.destino.visitado){
+                            ponderacionAcumulada = minimos.get(arista.destino).getDistanciaTotal();
+                            nuevaPonderacion = minimos.get(actual).getDistanciaTotal() + arista.getPonderacion(tipoPonderacion);
+                            if (ponderacionAcumulada > nuevaPonderacion) {
+                                previos.put(arista.destino,arista);  // Agrega la arista del anterior al vertice actual
+                                minimos.get(arista.destino).setDistanciaTotal(nuevaPonderacion);  // Se actualiza la distancia desde el origen al vertice
+                            }
                         }
                     }
+                    actual = getMinimoNoVisitado(minimos);
+                    if (actual == null) // Ya todos estan visitados
+                        break;
                 }
-                actual = getMinimo(origen, minimos);
-                i++;
+                // Se recontruyen los caminos para llegar a cada vertice desde el origen especificado
+                // Se recontruyen los caminos para llegar a cada vertice desde el origen especificado
+                for (Vertice vertice : previos.keySet()){
+                    Vertice posiblePrevio = vertice;
+                    Arista aristaConPrevio;
+                    Stack<Arista> pilaAristas = new Stack<Arista>();
+                    while ((aristaConPrevio = previos.get(posiblePrevio)) != null){
+                        pilaAristas.push(aristaConPrevio);
+                        posiblePrevio = aristaConPrevio.getOrigen();
+                    }
+                    while (!pilaAristas.isEmpty()){
+                        minimos.get(vertice).addCamino(pilaAristas.pop());
+                    }
+                }
+
+                //TODO: Impresion para desarrollo, borrar luego
+                System.out.println("RESULTADO FINAL DE LA TABLA - ALGORITMO DE DIJKSTRA");
+                for (Vertice vertice : minimos.keySet()) {
+                    System.out.println(vertice.nombre + " " + minimos.get(vertice).getDistanciaTotal());
+                }
+                reestablecerVisitados();    // Para futuras corridas
+                return minimos;
             }
-            //TODO: Impresion para desarrollo, borrar luego
-            System.out.println("RESULTADO FINAL DE LA TABLA - ALGORITMO DE DIJKSTRA");
-            for (Vertice vertice : minimos.keySet()) {
-                System.out.println(vertice.nombre + " " + minimos.get(vertice).getDistanciaTotal());
+            else{
+                Out.msg("Algo anda mal ...","El grafo debe ser conexo para poder encontrar los caminos mínimos desde cualquier vértice");
+                return null;
             }
-            return minimos;
     }
 
 

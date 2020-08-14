@@ -6,6 +6,7 @@
 		{"origen": "N", "destino": "M", "activo" : true, "costo": 0, "km" : 4.1, "minutos": 0.2},
 		{"origen": "J", "destino": "O", "activo" : true, "costo": 76.6, "km" : 204.5, "minutos": 23},
 		{"origen": "L", "destino": "M", "activo" : true, "costo": 403.56, "km" : 290.7, "minutos": 25},
-		{"origen": "O", "destino": "K", "activo" : true, "costo": 2.655, "km" : 203.1, "minutos": 65}
+		{"origen": "O", "destino": "K", "activo" : true, "costo": 2.655, "km" : 203.1, "minutos": 65},
+		{"origen": "M", "destino": "J", "activo" : true, "costo": 54.9, "km" : 39.4, "minutos": 83}
 	]
 }

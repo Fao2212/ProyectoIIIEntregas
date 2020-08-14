@@ -1,0 +1,11 @@
+{
+	"vertices" : ["W","X","Y","Z"],
+	"aristas" : [
+		{"origen": "X", "destino": "W", "activo" : true, "costo": 34, "km" : 5.6, "minutos": 9},
+		{"origen": "W", "destino": "Y", "activo" : true, "costo": 40, "km" : 0.7, "minutos": 2},
+		{"origen": "Z", "destino": "Y", "activo" : true, "costo": 0, "km" : 4.1, "minutos": 0.2},
+		{"origen": "X", "destino": "Z", "activo" : true, "costo": 36, "km" : 45.4, "minutos": 89},
+		{"origen": "Z", "destino": "W", "activo" : true, "costo": 7, "km" : 1, "minutos": 2},
+		{"origen": "Y", "destino": "X", "activo" : true, "costo": 0, "km" : 4.1, "minutos": 0.2}
+	]
+}
