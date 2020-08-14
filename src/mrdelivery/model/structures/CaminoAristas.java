@@ -22,9 +22,13 @@ public class CaminoAristas {
 
     CaminoAristas(CaminoAristas copiar){
         camino = new ArrayList<>();
+        int sumaParcial = 0;
+        for (Arista arista : copiar.camino){
+            sumaParcial += arista.getPonderacionActual();
+        }
+        distanciaTotal = sumaParcial;
         camino.addAll(copiar.camino);
         currentIndex = 0;
-        distanciaTotal = 0.0;
     }
 
     public void addCamino(Arista arista){
@@ -75,6 +79,35 @@ public class CaminoAristas {
                              arista.getDistancia()+" km, "+arista.getTiempo()+" min ]-("+
                              arista.getDestino().getNombre()+") ");
         }
+    }
+
+    public String toString(){
+        StringBuilder s = new StringBuilder();
+        for (int i = 0; i < camino.size(); i++){
+            Arista arista = camino.get(i);
+            s.append("("+arista.getOrigen().getNombre()+")-[ $"+arista.getPrecio()+", "+
+                    arista.getDistancia()+" km, "+arista.getTiempo()+" min ]-("+
+                    arista.getDestino().getNombre()+") ");
+            if (i == camino.size()-1){
+                break;
+            }
+            s.append(" - ");
+        }
+        return s.toString();
+    }
+
+    public String toStringResumen(){
+        StringBuilder s = new StringBuilder();
+        for (int i = 0; i < camino.size(); i++){
+            Arista arista = camino.get(i);
+            if (i == 0)
+                s.append("("+arista.getOrigen().getNombre()+")-("+arista.getDestino().getNombre()+")");
+            else
+                s.append("-("+arista.getDestino().getNombre()+")");
+        }
+        if (camino.get(0) != null)
+            s.append("Total: " +distanciaTotal + camino.get(0).getPonderacionActualString());
+        return s.toString();
     }
 
 }

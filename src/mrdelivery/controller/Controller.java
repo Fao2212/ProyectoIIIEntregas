@@ -1,34 +1,28 @@
 package mrdelivery.controller;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.layout.BackgroundFill;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Paint;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
 import mrdelivery.model.App;
 import mrdelivery.model.Const;
-import mrdelivery.model.structures.Vertice;
-import mrdelivery.model.structures.Arista;
-import mrdelivery.model.structures.Grafo;
+import mrdelivery.model.structures.*;
 import mrdelivery.view.Out;
-import mrdelivery.view.componentes.Boton;
 import mrdelivery.view.componentes.BotonArista;
 import mrdelivery.view.componentes.BotonVertice;
+import mrdelivery.view.componentes.VistaCamino;
 import org.json.JSONObject;
 
-public class Controller implements ViewController {
+import java.util.ArrayList;
 
-    // Constantes
-//    boolean ponderacionGrafoOriginalActiva[] = {false,false,false};
-//    boolean ponderacionGrafoActualActiva[] = {false,false,false};
+public class Controller implements ViewController {
 
     // Objetos generados por fxml
     @FXML private VBox vbxGrafoOriginal, vbxGrafoActual, vbxAristasGrafoOriginal,vbxAristasGrafoActual;
@@ -55,7 +49,7 @@ public class Controller implements ViewController {
     @FXML private TextArea tarCaminosMinimo, tarRecorridoProfundidad, tarRecorridoAnchura,
                      tarArbolExpansionMinima;
 
-    @FXML private ListView<?> lstCaminos;
+    @FXML private ListView<CaminoAristas> lstCaminos;
     @FXML
     private ListView<?> lstCaminoAvanzado;
 
@@ -70,7 +64,6 @@ public class Controller implements ViewController {
     private HBox crearFila(){
         HBox fila = new HBox();
         fila.setAlignment(Pos.CENTER);
-//        HBox.setMargin(vbxGrafoActual,new Insets(10,10,10,10));
         return fila;
     }
 
@@ -96,13 +89,6 @@ public class Controller implements ViewController {
         reloadGrid(grafo,grdGrafoActual,vbxGrafoActual,hbxVerticesGrafoActual);
     }
 
-    private void decorarBotonArista(BotonArista btnArista){
-        btnArista.getStyleClass().add("arista");
-    }
-
-    private void decorarBotonVertice(BotonVertice btnVertice){
-        btnVertice.getStyleClass().add("vertice");
-    }
     private void reloadGrid(Grafo grafo, GridPane gridPane, VBox vbox, HBox hbox){
         gridPane = crearCuadricula();
         hbox = crearFila();
@@ -111,32 +97,41 @@ public class Controller implements ViewController {
             BotonVertice btnVertice = new BotonVertice(Const.BTN_ALTO,Const.BTN_ANCHO, grafo.getVertices().get(fila));
             btnVertice.getTooltip().setText(showVerticeToolTip(grafo.getVertices().get(fila)));
             btnVertice.setText(grafo.getVertices().get(fila).getNombre());
-            decorarBotonVertice(btnVertice);
             hbox.getChildren().add(btnVertice);
             HBox.setMargin(btnVertice,new Insets(10,0,20,0));
+
             for (int columna = 0; columna < matriz.length; columna++) {
                 BotonArista btnArista = new BotonArista(Const.BTN_ALTO,Const.BTN_ANCHO,matriz[fila][columna]);
                 btnArista.getTooltip().setText(showAristaToolTip(grafo.getVertices().get(fila),grafo.getVertices().get(columna)));
                 if(matriz[fila][columna] != null) {
                     btnArista.getTooltip().setText(matriz[fila][columna].toStringToolTip());
-                    btnArista.setFont(Font.font("Courier", FontWeight.NORMAL, FontPosture.REGULAR,10.5));
                     btnArista.setText(matriz[fila][columna].getPonderacionString(grafo.getPonderacionActiva()));
-                    btnArista.setWrapText(true);
-                    decorarBotonArista(btnArista);
+                    btnArista.getStyleClass().add("arista");
                 }
                 gridPane.add(btnArista,fila,columna);
             }
         }
-//        vbox.getChildren().remove(2);
         vbox.getChildren().set(1,hbox);
-//        vbox.getChildren().remove(3);
         vbox.getChildren().set(2,gridPane);
     }
 
     // ACCIONES DESDE LA INTERFAZ
     @FXML
     void activarVertice(ActionEvent event) {
+        String nombreVertice = tfdVerticeAlterado.getText();
+        if (!nombreVertice.equals(""))
+            app.getActualModificado().buscarVertice(nombreVertice).setActivo(true);
+        else
+            Out.msg("Por favor ingrese un vertice.");
+    }
 
+    @FXML
+    void desactivarVertice(ActionEvent event) {
+        String nombreVertice = tfdVerticeAlterado.getText();
+        if (!nombreVertice.equals(""))
+            app.getActualModificado().buscarVertice(nombreVertice).setActivo(false);
+        else
+            Out.msg("Por favor ingrese un vertice.");
     }
 
     @FXML
@@ -182,7 +177,6 @@ public class Controller implements ViewController {
 
     @FXML
     void avanzarGrafoActual(ActionEvent event) {
-
     }
 
     @FXML
@@ -192,11 +186,6 @@ public class Controller implements ViewController {
 
     @FXML
     void calcularRecorrido(ActionEvent event) {
-
-    }
-
-    @FXML
-    void desactivarVertice(ActionEvent event) {
 
     }
 
@@ -211,8 +200,33 @@ public class Controller implements ViewController {
     }
 
     @FXML
-    void obtenerTodosLosCaminos(ActionEvent event) {
+    void mostrarCaminoDetallado(MouseEvent event) {
+        String camino = lstCaminos.getSelectionModel().getSelectedItem().toString();
+        Out.msg("Camino detallado",camino, Alert.AlertType.INFORMATION);
+    }
 
+    @FXML
+    void obtenerTodosLosCaminos(ActionEvent event) {
+        String origen = tfdOrigenTodosLosCaminos.getText();
+        String destino = tfdDestinoTodosLosCaminos.getText();
+        if (!origen.equals("") && !destino.equals("")){
+            // Se verifica que son vertices del grafo
+            Vertice verticeOrigen = app.getActualModificado().buscarVertice(origen);
+            Vertice verticeDestino = app.getActualModificado().buscarVertice(destino);
+            if ((verticeOrigen != null) && (verticeDestino != null)) {
+                ArrayList<CaminoAristas> caminoAristas = app.getActualModificado().todosLosCaminos(verticeOrigen, verticeDestino);
+                ObservableList<CaminoAristas> caminoAristasObservable = FXCollections.observableArrayList();
+                caminoAristasObservable.addAll(caminoAristas);
+                lstCaminos.setItems(caminoAristasObservable);
+                lstCaminos.setCellFactory(caminoVerticesListView -> new VistaCamino());
+            }
+            else {
+                Out.msg("Algo anda mal ...","Por favor ingrese un origen y destino validos");
+            }
+        }
+        else{
+            Out.msg("Algo anda mal ...","Por favor ingrese el origen y el destino para obtener todos los caminos");
+        }
     }
 
     @FXML

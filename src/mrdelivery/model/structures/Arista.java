@@ -10,23 +10,26 @@ public class Arista {
     double tiempo;
     double precio;
     boolean activo;
+    int ponderacionActual;
 
-    public Arista(Vertice origen,Vertice destino,boolean activo,double distancia,double tiempo,double precio){
+    public Arista(Vertice origen,Vertice destino,boolean activo,double precio,double distancia,double tiempo){
         this.origen = origen;
         this.destino = destino;
         this.distancia = distancia;
         this.precio = precio;
         this.tiempo = tiempo;
         this.activo = activo;
+        this.ponderacionActual = 0;
     }
 
-    public Arista(Vertice origen,Vertice destino,String activo,String distancia,String tiempo,String precio){
+    public Arista(Vertice origen,Vertice destino,String activo,String precio,String distancia,String tiempo){
         this.origen = origen;
         this.destino = destino;
         this.distancia = Double.parseDouble(distancia);
         this.precio = Double.parseDouble(precio);
         this.tiempo = Double.parseDouble(tiempo);
         this.activo = Boolean.parseBoolean(activo);
+        this.ponderacionActual = 0;
     }
 
     public Arista(Vertice origen,Vertice destino,Arista arista){
@@ -36,6 +39,7 @@ public class Arista {
         this.precio = arista.precio;
         this.tiempo = arista.tiempo;
         this.activo = arista.activo;
+        this.ponderacionActual = 0;
     }
 
     public Vertice getOrigen() {
@@ -111,8 +115,30 @@ public class Arista {
             default: return 0;
         }
     }
+
+    public void setPonderacionActual(int ponderacionActual) {
+        this.ponderacionActual = ponderacionActual;
+    }
+
+    public double getPonderacionActual(){
+        switch (ponderacionActual){
+            case Const.PRECIO: return precio;
+            case Const.DISTANCIA: return distancia;
+            case Const.TIEMPO: return tiempo;
+            default: return 0;
+        }
+    }
     public String getPonderacionString(int tipo){
         switch (tipo){
+            case Const.PRECIO: return "$"+precio;
+            case Const.DISTANCIA: return distancia+" km";
+            case Const.TIEMPO: return tiempo+" min";
+            default: return "";
+        }
+    }
+
+    public String getPonderacionActualString(){
+        switch (ponderacionActual){
             case Const.PRECIO: return "$"+precio;
             case Const.DISTANCIA: return distancia+" km";
             case Const.TIEMPO: return tiempo+" min";

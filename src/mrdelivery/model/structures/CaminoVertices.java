@@ -1,8 +1,11 @@
 package mrdelivery.model.structures;
 
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
+
 import java.util.ArrayList;
 
-public class CaminoVertices {
+public class CaminoVertices implements Observable {
 
     ArrayList<Vertice> camino;
     int currentIndex;
@@ -37,7 +40,6 @@ public class CaminoVertices {
             currentIndex++;
     }
 
-
     public  void retrocederCamino(){
         if(currentIndex > 0)
             currentIndex--;
@@ -57,5 +59,15 @@ public class CaminoVertices {
         }
     }
 
+
+    @Override
+    public void addListener(InvalidationListener invalidationListener) {
+        invalidationListener.invalidated(this);
+    }
+
+    @Override
+    public void removeListener(InvalidationListener invalidationListener) {
+
+    }
 }
 

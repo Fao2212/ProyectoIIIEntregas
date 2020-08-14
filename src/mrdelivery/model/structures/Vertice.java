@@ -7,17 +7,20 @@ public class Vertice {
     String nombre;
     ArrayList<Arista> aristas;
     boolean visitado;
+    boolean activo;
 
     public Vertice(String nombre){
         this.nombre = nombre;
         this.aristas = new ArrayList<>();
         this.visitado = false;
+        this.activo = true;
     }
 
     public Vertice(Vertice vertice){//Paso el vertice completo por si luego se le agregan mas atributos que asignar
         this.nombre = vertice.nombre;
         this.aristas = new ArrayList<>();
         this.visitado = false;
+        this.activo = true;
     }
 
     public void addArista(Arista arista){
@@ -38,5 +41,13 @@ public class Vertice {
 
     public String getNombre() {
         return nombre;
+    }
+
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
     }
 }

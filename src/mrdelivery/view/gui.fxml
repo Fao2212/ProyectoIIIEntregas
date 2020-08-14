@@ -409,7 +409,7 @@
                         <Font name="Courier" size="13.0" />
                      </font>
                   </Button>
-                  <ListView fx:id="lstCaminos" prefHeight="200.0" prefWidth="200.0">
+                  <ListView fx:id="lstCaminos" onMousePressed="#mostrarCaminoDetallado" prefHeight="200.0" prefWidth="200.0">
                      <VBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>

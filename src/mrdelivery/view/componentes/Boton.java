@@ -1,12 +1,11 @@
 package mrdelivery.view.componentes;
 
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.control.Tooltip;
 import javafx.scene.text.Font;
-import mrdelivery.model.structures.Arista;
 
-public abstract class Boton extends Button{
+public abstract class Boton extends ToggleButton {
     public Boton (int alto, int ancho){
         Tooltip tooltip = new Tooltip();
         tooltip.setWrapText(true);
@@ -15,5 +14,7 @@ public abstract class Boton extends Button{
         this.setAlignment(Pos.CENTER);
         this.setFont(Font.font("Courier",10));
     }
+
+
 
 }

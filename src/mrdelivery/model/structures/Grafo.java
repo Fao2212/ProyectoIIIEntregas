@@ -1,7 +1,6 @@
 package mrdelivery.model.structures;
 
 import mrdelivery.model.Const;
-import netscape.javascript.JSObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,7 +33,6 @@ public class Grafo {
             Vertice clonOrigen = buscarVertice(arista.origen,copiaVertices);
             Vertice clonDestino = buscarVertice(arista.destino,copiaVertices);
             Arista copiaArista = new Arista(clonOrigen,clonDestino,arista.activo, arista.distancia, arista.tiempo, arista.precio);
-            clonDestino.addArista(copiaArista);
             clonOrigen.addArista(copiaArista);
             copiaAristas.add(copiaArista);
         }
@@ -73,27 +71,31 @@ public class Grafo {
         }
     }
 
-    public ArrayList<CaminoVertices> todosLosCaminos(Vertice inicio, Vertice destino){
-        ArrayList<CaminoVertices> caminoVertices = new ArrayList<>();
-        return buscarCamino(inicio,inicio,destino, caminoVertices,new CaminoVertices(),true);
+    public ArrayList<CaminoAristas> todosLosCaminos(Vertice inicio, Vertice destino){
+        ArrayList<CaminoAristas> caminoAristas = new ArrayList<>();
+        imprimirListaAdyacenciaGrafo();
+        return buscarCamino(inicio,inicio,destino, caminoAristas,new CaminoAristas(),true,null);
     }
 
-    private ArrayList<CaminoVertices> buscarCamino(Vertice original, Vertice inicio, Vertice destino, ArrayList<CaminoVertices> caminos, CaminoVertices camino, boolean primero) {
+    private ArrayList<CaminoAristas> buscarCamino(Vertice original, Vertice inicio, Vertice destino, ArrayList<CaminoAristas> caminos, CaminoAristas camino, boolean primero, Arista aristaActual) {
         System.out.println(inicio.nombre);
         // Caso en que el origen y el destino sean iguales, no se permiten lazos
         if(!primero && (inicio == original)) {
             return null;
         }
-        camino.addCamino(inicio);
+        if (!primero)
+            camino.addCamino(aristaActual);
         if (inicio == destino) {
             caminos.add(camino);
             return null;
         }
+        if (!inicio.isActivo()){ // Por si un vertice esta inactivo
+            return null;
+        }
         for(Arista arista: inicio.aristas){
-            if(arista.activo)
-
-                buscarCamino(original,arista.destino,destino, caminos,new CaminoVertices(camino),false);
-
+            if(arista.activo) {
+                buscarCamino(original, arista.destino, destino, caminos, new CaminoAristas(camino), false, arista);
+            }
         }
         return caminos;
     }
@@ -109,6 +111,14 @@ public class Grafo {
         for(Vertice ver:vertices){
             if(ver.nombre.equals(vertice.nombre))
                 return ver;
+        }
+        return null;
+    }
+
+    public Vertice buscarVertice(String nombreVertice){
+        for (Vertice vertice : vertices){
+            if (vertice.getNombre().equals(nombreVertice))
+                return vertice;
         }
         return null;
     }

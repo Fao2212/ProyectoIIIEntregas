@@ -114,7 +114,6 @@ public class App {
                                                     arista.getDouble("costo"), arista.getDouble("km"),
                                                     arista.getDouble("minutos"));
                     origen.addArista(nuevaArista);
-                    destino.addArista(nuevaArista);
                     listaAristas.add(nuevaArista);
                 }
             }
