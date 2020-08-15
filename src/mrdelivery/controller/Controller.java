@@ -397,6 +397,6 @@ public class Controller implements ViewController {
 
     @FXML
     void regresarAlGrafoNormal(ActionEvent event) {
-        app.setActualModificado(app.getActualOriginal());
+        app.setActualModificado(app.getActualOriginal().clonarGrafo());
     }
 }
