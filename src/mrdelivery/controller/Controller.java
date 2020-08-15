@@ -28,33 +28,31 @@ import java.util.HashMap;
 public class Controller implements ViewController {
 
     // Objetos generados por fxml
-    @FXML private VBox vbxGrafoOriginal, vbxGrafoActual, vbxAristasGrafoOriginal,vbxAristasGrafoActual;
+    @FXML private VBox vbxGrafoOriginal, vbxGrafoActual;
 
-    @FXML private HBox hbxVerticesGrafoOriginal,hbxVerticesGrafoActual;
+    @FXML private HBox hbxVerticesGrafoOriginal, hbxVerticesGrafoActual;
 
     @FXML private GridPane grdGrafoOriginal, grdGrafoActual;
 
-    @FXML private Button btnAvanzarOriginal, btnAvanzarActual, btnSiguienteGrafo,
-                         btnActivarVertice, btnDesactivarVertice, btnObtenerCaminoMinimo,
-                         btnTodosLosCaminos, btnCaminoOptimo, btnCalcularRecorrido,
-                         btnCalcularAEM, btnRegresarAlGrafoNormal, btnRecorrerPrimDesde;
+    @FXML private ToggleGroup PonderacionGrafoActual;
 
-    @FXML private TextField tfdVerticeAlterado, tfdDesdeCaminosMinimos, tfdOrigenTodosLosCaminos,
-                            tfdDestinoTodosLosCaminos, tfdRecorridosDesde;
+    @FXML private RadioButton rdbPrecioGrafoOriginal, rdbDistanciaGrafoOriginal, rdbTiempoGrafoOriginal,
+                        rdbPrecioGrafoActual, rdbDistanciaGrafoActual, rdbTiempoGrafoActual;
+
+    @FXML private ToggleGroup PonderacionGrafoOriginal;
+
+    @FXML private Button btnAvanzarOriginal, btnAvanzarActual, btnSiguienteGrafo, btnConexo, btnObtenerCaminoMinimo,
+                   btnTodosLosCaminos, btnCaminoOptimo, btnRecorridoProfundidad, btnRecorridoAnchura,
+                   btnRecorrerPrimDesde, btnCalcularPrim, btnRegresarAlGrafoNormal;
+
+    @FXML private TextField tfdDesdeCaminosMinimos, tfdOrigenTodosLosCaminos, tfdDestinoTodosLosCaminos,
+                      tfdProfundidadDesde, tfdAnchuraDesde, tfdPrimDesde;
+
+    @FXML private ListView<CaminoAristas> lstCaminos, lstCaminosMinimos, lstRecorridoProfundidad,
+                                          lstRecorridoAnchura, lstPrim;
+    @FXML private ListView<?> lstCaminoAvanzado;
 
 
-    @FXML private RadioButton rdbPrecio, rdbDistancia, rdbTiempo, rdbPrecioGrafoOriginal,
-                              rdbDistanciaGrafoOriginal, rdbTiempoGrafoOriginal, rdbPrecioGrafoActual,
-                              rdbDistanciaGrafoActual, rdbTiempoGrafoActual;
-
-    @FXML private ToggleGroup CostoDesdeOpciones, PonderacionGrafoOriginal, PonderacionGrafoActual;
-
-    @FXML private TextArea tarCaminosMinimo, tarRecorridoProfundidad, tarRecorridoAnchura,
-                     tarArbolExpansionMinima;
-
-    @FXML private ListView<CaminoAristas> lstCaminos, lstCaminosMinimos;
-    @FXML
-    private ListView<?> lstCaminoAvanzado;
 
     // Variables propias
     private App app;
@@ -77,6 +75,9 @@ public class Controller implements ViewController {
 
     @Override
     public void prepararVentana(){
+        btnCalcularPrim.setTooltip(new Tooltip("Calcular prim"));
+        btnRegresarAlGrafoNormal.setTooltip(new Tooltip("Regresar al grafo original"));
+        btnRecorrerPrimDesde.setTooltip(new Tooltip("Recorrer el árbol de expansión mínima"));
     }
 
     @Override
@@ -125,42 +126,6 @@ public class Controller implements ViewController {
     }
 
     // ACCIONES DESDE LA INTERFAZ
-    @FXML
-    void activarVertice(ActionEvent event) {
-        String nombreVertice = tfdVerticeAlterado.getText();
-        if (!nombreVertice.equals(""))
-            app.getActualModificado().buscarVertice(nombreVertice).setActivo(true);
-        else
-            Out.msg("Por favor ingrese un vertice.");
-    }
-
-    @FXML
-    void desactivarVertice(ActionEvent event) {
-        String nombreVertice = tfdVerticeAlterado.getText();
-        if (!nombreVertice.equals(""))
-            app.getActualModificado().buscarVertice(nombreVertice).setActivo(false);
-        else
-            Out.msg("Por favor ingrese un vertice.");
-    }
-
-    @FXML
-    void actualizarPesaje(ActionEvent event) {
-        if (rdbPrecio.isSelected()){
-            app.getActualModificado().setPonderacionActiva(Const.PRECIO);
-            app.getActualOriginal().setPonderacionActiva(Const.PRECIO);
-            System.out.println("Se activo el precio");
-        }
-        else if (rdbDistancia.isSelected()){
-            app.getActualModificado().setPonderacionActiva(Const.DISTANCIA);
-            app.getActualOriginal().setPonderacionActiva(Const.DISTANCIA);
-            System.out.println("Se activo la distancia");
-        }
-        else if (rdbTiempo.isSelected()){
-            app.getActualModificado().setPonderacionActiva(Const.DISTANCIA);
-            app.getActualOriginal().setPonderacionActiva(Const.DISTANCIA);
-            System.out.println("Se activo el tiempo");
-        }
-    }
 
     @FXML
     void setPonderacionGrafoActual(ActionEvent event) {
@@ -185,7 +150,6 @@ public class Controller implements ViewController {
     }
 
     private void avanzarAdelante(Paso paso){
-        System.out.println("Entro a avanzar adelante");
         PauseTransition quitarResaltadoDestino = new PauseTransition(Duration.millis(500));
         quitarResaltadoDestino.setOnFinished((cambio) -> {
                     paso.getDestino().quitarResaltado();
@@ -263,7 +227,6 @@ public class Controller implements ViewController {
                 regresandoPorInactivo = false;
                 System.out.println("indefOfNextStep : " + camino.indexOfNextStep);
                 System.out.println("indefOfCurrentStep : " + (camino.indexOfNextStep-1));
-                System.out.println(tmpPasoNuevo.getAristaActual().toStringConexion());
             }
             if(tmpPasoNuevo != null) {
                 // Primero pregunta si la arista esta activa
@@ -286,7 +249,6 @@ public class Controller implements ViewController {
                             camino.setRetrocediendo(false);
                         }
                     }
-
                     // Esto es para no perder el recorrido del ultimo paso registrado antes del proceso de regreso
                     else if (tmpPasoPendiente != null) {
                         avanzarAdelante(tmpPasoPendiente);
@@ -447,18 +409,73 @@ public class Controller implements ViewController {
 
     @FXML
     void btnEjecutarPrim(ActionEvent event) {
-        //TODO Cuando se llame prim hay que reasignar la matriz de la pantalla
         app.getActualModificado().prim();
+        cargarGrafoActual(app.getActualModificado());
         Out.msg("El grafo actual ha sido recreado");
     }
 
     @FXML
     void recorrerPrimDesde(ActionEvent event) {
         //TODO:Pensar si se van a usar los otros botones para hacer recorridos comunes en el nuevo grafo
+        cargarRecorrido(tfdPrimDesde,lstPrim,Const.RECORRIDO_PRIM);
     }
 
     @FXML
     void regresarAlGrafoNormal(ActionEvent event) {
         app.setActualModificado(app.getActualOriginal());
+        cargarGrafoActual(app.getActualOriginal());
+        Out.msg("El grafo se ha revertido a su forma original");
+    }
+
+    @FXML
+    void obtenerEsConexo(ActionEvent event) {
+        if (app.getActualModificado().esConexo())
+            Out.msg("Informacion","Sí, hay camino hacia todos los demás. El grafo actual es conexo");
+        else
+            Out.msg("Informacion","No, no hay camino hacia todos los demás. El grafo actual no conexo");
+    }
+
+    private void cargarRecorrido(TextField tfdOrigen, ListView<CaminoAristas> lista, int tipoRecorrido) {
+        String origen = tfdOrigen.getText();
+        CaminoAristas camino = new CaminoAristas();
+        if (!origen.equals("")){
+            // Se verifica que el vertice seleccionado exista y esta activo
+            Vertice verticeOrigen = app.getActualModificado().buscarVertice(origen);
+            if (tipoRecorrido == Const.RECORRIDO_PROFUNDIDAD)
+                camino = app.getActualModificado().recorridoEnProfundidad(verticeOrigen);
+            else if (tipoRecorrido == Const.RECORRIDO_ANCHURA)
+                camino = app.getActualModificado().recorridoEnAnchura(verticeOrigen);
+            else if (tipoRecorrido == Const.RECORRIDO_PRIM) {
+                app.getActualModificado().prim();
+                camino = app.getActualModificado().recorridoEnProfundidad(verticeOrigen);
+                Out.msg("Ojo","Recuerde reestablecer el grafo despues de calcular el Arbol de Expansión Mínima (Esto es temporal)");
+            }
+            if (verticeOrigen != null) {
+                ObservableList<CaminoAristas> caminoObservable = FXCollections.observableArrayList();
+                caminoObservable.addAll(camino);
+                lista.setItems(caminoObservable);
+                lista.setCellFactory(caminoVerticesListView -> new VistaCamino());
+            }
+            else
+                Out.msg("Algo anda mal ...","Por favor ingrese un origen valido");
+        }
+        else
+            Out.msg("Algo anda mal ...", "Por favor ingrese el origen para obtener el " + tipoRecorrido);
+        tmpPasoNuevo = null;
+        tmpPasoActual = null;
+        tmpPasoPendiente = null;
+        app.getActualModificado().setRecorridoActual(camino);
+    }
+    @FXML
+    void obtenerRecorridoAnchura(ActionEvent event) {
+        cargarRecorrido(tfdAnchuraDesde, lstRecorridoAnchura,Const.RECORRIDO_ANCHURA);
+    }
+
+    @FXML
+    void obtenerRecorridoProfundidad(ActionEvent event) {
+        cargarRecorrido(tfdProfundidadDesde, lstRecorridoProfundidad,Const.RECORRIDO_PROFUNDIDAD);
+    }
+
+    public void mostrarCaminoProfundidadDetallado(MouseEvent mouseEvent) {
     }
 }
