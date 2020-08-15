@@ -1,5 +1,5 @@
 {
-  "vertices" : ["A","D","C","B"],
+  "vertices" : ["A","3","C","B"],
   "aristas" : [
     {"origen": "A", "destino": "D", "activo" : true, "costo": 7, "km" : 32, "minutos": 15},
     {"origen": "D", "destino": "C", "activo" : true, "costo": 6, "km" : 10, "minutos": 50},
