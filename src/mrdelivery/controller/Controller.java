@@ -419,7 +419,7 @@ public class Controller implements ViewController {
     @FXML
     void regresarAlGrafoNormal(ActionEvent event) {
         app.setActualModificado(app.getActualOriginal());
-        cargarGrafoActual(app.getActualOriginal());
+        cargarGrafoActual(app.getActualOriginal().clonarGrafo());
         Out.msg("El grafo se ha revertido a su forma original");
     }
 

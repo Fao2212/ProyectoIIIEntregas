@@ -375,6 +375,7 @@ public class Grafo {
     }
 
     public void recorridoEnProfundidad(Vertice vertice,CaminoAristas camino){
+        System.out.println(vertice);
         if(vertice.aristas.isEmpty())
             return;
         for (Arista arista: vertice.aristas){
