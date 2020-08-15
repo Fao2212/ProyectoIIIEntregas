@@ -35,6 +35,31 @@
     -fx-font-size: 10px;
 }
 
+.arista:resaltado {
+    -fx-background-color: 
+        #000000,
+        linear-gradient(#2ce6cd, #2faeb5),
+        linear-gradient(#63d6ce, #28adad),
+        linear-gradient(#3cd6ce, #1f918b);
+    -fx-background-radius: 3,2,2,2;
+    -fx-background-insets: 0,1,2,3;
+    -fx-text-fill: white;
+    -fx-font-size: 10px;
+}
+
+.arista:activo {
+    -fx-background-color: 
+        #000000,
+        linear-gradient(#99cff7, #3056b8),
+        linear-gradient(#638bd6, #2c56b8),
+        linear-gradient(#3b6ad4, #1f4191);
+    -fx-background-radius: 3,2,2,2;
+    -fx-background-insets: 0,1,2,3;
+    -fx-text-fill: white;
+    -fx-font-size: 10px;
+}
+
+
 .vertice{
     -fx-background-color: 
         #000000,
@@ -65,6 +90,18 @@
         linear-gradient(#cc4949, #ab0c0c),
         linear-gradient(#9c3e3e, #751a1a),
         linear-gradient(#994b4b, #732222);
+    -fx-background-radius: 3,2,2,2;
+    -fx-background-insets: 0,1,2,3;
+    -fx-text-fill: white;
+    -fx-font-size: 10px;
+}
+
+.vertice:resaltado {
+    -fx-background-color: 
+        #000000,
+        linear-gradient(#B5E2A2, #74A555),
+        linear-gradient(#64BA5B, #417E4A),
+        linear-gradient(#6DCD73, #40753A);
     -fx-background-radius: 3,2,2,2;
     -fx-background-insets: 0,1,2,3;
     -fx-text-fill: white;

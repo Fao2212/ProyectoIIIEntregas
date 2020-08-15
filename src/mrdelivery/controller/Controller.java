@@ -1,22 +1,22 @@
 package mrdelivery.controller;
 
+import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 import mrdelivery.model.App;
 import mrdelivery.model.Const;
 import mrdelivery.model.structures.*;
 import mrdelivery.view.Out;
-import mrdelivery.view.componentes.Boton;
 import mrdelivery.view.componentes.BotonArista;
 import mrdelivery.view.componentes.BotonVertice;
 import mrdelivery.view.componentes.VistaCamino;
@@ -37,7 +37,7 @@ public class Controller implements ViewController {
     @FXML private Button btnAvanzarOriginal, btnAvanzarActual, btnSiguienteGrafo,
                          btnActivarVertice, btnDesactivarVertice, btnObtenerCaminoMinimo,
                          btnTodosLosCaminos, btnCaminoOptimo, btnCalcularRecorrido,
-                         btnCalcularAEM;
+                         btnCalcularAEM, btnRegresarAlGrafoNormal, btnRecorrerPrimDesde;
 
     @FXML private TextField tfdVerticeAlterado, tfdDesdeCaminosMinimos, tfdOrigenTodosLosCaminos,
                             tfdDestinoTodosLosCaminos, tfdRecorridosDesde;
@@ -179,15 +179,94 @@ public class Controller implements ViewController {
         cargarGrafoOriginal(app.getActualOriginal());
     }
 
+    private void avanzarAdelante(Paso paso){
+        System.out.println("Entro a avanzar adelante");
+        PauseTransition quitarResaltadoDestino = new PauseTransition(Duration.millis(500));
+        quitarResaltadoDestino.setOnFinished((cambio) -> {
+                    paso.getDestino().quitarResaltado();
+                }
+        );
+
+        PauseTransition resaltadoDestino = new PauseTransition(Duration.millis(500));
+        resaltadoDestino.setOnFinished((cambio) -> {
+                    paso.getAristaActual().quitarResaltado();
+                    paso.getDestino().resaltarEnPantalla();
+                    quitarResaltadoDestino.play();
+                }
+        );
+
+        PauseTransition resaltadoArista = new PauseTransition(Duration.millis(500));
+        resaltadoArista.setOnFinished((cambio) -> {
+                    paso.getOrigen().quitarResaltado();
+                    paso.getAristaActual().resaltarEnPantalla();
+                    resaltadoDestino.play();
+                }
+        );
+        PauseTransition resaltadoOrigen = new PauseTransition(Duration.millis(500));
+        resaltadoOrigen.setOnFinished((cambio) -> {
+                    paso.getOrigen().resaltarEnPantalla();
+                    resaltadoArista.play();
+                }
+        );
+        resaltadoOrigen.play();
+    }
+
+    private void avanzarAtras(Paso paso){
+        PauseTransition quitarResaltadoOrigen = new PauseTransition(Duration.millis(500));
+        quitarResaltadoOrigen.setOnFinished((cambio)->{
+            paso.getOrigen().quitarResaltado();
+        });
+
+        PauseTransition quitarResaltadoArista = new PauseTransition(Duration.millis(500));
+        quitarResaltadoArista.setOnFinished((cambio)->{
+            paso.getAristaActual().quitarResaltado();
+            paso.getOrigen().resaltarEnPantalla();
+            quitarResaltadoOrigen.play();
+        });
+
+        PauseTransition quitarResaltadoDestino = new PauseTransition(Duration.millis(500));
+        quitarResaltadoDestino.setOnFinished((cambio)->{
+            paso.getDestino().quitarResaltado();
+            paso.getAristaActual().resaltarEnPantalla();
+            quitarResaltadoArista.play();
+        });
+
+        PauseTransition resaltadoDestino = new PauseTransition(Duration.millis(500));
+        resaltadoDestino.setOnFinished((cambio) ->{
+                    paso.getDestino().resaltarEnPantalla();
+                    quitarResaltadoDestino.play();
+                }
+        );
+        resaltadoDestino.play();
+    }
+
     @FXML
     void avanzarGrafoActual(ActionEvent event) {
         CaminoAristas camino = app.getActualModificado().getRecorridoActual();
         if(camino != null){
-            Paso paso = camino.avanzarCamino();
-            if(paso.getAristaSiguiente() != null) {
-                paso.getOrigen().resaltarEnPantalla();
-                paso.getAristaActual().resaltarEnPantalla();
-                paso.getDestino().resaltarEnPantalla();
+            Paso actual = camino.getPasoActual();
+            Paso nuevo = camino.avanzarCamino();
+            System.out.println("Indice actual : " + camino.indexOfNext);
+            if(nuevo != null) {
+                if (actual == null){    // Esto es cuando es el primero en el camino
+                    avanzarAdelante(nuevo);
+                    if (nuevo.getAristaSiguiente() == null)
+                        camino.setLlegoAlFinal(true);
+                }
+                else if (actual.getDestino().equals(nuevo.getOrigen())) {
+                    avanzarAdelante(nuevo);
+                    if (nuevo.getAristaSiguiente() == null)
+                        camino.setLlegoAlFinal(true);
+                }
+                else {
+                    Out.msg("Retrocediendo");
+                    camino.setRetrocediendo(true);
+                    System.out.println("Indice antes de retroceder: "+ camino.indexOfNext);
+                    Paso anterior = camino.retrocederCamino();
+                    avanzarAtras(anterior);
+                    System.out.println("Indice despues de retroceder: "+ camino.indexOfNext);
+                }
+                System.out.println(nuevo.getDestino() + " == " + nuevo.getAristaSiguiente().getOrigen());
             }
             else
                 Out.msg("Fin del camino");
@@ -304,4 +383,18 @@ public class Controller implements ViewController {
         return "Vertice: " + v1.getNombre();
     }
 
+    @FXML
+    void btnEjecutarPrim(ActionEvent event) {
+
+    }
+
+    @FXML
+    void recorrerPrimDesde(ActionEvent event) {
+
+    }
+
+    @FXML
+    void regresarAlGrafoNormal(ActionEvent event) {
+
+    }
 }

@@ -1,5 +1,6 @@
 package mrdelivery.model.structures;
 
+import javafx.beans.property.BooleanProperty;
 import mrdelivery.model.Const;
 import mrdelivery.view.componentes.Boton;
 import mrdelivery.view.componentes.BotonArista;
@@ -13,7 +14,8 @@ public class Arista implements  Comparable<Arista>{
     double precio;
     boolean activo;
     int ponderacionActual;
-    Boton boton;
+    Peso peso;
+    BotonArista boton;
 
     public Arista(Vertice origen,Vertice destino,boolean activo,double precio,double distancia,double tiempo){
         this.origen = origen;
@@ -53,6 +55,7 @@ public class Arista implements  Comparable<Arista>{
         this.activo = _arista.activo;
         this.ponderacionActual = _arista.ponderacionActual;
     }
+
     public Vertice getOrigen() {
         return origen;
     }
@@ -149,7 +152,6 @@ public class Arista implements  Comparable<Arista>{
     }
 
     public void resaltarEnPantalla(){
-        //TODO:Usa la referencia a pantalla para resaltarla de un color mostrando asi el camino
         boton.resaltar();
     }
 
@@ -166,5 +168,9 @@ public class Arista implements  Comparable<Arista>{
 
     public void setBoton(BotonArista btnArista) {
         this.boton = btnArista;
+    }
+
+    public void quitarResaltado() {
+        boton.quitarResaltado();
     }
 }
