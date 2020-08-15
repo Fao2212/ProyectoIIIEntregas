@@ -400,6 +400,7 @@ public class Grafo {
     }
 
     public void recorridoEnAnchura(Vertice vertice,CaminoAristas camino){
+        System.out.println(vertice);
         if(vertice.aristas.isEmpty())
             return;
         for (Arista arista: vertice.aristas){
