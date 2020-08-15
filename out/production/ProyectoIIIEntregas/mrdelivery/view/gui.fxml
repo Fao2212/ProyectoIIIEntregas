@@ -497,14 +497,36 @@
                      <font>
                         <Font name="Courier" size="13.0" />
                      </font>
-                  </Label>
-                  <Button fx:id="btnCalcularAEM" mnemonicParsing="false" prefHeight="40.0" prefWidth="80.0" text="Calcular">
                      <HBox.margin>
-                        <Insets bottom="2.0" left="2.0" right="5.0" top="5.0" />
+                        <Insets left="2.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Button fx:id="btnCalcularAEM" mnemonicParsing="false" onAction="#btnEjecutarPrim" prefHeight="26.0" prefWidth="33.0">
+                     <HBox.margin>
+                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                      </HBox.margin>
                      <font>
                         <Font name="Courier" size="10.0" />
                      </font>
+                     <graphic>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@imgs/img_runPrim.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="btnRegresarAlGrafoNormal" alignment="CENTER" mnemonicParsing="false" onAction="#regresarAlGrafoNormal" prefHeight="20.0" prefWidth="20.0">
+                     <HBox.margin>
+                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                     </HBox.margin>
+                     <graphic>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@imgs/img_rollbackGraph.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
                   </Button>
                </children>
             </HBox>
@@ -515,10 +537,17 @@
                         <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                      </HBox.margin>
                   </TextField>
-                  <Button mnemonicParsing="false" text="Button">
+                  <Button fx:id="btnRecorrerPrimDesde" mnemonicParsing="false" onAction="#recorrerPrimDesde">
                      <HBox.margin>
                         <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                      </HBox.margin>
+                     <graphic>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@imgs/img_walk.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
                   </Button>
                </children>
             </HBox>

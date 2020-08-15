@@ -385,16 +385,18 @@ public class Controller implements ViewController {
 
     @FXML
     void btnEjecutarPrim(ActionEvent event) {
-
+        //TODO Cuando se llame prim hay que reasignar la matriz de la pantalla
+        app.getActualModificado().prim();
+        Out.msg("El grafo actual ha sido recreado");
     }
 
     @FXML
     void recorrerPrimDesde(ActionEvent event) {
-
+        //TODO:Pensar si se van a usar los otros botones para hacer recorridos comunes en el nuevo grafo
     }
 
     @FXML
     void regresarAlGrafoNormal(ActionEvent event) {
-
+        app.setActualModificado(app.getActualOriginal());
     }
 }

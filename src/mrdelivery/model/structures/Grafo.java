@@ -110,7 +110,6 @@ public class Grafo {
     }
 
     private ArrayList<CaminoAristas> buscarCamino(Vertice original, Vertice inicio, Vertice destino, ArrayList<CaminoAristas> caminos, CaminoAristas camino, boolean primero, Arista aristaActual) {
-        System.out.println(inicio.nombre);
         // Caso en que el origen y el destino sean iguales, no se permiten lazos
         if(!primero && (inicio == original)) {
             return null;
@@ -301,17 +300,27 @@ public class Grafo {
     public void prim(){
         ArrayList<Vertice> nuevosVertices = new ArrayList<>();
         ArrayList<Arista> nuevosAristas = new ArrayList<>();
+        for (int i = 0;i<vertices.size();i++){
+            nuevosVertices.add(new Vertice(vertices.get(i)));
+        }
         if(esConexo()){
             System.out.println("Es conexo");
             desactivarAristas();
-            reestablecerVisitados();
+            reestablecerVisitados();//TODO:SE ESTAN RETORNANDO TODAS LAS ARISTAS DESACTIVADAS
             for (int i = 0;i<vertices.size()-1;i++){
                 Arista menor = menorAristaPrim();
                 menor.destino.setVisitado(true);
-                nuevosAristas.add(new Arista(menor));
-                nuevosAristas.add(new Arista(menor.destino, menor.origen,menor));
-                nuevosVertices.add(new Vertice(vertices.get(i)));
-                //menor.setActivo(true);
+                menor.setActivo(true);
+                //Codigo feo
+                Vertice clonOrigen = buscarVertice(menor.origen,nuevosVertices);
+                Vertice clonDestino = buscarVertice(menor.destino,nuevosVertices);
+                Arista copiaArista = new Arista(clonOrigen,clonDestino,menor);
+                Arista copiaAristaInverso = new Arista(clonDestino,clonOrigen,menor);
+                clonOrigen.addArista(copiaArista);
+                clonDestino.addArista(copiaAristaInverso);
+                nuevosAristas.add(copiaArista);
+                nuevosAristas.add(copiaAristaInverso);
+                ///
                 menor.origen.setVisitado(true);
             }
             resetGrafo(nuevosVertices,nuevosAristas);
