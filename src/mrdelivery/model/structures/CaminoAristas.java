@@ -231,4 +231,10 @@ public class CaminoAristas implements Comparable<CaminoAristas>{
         else
             return -1;
     }
+
+    public void setPonderacion(int ponderacion){
+        for (Arista arista:camino){
+            arista.setPonderacionActual(ponderacion);
+        }
+    }
 }

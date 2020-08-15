@@ -144,4 +144,7 @@ public class App {
         return null;
     }
 
+    public void setActualModificado(Grafo actualOriginal) {
+        this.actualModificado = actualOriginal;
+    }
 }

@@ -69,14 +69,6 @@ public class Arista implements  Comparable<Arista>{
         this.grafoAsociado = grafoAsociado;
     }
 
-    public BotonArista getBoton() {
-        return boton;
-    }
-
-    public void setPeso(Peso peso) {
-        this.peso = peso;
-    }
-
     public Vertice getOrigen() {
         return origen;
     }
@@ -178,23 +170,9 @@ public class Arista implements  Comparable<Arista>{
 
     @Override
     public int compareTo(Arista o) {
-        double comp1 = 0;
-        double comp2 = 0;
-        if(peso == Peso.DISTANCIA){
-            comp1 = distancia;
-            comp2 = o.getDistancia();
-        }
-        else if(peso == Peso.PRECIO){
-            comp1 = precio;
-            comp2 = o.getPrecio();
-        }
-        else if(peso == Peso.TIEMPO){
-            comp1 = tiempo;
-            comp2 = o.getTiempo();
-        }
-        if(comp1 == comp2)
+        if(ponderacionActual == o.ponderacionActual)
             return 0;
-        else if(comp1 > comp2)
+        else if(ponderacionActual > o.ponderacionActual)
             return 1;
         else
             return -1;

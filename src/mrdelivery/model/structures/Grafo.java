@@ -23,6 +23,24 @@ public class Grafo {
         grafoAMatriz();
     }
 
+    public Grafo(Grafo grafo){
+        for (Vertice vertice:grafo.vertices){
+            this.vertices.add(new Vertice(vertice));
+        }
+        for (Arista arista:grafo.aristas){
+            this.aristas.add(new Arista(arista));
+        }
+        ponderacionActiva = 0;
+        grafoAMatriz();
+    }
+
+    public void resetGrafo(ArrayList<Vertice> vertices,ArrayList<Arista> aristas){
+        this.aristas = aristas;
+        this.vertices = vertices;
+        this.ponderacionActiva = 0;
+        grafoAMatriz();
+    }
+
     public ArrayList<Vertice> getVertices(){
         return this.vertices;
     }
@@ -93,7 +111,6 @@ public class Grafo {
     }
 
     private ArrayList<CaminoAristas> buscarCamino(Vertice original, Vertice inicio, Vertice destino, ArrayList<CaminoAristas> caminos, CaminoAristas camino, boolean primero, Arista aristaActual) {
-        System.out.println(inicio.nombre);
         // Caso en que el origen y el destino sean iguales, no se permiten lazos
         if(!primero && (inicio == original)) {
             return null;
@@ -114,11 +131,13 @@ public class Grafo {
         }
         return caminos;
     }
-    //Toma el origen y encola todas las aristas o vertices
-    //Agrega al camino y busca en el siguiente vertice
-    //Al llegar a un final(Null o nodo objetivo)
 
-    private void ordenarCaminos(int index/*Peso peso*/){
+    public CaminoAristas caminoOptimo(Vertice origen,Vertice destino,int tipoPonderacion){
+        ArrayList<CaminoAristas> caminos = todosLosCaminos(origen,destino);
+        return Collections.min(caminos);
+    }
+
+    private void ordenarCaminos(int index,Peso peso){
 
     }
 
@@ -283,17 +302,33 @@ public class Grafo {
             }
     }
 
-    public void prim(Peso peso){
+    public void prim(){
+        ArrayList<Vertice> nuevosVertices = new ArrayList<>();
+        ArrayList<Arista> nuevosAristas = new ArrayList<>();
+        for (int i = 0;i<vertices.size();i++){
+            nuevosVertices.add(new Vertice(vertices.get(i)));
+        }
         if(esConexo()){
             System.out.println("Es conexo");
             desactivarAristas();
-            reestablecerVisitados();
+            reestablecerVisitados();//TODO:SE ESTAN RETORNANDO TODAS LAS ARISTAS DESACTIVADAS
             for (int i = 0;i<vertices.size()-1;i++){
-                Arista menor = menorAristaPrim(peso);
+                Arista menor = menorAristaPrim();
                 menor.destino.setVisitado(true);
                 menor.setActivo(true);
+                //Codigo feo
+                Vertice clonOrigen = buscarVertice(menor.origen,nuevosVertices);
+                Vertice clonDestino = buscarVertice(menor.destino,nuevosVertices);
+                Arista copiaArista = new Arista(clonOrigen,clonDestino,menor);
+                Arista copiaAristaInverso = new Arista(clonDestino,clonOrigen,menor);
+                clonOrigen.addArista(copiaArista);
+                clonDestino.addArista(copiaAristaInverso);
+                nuevosAristas.add(copiaArista);
+                nuevosAristas.add(copiaAristaInverso);
+                ///
                 menor.origen.setVisitado(true);
             }
+            resetGrafo(nuevosVertices,nuevosAristas);
         }
         else {
             System.out.println("No es conexo");
@@ -309,18 +344,14 @@ public class Grafo {
     //
 
 
-    private Arista menorAristaPrim(Peso peso) {//No deberia dar problemas con posibles vacios por ser conexo
+    private Arista menorAristaPrim() {//No deberia dar problemas con posibles vacios por ser conexo
         ArrayList<Arista> posibles = new ArrayList<>();
         if(ningunoSinVisitar()){
-            for (Arista arista:vertices.get(0).aristas) {
-                arista.setPeso(peso);
-            }
             return Collections.min(vertices.get(0).aristas);
         }
         else {
             for (Arista arista : aristas) {
                 if (!arista.isActivo() && arista.origen.visitado && !arista.destino.visitado) {
-                    arista.setPeso(peso);
                     posibles.add(arista);
                 }
             }
@@ -347,7 +378,7 @@ public class Grafo {
         if(vertice.aristas.isEmpty())
             return;
         for (Arista arista: vertice.aristas){
-            if (!arista.destino.visitado){
+            if (!arista.destino.visitado && arista.isActivo()){
                 arista.origen.setVisitado(true);
                 arista.destino.setVisitado(true);
                 camino.addCamino(arista);
@@ -374,10 +405,11 @@ public class Grafo {
     }
 
     public void recorridoEnAnchura(Vertice vertice,CaminoAristas camino){
+        System.out.println(vertice);
         if(vertice.aristas.isEmpty())
             return;
         for (Arista arista: vertice.aristas){
-            if(!arista.destino.visitado) {
+            if(!arista.destino.visitado && arista.isActivo()) {
                 System.out.println(arista.toStringToolTip());
                 arista.origen.setVisitado(true);;
                 camino.addCamino(arista);
@@ -385,7 +417,7 @@ public class Grafo {
         }
         CaminoAristas caminoTemp = new CaminoAristas(camino);
         for (Arista arista: caminoTemp.camino){
-            if(!arista.destino.visitado){
+            if(!arista.destino.visitado && arista.isActivo()){
                 arista.destino.setVisitado(true);
                 recorridoEnProfundidad(arista.destino,camino);
             }
