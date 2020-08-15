@@ -20,7 +20,6 @@ public abstract class Boton extends ToggleButton {
 
     public void resaltar(){
         String previous = this.getStyle();
-        this.setStyle("-fx-background-color:#000000");
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {

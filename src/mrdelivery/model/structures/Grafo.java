@@ -24,6 +24,24 @@ public class Grafo {
         grafoAMatriz();
     }
 
+    public Grafo(Grafo grafo){
+        for (Vertice vertice:grafo.vertices){
+            this.vertices.add(new Vertice(vertice));
+        }
+        for (Arista arista:grafo.aristas){
+            this.aristas.add(new Arista(arista));
+        }
+        ponderacionActiva = 0;
+        grafoAMatriz();
+    }
+
+    public void resetGrafo(ArrayList<Vertice> vertices,ArrayList<Arista> aristas){
+        this.aristas = aristas;
+        this.vertices = vertices;
+        this.ponderacionActiva = 0;
+        grafoAMatriz();
+    }
+
     public ArrayList<Vertice> getVertices(){
         return this.vertices;
     }
@@ -112,11 +130,13 @@ public class Grafo {
         }
         return caminos;
     }
-    //Toma el origen y encola todas las aristas o vertices
-    //Agrega al camino y busca en el siguiente vertice
-    //Al llegar a un final(Null o nodo objetivo)
 
-    private void ordenarCaminos(int index/*Peso peso*/){
+    public CaminoAristas caminoOptimo(Vertice origen,Vertice destino,int tipoPonderacion){
+        ArrayList<CaminoAristas> caminos = todosLosCaminos(origen,destino);
+        return Collections.min(caminos);
+    }
+
+    private void ordenarCaminos(int index,Peso peso){
 
     }
 
@@ -275,17 +295,23 @@ public class Grafo {
             }
     }
 
-    public void prim(Peso peso){
+    public void prim(){
+        ArrayList<Vertice> nuevosVertices = new ArrayList<>();
+        ArrayList<Arista> nuevosAristas = new ArrayList<>();
         if(esConexo()){
             System.out.println("Es conexo");
             desactivarAristas();
             reestablecerVisitados();
             for (int i = 0;i<vertices.size()-1;i++){
-                Arista menor = menorAristaPrim(peso);
+                Arista menor = menorAristaPrim();
                 menor.destino.setVisitado(true);
-                menor.setActivo(true);
+                nuevosAristas.add(new Arista(menor));
+                nuevosAristas.add(new Arista(menor.destino, menor.origen,menor));
+                nuevosVertices.add(new Vertice(vertices.get(i)));
+                //menor.setActivo(true);
                 menor.origen.setVisitado(true);
             }
+            resetGrafo(nuevosVertices,nuevosAristas);
         }
         else {
             System.out.println("No es conexo");
@@ -301,18 +327,14 @@ public class Grafo {
     //
 
 
-    private Arista menorAristaPrim(Peso peso) {//No deberia dar problemas con posibles vacios por ser conexo
+    private Arista menorAristaPrim() {//No deberia dar problemas con posibles vacios por ser conexo
         ArrayList<Arista> posibles = new ArrayList<>();
         if(ningunoSinVisitar()){
-            for (Arista arista:vertices.get(0).aristas) {
-                arista.setPeso(peso);
-            }
             return Collections.min(vertices.get(0).aristas);
         }
         else {
             for (Arista arista : aristas) {
                 if (!arista.isActivo() && arista.origen.visitado && !arista.destino.visitado) {
-                    arista.setPeso(peso);
                     posibles.add(arista);
                 }
             }
@@ -339,7 +361,7 @@ public class Grafo {
         if(vertice.aristas.isEmpty())
             return;
         for (Arista arista: vertice.aristas){
-            if (!arista.destino.visitado){
+            if (!arista.destino.visitado && arista.isActivo()){
                 arista.origen.setVisitado(true);
                 arista.destino.setVisitado(true);
                 camino.addCamino(arista);
@@ -369,7 +391,7 @@ public class Grafo {
         if(vertice.aristas.isEmpty())
             return;
         for (Arista arista: vertice.aristas){
-            if(!arista.destino.visitado) {
+            if(!arista.destino.visitado && arista.isActivo()) {
                 System.out.println(arista.toStringToolTip());
                 arista.origen.setVisitado(true);;
                 camino.addCamino(arista);
@@ -377,7 +399,7 @@ public class Grafo {
         }
         CaminoAristas caminoTemp = new CaminoAristas(camino);
         for (Arista arista: caminoTemp.camino){
-            if(!arista.destino.visitado){
+            if(!arista.destino.visitado && arista.isActivo()){
                 arista.destino.setVisitado(true);
                 recorridoEnProfundidad(arista.destino,camino);
             }
