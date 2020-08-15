@@ -12,7 +12,7 @@ public class Vertice {
     ArrayList<Arista> aristas;
     boolean visitado;
     boolean activo;
-    Boton boton;
+    BotonVertice boton;
 
     public Vertice(String nombre){
         this.nombre = nombre;
@@ -26,6 +26,10 @@ public class Vertice {
         this.aristas = new ArrayList<>();
         this.visitado = false;
         this.activo = true;
+    }
+
+    public BotonVertice getBoton() {
+        return boton;
     }
 
     public void addArista(Arista arista){
@@ -66,5 +70,9 @@ public class Vertice {
 
     public void setBoton(BotonVertice btnVertice) {
         this.boton = btnVertice;
+    }
+
+    public void quitarResaltado() {
+        boton.quitarResaltado();
     }
 }

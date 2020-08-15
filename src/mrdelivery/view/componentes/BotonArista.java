@@ -1,5 +1,6 @@
 package mrdelivery.view.componentes;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.css.PseudoClass;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
@@ -7,7 +8,6 @@ import javafx.scene.text.FontWeight;
 import mrdelivery.model.structures.Arista;
 
 public class BotonArista extends Boton{
-//    public static final PseudoClass desactivado = PseudoClass.getPseudoClass("selected");
     Arista arista;
     public BotonArista(int alto, int ancho, Arista _arista) {
         super(alto, ancho);
@@ -30,4 +30,7 @@ public class BotonArista extends Boton{
     public Arista getArista(){
         return arista;
     }
+
+
+
 }

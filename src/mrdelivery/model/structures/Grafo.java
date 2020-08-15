@@ -15,6 +15,7 @@ public class Grafo {
     ArrayList<Arista> aristas;
     Arista[][] representacionMatriz;
     int ponderacionActiva;
+//    ArrayList<CaminoAristas>
     CaminoAristas caminoPorRecorrer;
 
     public Grafo(ArrayList<Vertice> vertices,ArrayList<Arista> aristas){
@@ -129,10 +130,12 @@ public class Grafo {
     }
 
     public Vertice buscarVertice(String nombreVertice){
-        for (Vertice vertice : vertices){
-            // TODO: Verificar si se ocupa saber si el vertice esta activo siempre o si hay casos en los que no
-            if (vertice.getNombre().equals(nombreVertice) && vertice.isActivo())
-                return vertice;
+        if (vertices != null){
+            for (Vertice vertice : vertices){
+                // TODO: Verificar si se ocupa saber si el vertice esta activo siempre o si hay casos en los que no
+                if (vertice.getNombre().equals(nombreVertice) && vertice.isActivo())
+                    return vertice;
+            }
         }
         return null;
     }
