@@ -120,8 +120,6 @@ public class App {
             }
             actualOriginal = new Grafo(listaVertices, listaAristas);
             actualModificado = actualOriginal.clonarGrafo();
-            actualModificado.prim();
-            System.out.println(actualModificado.recorridoEnProfundidad(actualModificado.getVertices().get(3)));
         }
     }
 
