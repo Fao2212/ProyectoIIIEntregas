@@ -115,6 +115,7 @@ public class App {
                     Arista nuevaArista = new Arista(origen, destino, arista.getBoolean("activo"),
                                                     arista.getDouble("costo"), arista.getDouble("km"),
                                                     arista.getDouble("minutos"));
+                    nuevaArista.setGrafoAsociado(actualOriginal);
                     origen.addArista(nuevaArista);
                     listaAristas.add(nuevaArista);
                 }

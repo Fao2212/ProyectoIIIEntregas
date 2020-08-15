@@ -1,9 +1,6 @@
 package mrdelivery.model.structures;
 
-import mrdelivery.model.Const;
 import mrdelivery.view.Out;
-
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,7 +12,8 @@ public class Grafo {
     ArrayList<Arista> aristas;
     Arista[][] representacionMatriz;
     int ponderacionActiva;
-//    ArrayList<CaminoAristas>
+    int numeroAristasDesactivadas;
+    int numeroVerticesDesactivados;
     CaminoAristas caminoPorRecorrer;
 
     public Grafo(ArrayList<Vertice> vertices,ArrayList<Arista> aristas){
@@ -38,6 +36,7 @@ public class Grafo {
     }
 
     public Grafo clonarGrafo(){
+        Grafo clon;
         ArrayList<Vertice> copiaVertices = new ArrayList<>();
         ArrayList<Arista> copiaAristas = new ArrayList<>();
         for (Vertice vertice:vertices){
@@ -47,13 +46,14 @@ public class Grafo {
             Vertice clonOrigen = buscarVertice(arista.origen,copiaVertices);
             Vertice clonDestino = buscarVertice(arista.destino,copiaVertices);
             Arista copiaArista = new Arista(clonOrigen,clonDestino,arista.activo, arista.distancia, arista.tiempo, arista.precio);
+//            copiaArista.setGrafoAsociado(clon);
             clonOrigen.addArista(copiaArista);
             copiaAristas.add(copiaArista);
         }
         return new Grafo(copiaVertices,copiaAristas);
     }
 
-    public void grafoAMatriz(){ //TODO: Cuidar aristas repetidas? setear a null los vertices que no existen?
+    public void grafoAMatriz(){
         representacionMatriz = new Arista[vertices.size()][vertices.size()];
         for (Vertice vertice : vertices) {
             for (Arista arista : vertice.aristas) {
@@ -61,6 +61,7 @@ public class Grafo {
                     representacionMatriz[indexVertice(arista.origen)][indexVertice(arista.destino)] = arista;
             }
         }
+        imprimirListaAdyacenciaGrafo();
     }
 
     public int getPonderacionActiva(){
@@ -170,7 +171,7 @@ public class Grafo {
 
     private boolean tieneCaminosConTodos(Vertice actual,ArrayList<Vertice> conexos){
         boolean tieneCaminoConTodos = true;
-        if (!actual.isVisitado())
+        if (!actual.isVisitado()) // Tiene que estar activo
             actual.setVisitado(true);
         if (vertices.size() == conexos.size())
             return true;
@@ -213,7 +214,7 @@ public class Grafo {
     public boolean estanTodosVisitados(){
         int numVisitados = 0;
         for (Vertice vertice : vertices) {
-            if (vertice.isVisitadoActivo())
+            if (vertice.isVisitado())
                 numVisitados++;
         }
         return numVisitados == vertices.size();
@@ -221,7 +222,11 @@ public class Grafo {
 
     public HashMap<Vertice,CaminoAristas> caminosMinimos(Vertice origen, int tipoPonderacion){
             // Valida que el grafo sea conexo
-            if (esConexo()) {
+            if (!origen.isActivo()){
+                Out.msg("Algo anda mal ...","Debe proporcionar un vertice activo");
+                return null;
+            }
+            else if (esConexo()) {
                 HashMap<Vertice,CaminoAristas> minimos = new HashMap<>();
                 HashMap<Vertice,Arista> previos = new HashMap<>();
 
@@ -236,7 +241,7 @@ public class Grafo {
                 while (!estanTodosVisitados()) {
                     actual.setVisitado(true);
                     for (Arista arista : actual.aristas){
-                        if (!arista.destino.visitado){
+                        if (!arista.destino.isVisitadoActivo()){
                             ponderacionAcumulada = minimos.get(arista.destino).getDistanciaTotal();
                             nuevaPonderacion = minimos.get(actual).getDistanciaTotal() + arista.getPonderacion(tipoPonderacion);
                             if (ponderacionAcumulada > nuevaPonderacion) {

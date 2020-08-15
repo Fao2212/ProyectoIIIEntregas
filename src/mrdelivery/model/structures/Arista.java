@@ -16,6 +16,7 @@ public class Arista implements  Comparable<Arista>{
     int ponderacionActual;
     Peso peso;
     BotonArista boton;
+    Grafo grafoAsociado;
 
     public Arista(Vertice origen,Vertice destino,boolean activo,double precio,double distancia,double tiempo){
         this.origen = origen;
@@ -25,6 +26,7 @@ public class Arista implements  Comparable<Arista>{
         this.tiempo = tiempo;
         this.activo = activo;
         this.ponderacionActual = 0;
+        this.grafoAsociado = null;
     }
 
     public Arista(Vertice origen,Vertice destino,String activo,String precio,String distancia,String tiempo){
@@ -35,6 +37,7 @@ public class Arista implements  Comparable<Arista>{
         this.tiempo = Double.parseDouble(tiempo);
         this.activo = Boolean.parseBoolean(activo);
         this.ponderacionActual = 0;
+        this.grafoAsociado = null;
     }
 
     public Arista(Vertice origen,Vertice destino,Arista arista){
@@ -45,6 +48,7 @@ public class Arista implements  Comparable<Arista>{
         this.tiempo = arista.tiempo;
         this.activo = arista.activo;
         this.ponderacionActual = 0;
+        this.grafoAsociado = null;
     }
     public Arista(Arista _arista){
         this.origen = _arista.origen;
@@ -54,6 +58,15 @@ public class Arista implements  Comparable<Arista>{
         this.tiempo = _arista.tiempo;
         this.activo = _arista.activo;
         this.ponderacionActual = _arista.ponderacionActual;
+        this.grafoAsociado = null;
+    }
+
+    public Grafo getGrafoAsociado() {
+        return grafoAsociado;
+    }
+
+    public void setGrafoAsociado(Grafo grafoAsociado) {
+        this.grafoAsociado = grafoAsociado;
     }
 
     public BotonArista getBoton() {
@@ -162,7 +175,6 @@ public class Arista implements  Comparable<Arista>{
     public void resaltarEnPantalla(){
         boton.resaltar();
     }
-
 
     @Override
     public int compareTo(Arista o) {

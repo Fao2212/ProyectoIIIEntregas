@@ -1,10 +1,8 @@
 package mrdelivery.model.structures;
 
-import mrdelivery.view.componentes.Boton;
 import mrdelivery.view.componentes.BotonVertice;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class Vertice {
 
@@ -13,6 +11,7 @@ public class Vertice {
     boolean visitado;
     boolean activo;
     BotonVertice boton;
+    Grafo grafoAsociado;
 
     public Vertice(String nombre){
         this.nombre = nombre;
