@@ -93,7 +93,7 @@ public class Test {
         grafo.prim();
         ArrayList<CaminoAristas> lca = grafo.todosLosCaminos(v1,v3);
         System.out.println(lca);
-        for (Vertice vertice:grafo.vertices){
+       /* for (Vertice vertice:grafo.vertices){
             System.out.println("Vertice");
             for (Arista arista:vertice.aristas){
                 System.out.println(arista.toStringToolTip());
@@ -108,7 +108,7 @@ public class Test {
             for (Arista arista: camino.camino){
                 System.out.println(arista.toStringToolTip());
             }
-        }
+        }*/
 
         //Prueba profundidad
         CaminoAristas ca = grafo.recorridoEnAnchura(grafo.vertices.get(2));

@@ -209,10 +209,6 @@ public class Controller implements ViewController {
         resaltadoDestino.play();
     }
 
-    private boolean isPasoActivo(Paso paso){
-        return paso.getAristaActual().isActivo();
-    }
-
     @FXML
     void avanzarGrafoActual(ActionEvent event) {
         CaminoAristas camino = app.getActualModificado().getRecorridoActual();

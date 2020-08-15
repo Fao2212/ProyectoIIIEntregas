@@ -1,0 +1,26 @@
+{
+  "vertices" : ["K","G","F","H","Q","R","N","M","J","A","C"],
+  "aristas" : [
+    {"origen": "K", "destino": "G", "activo" : true, "costo": 7, "km" : 32, "minutos": 15},
+    {"origen": "K", "destino": "F", "activo" : true, "costo": 8, "km" : 13, "minutos": 7},
+    {"origen": "K", "destino": "H", "activo" : true, "costo": 19, "km" : 62, "minutos": 77},
+    {"origen": "F", "destino": "G", "activo" : true, "costo": 19, "km" : 62, "minutos": 77},
+    {"origen": "F", "destino": "H", "activo" : true, "costo": 8, "km" : 13, "minutos": 7},
+    {"origen": "G", "destino": "Q", "activo" : true, "costo": 12, "km" : 2, "minutos": 112},
+    {"origen": "G", "destino": "R", "activo" : true, "costo": 6, "km" : 14, "minutos": 11},
+    {"origen": "H", "destino": "N", "activo" : true, "costo": 15, "km" : 1, "minutos": 1},
+    {"origen": "H", "destino": "R", "activo" : true, "costo": 18, "km" : 11, "minutos": 51},
+    {"origen": "Q", "destino": "M", "activo" : true, "costo": 111, "km" : 111, "minutos": 21},
+    {"origen": "Q", "destino": "J", "activo" : true, "costo": 12, "km" : 115, "minutos": 71},
+    {"origen": "N", "destino": "J", "activo" : true, "costo": 13, "km" : 117, "minutos": 23},
+    {"origen": "N", "destino": "A", "activo" : true, "costo": 14, "km" : 53, "minutos": 64},
+    {"origen": "R", "destino": "Q", "activo" : true, "costo": 21, "km" : 71, "minutos": 86},
+    {"origen": "R", "destino": "N", "activo" : true, "costo": 31, "km" : 11, "minutos": 9},
+    {"origen": "M", "destino": "C", "activo" : true, "costo": 113, "km" : 51, "minutos": 88},
+    {"origen": "M", "destino": "J", "activo" : true, "costo": 121, "km" : 41, "minutos": 1},
+    {"origen": "J", "destino": "C", "activo" : true, "costo": 11, "km" : 61, "minutos": 17},
+    {"origen": "J", "destino": "A", "activo" : true, "costo": 15, "km" : 52, "minutos": 16},
+    {"origen": "A", "destino": "C", "activo" : true, "costo": 16, "km" : 61, "minutos": 19},
+    {"origen": "C", "destino": "A", "activo" : true, "costo": 45, "km" : 130, "minutos": 190}
+  ]
+}
