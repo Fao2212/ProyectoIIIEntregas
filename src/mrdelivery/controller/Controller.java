@@ -22,6 +22,8 @@ import mrdelivery.view.componentes.BotonVertice;
 import mrdelivery.view.componentes.VistaCamino;
 import org.json.JSONObject;
 import tray.notification.NotificationType;
+
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -207,76 +209,93 @@ public class Controller implements ViewController {
         resaltadoDestino.play();
     }
 
+    private String toStringPasoCamino(Vertice origen, Vertice destino){
+        DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(2);
+        if (app.getActualModificado().getPonderacionActiva() == Const.PRECIO)
+            return "Desde: " + origen.getNombre() + " Hacia: " + destino.getNombre() + " Costo: $" + df.format(totalRecorrido);
+        else if (app.getActualModificado().getPonderacionActiva() == Const.DISTANCIA)
+            return "Desde: " + origen.getNombre() + " Hacia: " + destino.getNombre() + " Distancia: " + df.format(totalRecorrido) + " km";
+        else
+            return "Desde: " + origen.getNombre() + " Hacia: " + destino.getNombre() + " Tiempo: " + df.format(totalRecorrido)+ " min";
+    }
+
     @FXML
     void avanzarGrafoActual(ActionEvent event) {
         CaminoAristas caminoAristas = app.getActualModificado().getRecorridoActual();
-        if(!caminoAristas.camino.isEmpty()) {
-            if (!caminoAristas.isRetrocediendo()) {
-                tmpPasoActual = caminoAristas.avanzarCamino();
-                System.out.println("PASO ACTUAL " + tmpPasoActual.toStringConexion());
-                if (tmpPasoActual.isActivo()) {
-                    if (!caminoAristas.camino.isEmpty()){   // Caso en el que el ultimo elemento que se saco era el ultimo
-                        System.out.println("Este es el siguiente en la lista enlazada = " + caminoAristas.camino.peek().getOrigen().getNombre());
-                        if (tmpPasoActual.getDestino().equals(caminoAristas.camino.peek().getOrigen())) {
-                            avanzarAdelante(tmpPasoActual);
-                            totalRecorrido += tmpPasoActual.getPonderacionActual();
-                            lstCaminoAvanzado.getItems().add(tmpPasoActual.getOrigen().getNombre() + " - " + tmpPasoActual.getDestino().getNombre() + " " + totalRecorrido);
+        if (caminoAristas != null){
+            if(!caminoAristas.camino.isEmpty()) {
+                if (!caminoAristas.isRetrocediendo()) {
+                    tmpPasoActual = caminoAristas.avanzarCamino();
+                    System.out.println("PASO ACTUAL " + tmpPasoActual.toStringConexion());
+                    if (tmpPasoActual.isActivo()) {
+                        if (!caminoAristas.camino.isEmpty()){   // Caso en el que el ultimo elemento que se saco era el ultimo
+                            System.out.println("Este es el siguiente en la lista enlazada = " + caminoAristas.camino.peek().getOrigen().getNombre());
+                            if (tmpPasoActual.getDestino().equals(caminoAristas.camino.peek().getOrigen())) {
+                                avanzarAdelante(tmpPasoActual);
+                                totalRecorrido += tmpPasoActual.getPonderacionActual();
+                                lstCaminoAvanzado.getItems().add(toStringPasoCamino(tmpPasoActual.getOrigen(),tmpPasoActual.getDestino()));
+                            }
+                            else {
+                                // Tiene que retroceder pues X-Y U-Z por ejemplo
+                                avanzarAdelante(tmpPasoActual);
+                                totalRecorrido += tmpPasoActual.getPonderacionActual();
+                                lstCaminoAvanzado.getItems().add(toStringPasoCamino(tmpPasoActual.getOrigen(),tmpPasoActual.getDestino()));
+                                Out.pushNotification("Llego al final del camino","Intentando regresar", NotificationType.INFORMATION);
+                                caminoAristas.setRetrocediendo(true);
+                            }
                         }
                         else {
-                            // Tiene que retroceder pues X-Y U-Z por ejemplo
                             avanzarAdelante(tmpPasoActual);
                             totalRecorrido += tmpPasoActual.getPonderacionActual();
-                            lstCaminoAvanzado.getItems().add(tmpPasoActual.getOrigen().getNombre() + " - " + tmpPasoActual.getDestino().getNombre() + " " + totalRecorrido);
-                            Out.pushNotification("Llego al final del camino","Intentando regresar", NotificationType.INFORMATION);
-                            caminoAristas.setRetrocediendo(true);
+                            lstCaminoAvanzado.getItems().add(toStringPasoCamino(tmpPasoActual.getOrigen(),tmpPasoActual.getDestino()));
                         }
                     }
                     else {
-                        avanzarAdelante(tmpPasoActual);
-                        totalRecorrido += tmpPasoActual.getPonderacionActual();
-                        lstCaminoAvanzado.getItems().add(tmpPasoActual.getOrigen().getNombre() + " - " + tmpPasoActual.getDestino().getNombre() + " " + totalRecorrido);
+                        Out.msg("Algo anda mal", "No puede seguir avanzando por aqui, regresando");
+                        caminoAristas.setCaminoInterrumpido(true);
+                        caminoAristas.setRetrocediendo(true);
+                        caminoAristas.retrocederCamino();   // Esto para sacar al actual inactivo que se agrego por defecto
                     }
                 }
                 else {
-                    Out.msg("Algo anda mal", "No puede seguir avanzando por aqui, regresando");
-                    caminoAristas.setCaminoInterrumpido(true);
-                    caminoAristas.setRetrocediendo(true);
-                    caminoAristas.retrocederCamino();   // Esto para sacar al actual inactivo que se agrego por defecto
+                    if (!caminoAristas.recorridoPrevio.isEmpty()) {
+                        avanzarAtras(caminoAristas.retrocederCamino());
+                        totalRecorrido += tmpPasoActual.getPonderacionActual();
+                        lstCaminoAvanzado.getItems().add(toStringPasoCamino(tmpPasoActual.getDestino(),tmpPasoActual.getOrigen()));
+                    }
+                    else {
+                        Out.pushNotification("Informacion","Fin del retroceso",NotificationType.INFORMATION);
+                        caminoAristas.setRetrocediendo(false);
+                        while (!caminoAristas.camino.isEmpty() && caminoAristas.isCaminoInterrumpido()){
+                            if (caminoAristas.camino.peek() != null && caminoAristas.camino.peek().isActivo()){
+                                // Si el origen del siguiente en la lista es DIFERENTE a el origen de la ultima arista sacada de
+                                // la pila de aristas para el retroceso
+                                if (caminoAristas.camino.peek().getOrigen().equals(caminoAristas.getUltimoSacadoRecorridoPrevio().getOrigen())){
+                                    caminoAristas.avanzarCamino();
+                                }
+                                else {
+                                    System.out.println("Salio porque si se encontro un camino por donde seguir");
+                                    break;
+                                }
+                            }
+                            Out.msg("Informacion","El camino de aristas esta vacio");
+                        }
+                        if (caminoAristas.camino.isEmpty()){
+                            Out.msg("Informacion","Fin del recorrido, no pudo seguir avanzando");
+                        }
+                    }
                 }
             }
             else {
-                if (!caminoAristas.recorridoPrevio.isEmpty()) {
-                    avanzarAtras(caminoAristas.retrocederCamino());
-                    totalRecorrido += tmpPasoActual.getPonderacionActual();
-                    lstCaminoAvanzado.getItems().add(tmpPasoActual.getOrigen().getNombre() + " - " + tmpPasoActual.getDestino().getNombre() + " " + totalRecorrido);
-                }
-                else {
-                    Out.pushNotification("Informacion","Fin del retroceso",NotificationType.INFORMATION);
-                    caminoAristas.setRetrocediendo(false);
-                    while (!caminoAristas.camino.isEmpty() && caminoAristas.isCaminoInterrumpido()){
-                        if (caminoAristas.camino.peek() != null && caminoAristas.camino.peek().isActivo()){
-                            // Si el origen del siguiente en la lista es DIFERENTE a el origen de la ultima arista sacada de
-                            // la pila de aristas para el retroceso
-                            if (caminoAristas.camino.peek().getOrigen().equals(caminoAristas.getUltimoSacadoRecorridoPrevio().getOrigen())){
-                                    caminoAristas.avanzarCamino();
-                            }
-                            else {
-                                System.out.println("Salio porque si se encontro un camino por donde seguir");
-                                break;
-                            }
-                        }
-                        Out.msg("Informacion","El camino de aristas esta vacio");
-                    }
-                    if (caminoAristas.camino.isEmpty()){
-                        Out.msg("Informacion","Fin del recorrido, no pudo seguir avanzando");
-                    }
-                }
+                Out.pushNotification("Informacion", "Fin del camino, total recorrido " + totalRecorrido, NotificationType.SUCCESS);
+                totalRecorrido = 0;
             }
         }
         else {
-            Out.pushNotification("Informacion", "Fin del camino, total recorrido " + totalRecorrido, NotificationType.SUCCESS);
-            totalRecorrido = 0;
+            Out.msg("No hay recorridos cargados en este momento");
         }
+
     }
 
     @FXML
@@ -291,7 +310,25 @@ public class Controller implements ViewController {
 
     @FXML
     void obtenerCaminoOptimo(ActionEvent event) {
-
+        String origen = tfdOrigenTodosLosCaminos.getText();
+        String destino = tfdDestinoTodosLosCaminos.getText();
+        if (!origen.equals("") && !destino.equals("") && app.getActualModificado() != null){
+            // Se verifica que son vertices del grafo
+            Vertice verticeOrigen = app.getActualModificado().buscarVertice(origen);
+            Vertice verticeDestino = app.getActualModificado().buscarVertice(destino);
+            if ((verticeOrigen != null) && (verticeDestino != null)) {
+                CaminoAristas caminoAristas = app.getActualModificado().caminoOptimo(verticeOrigen, verticeDestino);
+                ObservableList<CaminoAristas> caminoAristasObservable = FXCollections.observableArrayList();
+                caminoAristasObservable.addAll(caminoAristas);
+                lstCaminos.setItems(caminoAristasObservable);
+                lstCaminoAvanzado.getItems().removeAll();   // Limpia el camino para mostrar la siguiente secuencia de pasos
+                lstCaminos.setCellFactory(caminoVerticesListView -> new VistaCamino());
+            }
+            else
+                Out.msg("Algo anda mal ...","Por favor ingrese un origen y destino validos");
+        }
+        else
+            Out.msg("Algo anda mal ...","Por favor ingrese el origen y el destino para obtener todos los caminos");
     }
 
     @FXML
@@ -303,7 +340,7 @@ public class Controller implements ViewController {
     void obtenerCaminosMinimos(ActionEvent event) {
         String origen = tfdDesdeCaminosMinimos.getText();
         CaminoAristas caminoTotal = new CaminoAristas();
-        if (!origen.equals("")){
+        if (!origen.equals("") && app.getActualModificado() != null){
             // Se verifica que el vertice ingresado existe
             Vertice vertice = app.getActualModificado().buscarVertice(origen);
             if (vertice != null){
@@ -324,8 +361,9 @@ public class Controller implements ViewController {
                     lstCaminosMinimos.setItems(caminoAristasObservable);
                     lstCaminosMinimos.refresh();
                     lstCaminosMinimos.setCellFactory(caminoVerticesListView -> new VistaCamino());
-                    // TODO IMPORTANTISIMO Antes de setear el recorrido se debe reestablecer los "pasos" locales
+
                     tmpPasoActual = null;
+                    lstCaminoAvanzado.getItems().removeAll();   // Limpia el camino para mostrar la siguiente secuencia de pasos
                     app.getActualModificado().setRecorridoActual(caminoTotal);
                 }
             }
@@ -346,15 +384,17 @@ public class Controller implements ViewController {
     void obtenerTodosLosCaminos(ActionEvent event) {
         String origen = tfdOrigenTodosLosCaminos.getText();
         String destino = tfdDestinoTodosLosCaminos.getText();
-        if (!origen.equals("") && !destino.equals("")){
+        if (!origen.equals("") && !destino.equals("") && app.getActualModificado() != null){
             // Se verifica que son vertices del grafo
             Vertice verticeOrigen = app.getActualModificado().buscarVertice(origen);
             Vertice verticeDestino = app.getActualModificado().buscarVertice(destino);
             if ((verticeOrigen != null) && (verticeDestino != null)) {
                 ArrayList<CaminoAristas> caminoAristas = app.getActualModificado().todosLosCaminos(verticeOrigen, verticeDestino);
+                caminoAristas.sort(CaminoAristas::compareTo);   // Se ordenan los elementos de menor a mayor
                 ObservableList<CaminoAristas> caminoAristasObservable = FXCollections.observableArrayList();
                 caminoAristasObservable.addAll(caminoAristas);
                 lstCaminos.setItems(caminoAristasObservable);
+                lstCaminoAvanzado.getItems().removeAll();   // Limpia el camino para mostrar la siguiente secuencia de pasos
                 lstCaminos.setCellFactory(caminoVerticesListView -> new VistaCamino());
             }
             else
@@ -390,70 +430,77 @@ public class Controller implements ViewController {
 
     @FXML
     void btnEjecutarPrim(ActionEvent event) {
-        app.getActualModificado().prim();
-        for (int i = 0;i<app.getActualModificado().getVertices().size();i++){  
-            System.out.println(i);
-            System.out.println( app.getActualModificado().recorridoEnProfundidad(app.getActualModificado().getVertices().get(i)));
+        if (app.getActualModificado() != null){
+            app.getActualModificado().prim();
+            for (int i = 0;i<app.getActualModificado().getVertices().size();i++){
+                System.out.println(i);
+                System.out.println( app.getActualModificado().recorridoEnProfundidad(app.getActualModificado().getVertices().get(i)));
+            }
+            cargarGrafoActual(app.getActualModificado());
+            Out.msg("El grafo actual ha sido recreado");
         }
-        cargarGrafoActual(app.getActualModificado());
-//        cargarRecorrido();
-        Out.msg("El grafo actual ha sido recreado");
     }
 
     @FXML
     void recorrerPrimDesde(ActionEvent event) {
-        //TODO:Pensar si se van a usar los otros botones para hacer recorridos comunes en el nuevo grafo
         cargarRecorrido(tfdPrimDesde,lstPrim,Const.RECORRIDO_PRIM);
     }
 
     @FXML
     void regresarAlGrafoNormal(ActionEvent event) {
-        app.setActualModificado(app.getActualOriginal().clonarGrafo());
-        cargarGrafoActual(app.getActualOriginal());
-        Out.msg("El grafo se ha revertido a su forma original");
+        if (app.getActualModificado() != null){
+            app.setActualModificado(app.getActualOriginal().clonarGrafo());
+            cargarGrafoActual(app.getActualOriginal());
+            Out.msg("El grafo se ha revertido a su forma original");
+        }
     }
 
     @FXML
     void obtenerEsConexo(ActionEvent event) {
-        if (app.getActualModificado().esConexo())
-            Out.msg("Informacion","Sí, hay camino hacia todos los demás. El grafo actual es conexo");
-        else
-            Out.msg("Informacion","No, no hay camino hacia todos los demás. El grafo actual no conexo");
+        if (app.getActualModificado() != null){
+            if (app.getActualModificado().esConexo())
+                Out.msg("Informacion","Sí, hay camino hacia todos los demás. El grafo actual es conexo");
+            else
+                Out.msg("Informacion","No, no hay camino hacia todos los demás. El grafo actual no conexo");
+        }
     }
 
     private void cargarRecorrido(TextField tfdOrigen, ListView<CaminoAristas> lista, int tipoRecorrido) {
         String origen = tfdOrigen.getText();
         CaminoAristas camino = new CaminoAristas();
-        if (!origen.equals("")){
-            // Se verifica que el vertice seleccionado exista y esta activo
-            Vertice verticeOrigen = app.getActualModificado().buscarVertice(origen);
-            if (tipoRecorrido == Const.RECORRIDO_PROFUNDIDAD)
-                camino = app.getActualModificado().recorridoEnProfundidad(verticeOrigen);
-            else if (tipoRecorrido == Const.RECORRIDO_ANCHURA)
-                camino = app.getActualModificado().recorridoEnAnchura(verticeOrigen);
-            else if (tipoRecorrido == Const.RECORRIDO_PRIM) {
+        if (app.getActualModificado() != null){
+            if (!origen.equals("")){
+                // Se verifica que el vertice seleccionado exista y esta activo
+                Vertice verticeOrigen = app.getActualModificado().buscarVertice(origen);
+                if (tipoRecorrido == Const.RECORRIDO_PROFUNDIDAD)
+                    camino = app.getActualModificado().recorridoEnProfundidad(verticeOrigen);
+                else if (tipoRecorrido == Const.RECORRIDO_ANCHURA)
+                    camino = app.getActualModificado().recorridoEnAnchura(verticeOrigen);
+                else if (tipoRecorrido == Const.RECORRIDO_PRIM) {
 //                app.getActualModificado().prim();
-                for (int i = 0;i<app.getActualModificado().getVertices().size();i++){
+                    for (int i = 0;i<app.getActualModificado().getVertices().size();i++){
 
-                    System.out.println(i);
-                    System.out.println( app.getActualModificado().recorridoEnProfundidad(app.getActualModificado().getVertices().get(i)));
+                        System.out.println(i);
+                        System.out.println( app.getActualModificado().recorridoEnProfundidad(app.getActualModificado().getVertices().get(i)));
+                    }
+                    camino = app.getActualModificado().recorridoEnProfundidad(verticeOrigen);
+                    Out.msg("Ojo","Recuerde reestablecer el grafo despues de calcular el Arbol de Expansión Mínima (Esto es temporal)");
                 }
-                camino = app.getActualModificado().recorridoEnProfundidad(verticeOrigen);
-                Out.msg("Ojo","Recuerde reestablecer el grafo despues de calcular el Arbol de Expansión Mínima (Esto es temporal)");
-            }
-            if (verticeOrigen != null) {
-                ObservableList<CaminoAristas> caminoObservable = FXCollections.observableArrayList();
-                caminoObservable.addAll(camino);
-                lista.setItems(caminoObservable);
-                lista.setCellFactory(caminoVerticesListView -> new VistaCamino());
+                if (verticeOrigen != null) {
+                    ObservableList<CaminoAristas> caminoObservable = FXCollections.observableArrayList();
+                    caminoObservable.addAll(camino);
+                    lista.setItems(caminoObservable);
+                    lista.setCellFactory(caminoVerticesListView -> new VistaCamino());
+                }
+                else
+                    Out.msg("Algo anda mal ...","Por favor ingrese un origen valido");
             }
             else
-                Out.msg("Algo anda mal ...","Por favor ingrese un origen valido");
+                Out.msg("Algo anda mal ...", "Por favor ingrese el origen para obtener el " + tipoRecorrido);
+            tmpPasoActual = null;
+            lstCaminoAvanzado.getItems().removeAll();   // Limpia el camino para mostrar la siguiente secuencia de pasos
+            app.getActualModificado().setRecorridoActual(camino);
         }
-        else
-            Out.msg("Algo anda mal ...", "Por favor ingrese el origen para obtener el " + tipoRecorrido);
-        tmpPasoActual = null;
-        app.getActualModificado().setRecorridoActual(camino);
     }
     @FXML
     void obtenerRecorridoAnchura(ActionEvent event) {

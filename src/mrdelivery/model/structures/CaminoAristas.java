@@ -2,6 +2,7 @@ package mrdelivery.model.structures;
 
 import mrdelivery.model.Const;
 
+import java.text.DecimalFormat;
 import java.util.*;
 
 public class CaminoAristas implements Comparable<CaminoAristas>{
@@ -174,18 +175,22 @@ public class CaminoAristas implements Comparable<CaminoAristas>{
     }
 
     private String getPonderacionConSimbolo(Arista arista, double total){
+        DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(2);
         switch (arista.ponderacionActual){
             case (Const.PRECIO):
-                return "$" + total;
+                return "$" + df.format(total);
             case(Const.DISTANCIA):
-                return total+" km";
+                return df.format(total)+" km";
             case(Const.TIEMPO):
-                return total+" min";
+                return df.format(total)+" min";
             default:
                 return "";
         }
     }
     public String toStringResumen(){
+        DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(2);
         StringBuilder s = new StringBuilder();
         for (int i = 0; i < camino.size(); i++){
             Arista arista = camino.get(i);

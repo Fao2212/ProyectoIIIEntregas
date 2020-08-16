@@ -156,7 +156,7 @@ public class Grafo {
         return false;
     }
 
-    public CaminoAristas caminoOptimo(Vertice origen,Vertice destino,int tipoPonderacion){
+    public CaminoAristas caminoOptimo(Vertice origen,Vertice destino){
         ArrayList<CaminoAristas> caminos = todosLosCaminos(origen,destino);
         return Collections.min(caminos);
     }

@@ -5,6 +5,8 @@ import mrdelivery.model.Const;
 import mrdelivery.view.componentes.Boton;
 import mrdelivery.view.componentes.BotonArista;
 
+import java.text.DecimalFormat;
+
 public class Arista implements  Comparable<Arista>{
 
     Vertice origen;
@@ -156,10 +158,12 @@ public class Arista implements  Comparable<Arista>{
         }
     }
     public String getPonderacionString(int tipo){
+        DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(2);
         switch (tipo){
-            case Const.PRECIO: return "$"+precio;
-            case Const.DISTANCIA: return distancia+" km";
-            case Const.TIEMPO: return tiempo+" min";
+            case Const.PRECIO: return "$"+df.format(precio);
+            case Const.DISTANCIA: return df.format(distancia)+" km";
+            case Const.TIEMPO: return df.format(tiempo)+" min";
             default: return "";
         }
     }
