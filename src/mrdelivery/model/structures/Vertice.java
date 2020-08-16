@@ -74,4 +74,12 @@ public class Vertice {
     public void quitarResaltado() {
         boton.quitarResaltado();
     }
+
+    public void modificarActividad(boolean estado){
+        grafoAsociado.actividadVertice(estado,this);
+    }
+
+    public void setGrafo(Grafo grafo) {
+        this.grafoAsociado = grafo;
+    }
 }

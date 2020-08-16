@@ -20,6 +20,7 @@ public class Grafo {
         this.aristas = aristas;
         ponderacionActiva = 0;
         grafoAMatriz();
+        repartirReferenciaAVertices();
     }
 
     public Grafo(Grafo grafo){
@@ -31,12 +32,20 @@ public class Grafo {
         }
         ponderacionActiva = 0;
         grafoAMatriz();
+        repartirReferenciaAVertices();
     }
 
     public void resetGrafo(ArrayList<Vertice> vertices,ArrayList<Arista> aristas){
         this.aristas = aristas;
         this.vertices = vertices;
         grafoAMatriz();
+        repartirReferenciaAVertices();
+    }
+
+    public void repartirReferenciaAVertices(){
+        for(Vertice vertice:vertices){
+            vertice.setGrafo(this);
+        }
     }
 
     public ArrayList<Vertice> getVertices(){
@@ -464,6 +473,15 @@ public class Grafo {
             if(!arista.destino.visitado && arista.isActivo()){
                 arista.destino.setVisitado(true);
                 recorridoEnProfundidad(arista.destino,camino);
+            }
+        }
+    }
+
+    public void actividadVertice(boolean actividad,Vertice vertice){
+        vertice.setActivo(actividad);
+        for (Arista arista:aristas){
+            if(arista.destino == vertice || arista.origen == vertice){
+                arista.setActivo(actividad);
             }
         }
     }
