@@ -58,6 +58,7 @@ public class Controller implements ViewController {
     private App app;
     private Arista tmpPasoActual;
     private double totalRecorrido;
+    private boolean recorridoAnchura;
 
     private GridPane crearCuadricula(){
         GridPane cuadricula = new GridPane();
@@ -209,15 +210,15 @@ public class Controller implements ViewController {
         resaltadoDestino.play();
     }
 
-    private String toStringPasoCamino(Vertice origen, Vertice destino){
+    private String toStringPasoCamino(Vertice origen, Vertice destino, double costoPaso){
         DecimalFormat df = new DecimalFormat();
         df.setMaximumFractionDigits(2);
         if (app.getActualModificado().getPonderacionActiva() == Const.PRECIO)
-            return "Desde: " + origen.getNombre() + " Hacia: " + destino.getNombre() + " Costo: $" + df.format(totalRecorrido);
+            return "Desde: " + origen.getNombre() + "\t Hacia: " + destino.getNombre() + "\t Costo: $" + df.format(costoPaso) + "\t Costa total: $" + df.format(totalRecorrido);
         else if (app.getActualModificado().getPonderacionActiva() == Const.DISTANCIA)
-            return "Desde: " + origen.getNombre() + " Hacia: " + destino.getNombre() + " Distancia: " + df.format(totalRecorrido) + " km";
+            return "Desde: " + origen.getNombre() + "\t Hacia: " + destino.getNombre() + "\t Distancia: " + df.format(costoPaso) + " km\tDistancia total: " + df.format(totalRecorrido) + " km";
         else
-            return "Desde: " + origen.getNombre() + " Hacia: " + destino.getNombre() + " Tiempo: " + df.format(totalRecorrido)+ " min";
+            return "Desde: " + origen.getNombre() + "\t Hacia: " + destino.getNombre() + "\t Tiempo: " + df.format(costoPaso)+ " min\tTiempo total: " + df.format(totalRecorrido) + " min" ;
     }
 
     @FXML
@@ -234,21 +235,21 @@ public class Controller implements ViewController {
                             if (tmpPasoActual.getDestino().equals(caminoAristas.camino.peek().getOrigen())) {
                                 avanzarAdelante(tmpPasoActual);
                                 totalRecorrido += tmpPasoActual.getPonderacionActual();
-                                lstCaminoAvanzado.getItems().add(toStringPasoCamino(tmpPasoActual.getOrigen(),tmpPasoActual.getDestino()));
+                                lstCaminoAvanzado.getItems().add(toStringPasoCamino(tmpPasoActual.getOrigen(),tmpPasoActual.getDestino(),tmpPasoActual.getPonderacionActual()));
                             }
                             else {
                                 // Tiene que retroceder pues X-Y U-Z por ejemplo
                                 avanzarAdelante(tmpPasoActual);
                                 totalRecorrido += tmpPasoActual.getPonderacionActual();
-                                lstCaminoAvanzado.getItems().add(toStringPasoCamino(tmpPasoActual.getOrigen(),tmpPasoActual.getDestino()));
-                                Out.msg("Llego al final del camino","Intentando regresar");
+                                lstCaminoAvanzado.getItems().add(toStringPasoCamino(tmpPasoActual.getOrigen(),tmpPasoActual.getDestino(),tmpPasoActual.getPonderacionActual()));
+                                Out.msg("Llego al final del camino","Ahora se va a regresar buscando la siguiente bifurcacion");
                                 caminoAristas.setRetrocediendo(true);
                             }
                         }
                         else {
                             avanzarAdelante(tmpPasoActual);
                             totalRecorrido += tmpPasoActual.getPonderacionActual();
-                            lstCaminoAvanzado.getItems().add(toStringPasoCamino(tmpPasoActual.getOrigen(),tmpPasoActual.getDestino()));
+                            lstCaminoAvanzado.getItems().add(toStringPasoCamino(tmpPasoActual.getOrigen(),tmpPasoActual.getDestino(),tmpPasoActual.getPonderacionActual()));
                         }
                     }
                     else {
@@ -260,9 +261,15 @@ public class Controller implements ViewController {
                 }
                 else {
                     if (!caminoAristas.recorridoPrevio.isEmpty()) {
-                        avanzarAtras(caminoAristas.retrocederCamino());
+                        if (recorridoAnchura)
+                            avanzarAtras(caminoAristas.fijarmeParaAtras(tmpPasoActual.getOrigen()));
+                        else
+                            avanzarAtras(caminoAristas.retrocederCamino());
                         totalRecorrido += tmpPasoActual.getPonderacionActual();
-                        lstCaminoAvanzado.getItems().add(toStringPasoCamino(tmpPasoActual.getDestino(),tmpPasoActual.getOrigen()));
+                        lstCaminoAvanzado.getItems().add(toStringPasoCamino(tmpPasoActual.getDestino(),tmpPasoActual.getOrigen(),tmpPasoActual.getPonderacionActual()));
+                        if (caminoAristas.getUltimoSacadoRecorridoPrevio().getOrigen().equals(caminoAristas.camino.peek().getOrigen())){
+                            caminoAristas.setRetrocediendo(false);
+                        }
                     }
                     else {
                         Out.msg("Informacion","Fin del retroceso");
@@ -282,6 +289,7 @@ public class Controller implements ViewController {
                             Out.msg("Informacion","El camino de aristas esta vacio");
                         }
                         if (caminoAristas.camino.isEmpty()){
+                            recorridoAnchura = false;
                             Out.msg("Informacion","Fin del recorrido, no pudo seguir avanzando");
                         }
                     }
@@ -290,6 +298,7 @@ public class Controller implements ViewController {
             else {
                 Out.pushNotification("Informacion", "Fin del camino, total recorrido " + totalRecorrido, NotificationType.SUCCESS);
                 totalRecorrido = 0;
+                recorridoAnchura = false;
             }
         }
         else {
@@ -378,6 +387,24 @@ public class Controller implements ViewController {
     void mostrarCaminoDetallado(MouseEvent event) {
         String camino = lstCaminos.getSelectionModel().getSelectedItem().toString();
         Out.msg("Camino detallado",camino, Alert.AlertType.INFORMATION);
+    }
+
+    @FXML
+    void mostrarAnchuraDetallada(MouseEvent event) {
+        String camino = lstRecorridoAnchura.getSelectionModel().getSelectedItem().toString();
+        Out.msg("Anchura detallada",camino, Alert.AlertType.INFORMATION);
+    }
+
+    @FXML
+    void mostrarPrimDetallado(MouseEvent event) {
+        String camino = lstPrim.getSelectionModel().getSelectedItem().toString();
+        Out.msg("Prim detallado",camino, Alert.AlertType.INFORMATION);
+    }
+
+    @FXML
+    void mostrarProfundidadDetallado(MouseEvent event) {
+        String camino = lstRecorridoProfundidad.getSelectionModel().getSelectedItem().toString();
+        Out.msg("Profundidad detallado",camino, Alert.AlertType.INFORMATION);
     }
 
     @FXML
@@ -498,6 +525,7 @@ public class Controller implements ViewController {
     }
     @FXML
     void obtenerRecorridoAnchura(ActionEvent event) {
+        recorridoAnchura = true;
         cargarRecorrido(tfdAnchuraDesde, lstRecorridoAnchura,Const.RECORRIDO_ANCHURA);
     }
 

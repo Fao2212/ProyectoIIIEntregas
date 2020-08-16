@@ -107,6 +107,18 @@ public class CaminoAristas implements Comparable<CaminoAristas>{
         return ultimoSacadoRecorridoPrevio;
     }
 
+    public Arista fijarmeParaAtras(Vertice origenDelSiguiente){
+        int largo = recorridoPrevio.size();
+        System.out.println("Largo de recorrido previo " + largo);
+        for (int i = largo-1; i > -1; i--){
+            if (recorridoPrevio.get(i).getDestino().equals(origenDelSiguiente)) {
+                this.ultimoSacadoRecorridoPrevio = recorridoPrevio.get(i);
+                return recorridoPrevio.get(i);
+            }
+        }
+        return null;
+    }
+
     public boolean compararCamino(CaminoAristas caminoAristas){
         if(camino.size() == caminoAristas.camino.size()) {
             for (int i = 0;i < camino.size();i++) {
