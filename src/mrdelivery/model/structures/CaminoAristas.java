@@ -39,7 +39,6 @@ public class CaminoAristas implements Comparable<CaminoAristas>{
     }
 
     public CaminoAristas(CaminoAristas copiar){
-        // TODO: Chequear si lo de sumaParcial esta bien
         camino = new LinkedList<>();
         int sumaParcial = 0;
         for (Arista arista : copiar.camino){

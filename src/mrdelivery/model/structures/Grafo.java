@@ -178,7 +178,9 @@ public class Grafo {
 
     public CaminoAristas caminoOptimo(Vertice origen,Vertice destino){
         ArrayList<CaminoAristas> caminos = todosLosCaminos(origen,destino);
-        return Collections.min(caminos);
+        if (caminos != null)
+            return Collections.min(caminos);
+        return null;
     }
 
     private void ordenarCaminos(int index,Peso peso){
@@ -481,9 +483,13 @@ public class Grafo {
         vertice.setActivo(actividad);
         for (Arista arista:aristas){
             if(arista.destino == vertice || arista.origen == vertice){
-                arista.setActivo(actividad);
+                if (vertice.isActivo())
+                    arista.activarBoton();
+                else
+                    arista.desactivarBoton();
             }
         }
+
     }
 
 }

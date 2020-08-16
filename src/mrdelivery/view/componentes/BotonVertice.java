@@ -11,11 +11,16 @@ public class BotonVertice extends Boton {
         if(vertice != null && !vertice.isActivo())
             this.pseudoClassStateChanged(Boton.seleccionado,true);
         this.setOnMouseClicked((evento)->{
-            if (vertice != null) {
-                vertice.modificarActividad(!vertice.isActivo());
-                this.pseudoClassStateChanged(Boton.seleccionado, !vertice.isActivo());
-            }
+            alternar();
         });
+    }
+
+    public void alternar(){
+        if (vertice != null) {
+            vertice.modificarActividad(!vertice.isActivo());
+            this.pseudoClassStateChanged(Boton.seleccionado, !vertice.isActivo());
+            System.out.println("Se cambio el estado del vertice, ahora esta: "+vertice.isActivo());
+        }
     }
 
     public Vertice getVertice(){

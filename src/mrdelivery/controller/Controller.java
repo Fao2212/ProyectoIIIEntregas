@@ -472,21 +472,15 @@ public class Controller implements ViewController {
             if (!origen.equals("")){
                 // Se verifica que el vertice seleccionado exista y esta activo
                 Vertice verticeOrigen = app.getActualModificado().buscarVertice(origen);
-                if (tipoRecorrido == Const.RECORRIDO_PROFUNDIDAD)
-                    camino = app.getActualModificado().recorridoEnProfundidad(verticeOrigen);
-                else if (tipoRecorrido == Const.RECORRIDO_ANCHURA)
-                    camino = app.getActualModificado().recorridoEnAnchura(verticeOrigen);
-                else if (tipoRecorrido == Const.RECORRIDO_PRIM) {
-//                app.getActualModificado().prim();
-                    for (int i = 0;i<app.getActualModificado().getVertices().size();i++){
-
-                        System.out.println(i);
-                        System.out.println( app.getActualModificado().recorridoEnProfundidad(app.getActualModificado().getVertices().get(i)));
-                    }
-                    camino = app.getActualModificado().recorridoEnProfundidad(verticeOrigen);
-                    Out.msg("Ojo","Recuerde reestablecer el grafo despues de calcular el Arbol de Expansión Mínima (Esto es temporal)");
-                }
                 if (verticeOrigen != null) {
+                    if (tipoRecorrido == Const.RECORRIDO_PROFUNDIDAD)
+                        camino = app.getActualModificado().recorridoEnProfundidad(verticeOrigen);
+                    else if (tipoRecorrido == Const.RECORRIDO_ANCHURA)
+                        camino = app.getActualModificado().recorridoEnAnchura(verticeOrigen);
+                    else if (tipoRecorrido == Const.RECORRIDO_PRIM) {
+                        camino = app.getActualModificado().recorridoEnProfundidad(verticeOrigen);
+                        Out.msg("Ojo","Recuerde reestablecer el grafo despues de calcular el Arbol de Expansión Mínima (Esto es temporal)");
+                    }
                     ObservableList<CaminoAristas> caminoObservable = FXCollections.observableArrayList();
                     caminoObservable.addAll(camino);
                     lista.setItems(caminoObservable);

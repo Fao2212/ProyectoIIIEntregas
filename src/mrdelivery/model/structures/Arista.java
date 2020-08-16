@@ -119,6 +119,15 @@ public class Arista implements  Comparable<Arista>{
         this.activo = activo;
     }
 
+    public void alternarBoton(){
+        this.boton.alternar();
+    }
+    public void activarBoton(){
+        this.boton.activar();
+    }
+    public void desactivarBoton(){
+        this.boton.desactivar();
+    }
 
     public String toStringConexion() {
         return "Conexion:" + origen.getNombre() + "-" + destino.getNombre();
