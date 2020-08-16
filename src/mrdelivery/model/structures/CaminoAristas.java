@@ -2,100 +2,68 @@ package mrdelivery.model.structures;
 
 import mrdelivery.model.Const;
 
-import java.util.ArrayList;
-import java.util.Stack;
+import java.util.*;
 
 public class CaminoAristas implements Comparable<CaminoAristas>{
 
-    public ArrayList<Arista> camino;
+    public LinkedList<Arista> camino;
     double distanciaTotal;
-    public int indexOfNextStep;
-    Paso pasoActual;
-    boolean llegoAlFinal;
-    boolean llegoAlInicio;
+    public int currentIndex;
+    Arista ultimoSacadoRecorridoPrevio;
+    Arista ultimoSacadoCamino;
+    boolean caminoInterrumpido;
     boolean retrocediendo;
-    public Stack<Paso> recorridoPrevio;
-    public Stack<Paso> recorridoSiguiente;
+    public Stack<Arista> recorridoPrevio;
 
     public CaminoAristas(){
-        camino = new ArrayList<>();
-        indexOfNextStep = 0;
+        camino = new LinkedList<>();
+        currentIndex = 0;
         distanciaTotal = 0.0;
-        pasoActual = null;
-        llegoAlFinal = false;
-        llegoAlInicio = false;
         retrocediendo = false;
+        caminoInterrumpido = false;
         recorridoPrevio = new Stack<>();
-        recorridoSiguiente = new Stack<>();
+        ultimoSacadoCamino = null;
+        ultimoSacadoRecorridoPrevio = null;
     }
 
     public CaminoAristas(double _distanciaTotal){
-        camino = new ArrayList<Arista>();
-        indexOfNextStep = 0;
+        camino = new LinkedList<>();
+        currentIndex = 0;
         distanciaTotal = _distanciaTotal;
-        pasoActual = null;
-        llegoAlFinal = false;
-        llegoAlInicio = false;
         retrocediendo = false;
+        caminoInterrumpido = false;
         recorridoPrevio = new Stack<>();
-        recorridoSiguiente = new Stack<>();
+        ultimoSacadoCamino = null;
+        ultimoSacadoRecorridoPrevio = null;
     }
 
     public CaminoAristas(CaminoAristas copiar){
         // TODO: Chequear si lo de sumaParcial esta bien
-        camino = new ArrayList<Arista>();
+        camino = new LinkedList<>();
         int sumaParcial = 0;
         for (Arista arista : copiar.camino){
             sumaParcial += arista.getPonderacionActual();
         }
         distanciaTotal = sumaParcial;
         camino.addAll(copiar.camino);
-        indexOfNextStep = 0;
-        pasoActual = null;
-        llegoAlFinal = false;
-        llegoAlInicio = false;
+        currentIndex = 0;
         retrocediendo = false;
+        caminoInterrumpido = false;
         recorridoPrevio = new Stack<>();
-        recorridoSiguiente = new Stack<>();
+        ultimoSacadoCamino = null;
+        ultimoSacadoRecorridoPrevio = null;
     }
 
     public void addCamino(Arista arista){
-        camino.add(arista);
+        camino.addLast(arista);
     }
 
     public void join(CaminoAristas aristas){
         this.camino.addAll(aristas.camino);
     }
 
-    public void recorridoCompleto(){
-        // TODO: Ver si se elimina por no ocuparse
-        for (Arista arista : camino){
-            arista.resaltarEnPantalla();
-        }
-    }
-
     public void verticeActual(){
-        camino.get(indexOfNextStep).resaltarEnPantalla();
-    }
-
-    public Paso getPasoActual() {
-        return pasoActual;
-    }
-
-    public void setPasoActual(Paso pasoActual) {
-        this.pasoActual = pasoActual;
-    }
-
-    public void setLlegoAlFinal(boolean llegoAlFinal) {
-        this.llegoAlFinal = llegoAlFinal;
-    }
-
-    public boolean isLlegoAlInicio() {
-        return llegoAlInicio;
-    }
-
-    public void setLlegoAlInicio(boolean llegoAlInicio) {
-        this.llegoAlInicio = llegoAlInicio;
+        camino.get(currentIndex).resaltarEnPantalla();
     }
 
     public boolean isRetrocediendo() {
@@ -106,51 +74,55 @@ public class CaminoAristas implements Comparable<CaminoAristas>{
         this.retrocediendo = retrocediendo;
     }
 
-    public Paso avanzarCamino(){
-        if (!llegoAlFinal){
-            Arista anterior;
-            Arista siguiente;
-            Arista actual = camino.get(indexOfNextStep);
-            if(indexOfNextStep == 0)
-                anterior = null;
-            else
-                anterior = camino.get(indexOfNextStep -1);
-            if(indexOfNextStep == (camino.size()-1))
-                siguiente = null;
-            else
-                siguiente = camino.get(indexOfNextStep +1);
-            Paso paso = new Paso(actual,siguiente,anterior);
-            recorridoPrevio.push(paso);
-            this.pasoActual = paso;
-            if(indexOfNextStep < (camino.size()-1))
-                indexOfNextStep++;
+    public boolean isCaminoInterrumpido() {
+        return caminoInterrumpido;
+    }
+
+    public void setCaminoInterrumpido(boolean caminoInterrumpido) {
+        this.caminoInterrumpido = caminoInterrumpido;
+    }
+
+    public Arista avanzarCamino(){
+        if (!camino.isEmpty()){
+            Arista paso = camino.removeFirst();
+            System.out.println("Paso actual = " + paso.toStringConexion());
+//            if(currentIndex == 0) {
+//                anterior = null;
+//                System.out.println("Anterior = null ");
+//            }
+//            else {
+//                anterior = camino.get(currentIndex - 1);
+//                System.out.println("Anterior = " + anterior.toStringConexion());
+//            }
+//            if(currentIndex == (camino.size()-1)) {
+//                siguiente = null;
+//                System.out.println("Siguiente = null ");
+//            }
+//            else {
+//                siguiente = camino.get(currentIndex + 1);
+//                System.out.println("Siguiente = " + siguiente.toStringConexion());
+//            }
+//            Paso paso = new Paso(actual,siguiente,anterior);
+            this.recorridoPrevio.push(paso);
+            this.ultimoSacadoCamino = paso;
+            //currentIndex++; // Se acomoda para la siguiente iteracion
+//            if(currentIndex < (camino.size()-1);
             return paso;
         }
         return null;
     }
 
-    public Paso retrocederCamino(){
-        return recorridoPrevio.pop();
-//        if (!llegoAlInicio){
-//            if(indexOfNext > -1) {   // El minimo es el cero
-//                Arista anterior;
-//                Arista siguiente;
-//                Arista actual = camino.get(indexOfNext);
-//                if (indexOfNext == 0)
-//                    anterior = null;
-//                else
-//                    anterior = camino.get(indexOfNext - 1);
-//                if (indexOfNext == (camino.size() - 1))
-//                    siguiente = null;
-//                else
-//                    siguiente = camino.get(indexOfNext + 1);
-//                Paso paso = new Paso(actual, siguiente, anterior);
-//                recorridoPrevio.pop();
-//                this.pasoActual = paso;
-//                return paso;
-//            }
-//        }
-//        return null;
+    public Arista getUltimoSacadoRecorridoPrevio() {
+        return ultimoSacadoRecorridoPrevio;
+    }
+
+    public Arista getUltimoSacadoCamino() {
+        return ultimoSacadoCamino;
+    }
+
+    public Arista retrocederCamino(){
+        ultimoSacadoRecorridoPrevio = recorridoPrevio.pop();
+        return ultimoSacadoRecorridoPrevio;
     }
 
     public boolean compararCamino(CaminoVertices caminoVertices){

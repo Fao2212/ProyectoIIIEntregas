@@ -21,6 +21,7 @@ import mrdelivery.view.componentes.BotonArista;
 import mrdelivery.view.componentes.BotonVertice;
 import mrdelivery.view.componentes.VistaCamino;
 import org.json.JSONObject;
+import tray.notification.NotificationType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,10 +57,7 @@ public class Controller implements ViewController {
 
     // Variables propias
     private App app;
-    private Paso tmpPasoActual;
-    private Paso tmpPasoNuevo;
-    private Paso tmpPasoPendiente;
-    private boolean regresandoPorInactivo;
+    private Arista tmpPasoActual;
 
     private GridPane crearCuadricula(){
         GridPane cuadricula = new GridPane();
@@ -149,7 +147,7 @@ public class Controller implements ViewController {
         cargarGrafoOriginal(app.getActualOriginal());
     }
 
-    private void avanzarAdelante(Paso paso){
+    private void avanzarAdelante(Arista paso){
         PauseTransition quitarResaltadoDestino = new PauseTransition(Duration.millis(500));
         quitarResaltadoDestino.setOnFinished((cambio) -> {
                     paso.getDestino().quitarResaltado();
@@ -158,7 +156,7 @@ public class Controller implements ViewController {
 
         PauseTransition resaltadoDestino = new PauseTransition(Duration.millis(500));
         resaltadoDestino.setOnFinished((cambio) -> {
-                    paso.getAristaActual().quitarResaltado();
+                    paso.quitarResaltado();
                     paso.getDestino().resaltarEnPantalla();
                     quitarResaltadoDestino.play();
                 }
@@ -167,7 +165,7 @@ public class Controller implements ViewController {
         PauseTransition resaltadoArista = new PauseTransition(Duration.millis(500));
         resaltadoArista.setOnFinished((cambio) -> {
                     paso.getOrigen().quitarResaltado();
-                    paso.getAristaActual().resaltarEnPantalla();
+                    paso.resaltarEnPantalla();
                     resaltadoDestino.play();
                 }
         );
@@ -180,7 +178,7 @@ public class Controller implements ViewController {
         resaltadoOrigen.play();
     }
 
-    private void avanzarAtras(Paso paso){
+    private void avanzarAtras(Arista paso){
         PauseTransition quitarResaltadoOrigen = new PauseTransition(Duration.millis(500));
         quitarResaltadoOrigen.setOnFinished((cambio)->{
             paso.getOrigen().quitarResaltado();
@@ -188,7 +186,7 @@ public class Controller implements ViewController {
 
         PauseTransition quitarResaltadoArista = new PauseTransition(Duration.millis(500));
         quitarResaltadoArista.setOnFinished((cambio)->{
-            paso.getAristaActual().quitarResaltado();
+            paso.quitarResaltado();
             paso.getOrigen().resaltarEnPantalla();
             quitarResaltadoOrigen.play();
         });
@@ -196,7 +194,7 @@ public class Controller implements ViewController {
         PauseTransition quitarResaltadoDestino = new PauseTransition(Duration.millis(500));
         quitarResaltadoDestino.setOnFinished((cambio)->{
             paso.getDestino().quitarResaltado();
-            paso.getAristaActual().resaltarEnPantalla();
+            paso.resaltarEnPantalla();
             quitarResaltadoArista.play();
         });
 
@@ -211,85 +209,60 @@ public class Controller implements ViewController {
 
     @FXML
     void avanzarGrafoActual(ActionEvent event) {
-        CaminoAristas camino = app.getActualModificado().getRecorridoActual();
-        if(camino != null){
-            /* Mientras se este retrocediendo se mantiene el recorrido
-               "en posicion". Cuando se el retroceso isRetrocediendo()
-               devuelve false y se continua desde donde habia
-               quedado el indice en el CaminoAristas */
-            if (!camino.isRetrocediendo()) {
-                tmpPasoActual = camino.getPasoActual();
-                tmpPasoNuevo = camino.avanzarCamino();
-                regresandoPorInactivo = false;
-                System.out.println("indefOfNextStep : " + camino.indexOfNextStep);
-                System.out.println("indefOfCurrentStep : " + (camino.indexOfNextStep-1));
-            }
-            if(tmpPasoNuevo != null) {
-                // Primero pregunta si la arista esta activa
-                if (tmpPasoNuevo.getAristaActual().isActivo() && !regresandoPorInactivo){
-
-                    // Esto es cuando es el primero en el camino
-                    if (tmpPasoActual == null){
-                        avanzarAdelante(tmpPasoNuevo);
-                        if (tmpPasoNuevo.getAristaSiguiente() == null)
-                            camino.setLlegoAlFinal(true);
-                    }
-                    // Esto es para seguir sacando de la pila de pasos los pasos recorridos hasta el momento
-                    else if (camino.isRetrocediendo()){
-                        if (!camino.recorridoPrevio.isEmpty()){
-                            Paso anterior = camino.retrocederCamino();
-                            avanzarAtras(anterior);
-                        }
+        CaminoAristas caminoAristas = app.getActualModificado().getRecorridoActual();
+        if(!caminoAristas.camino.isEmpty()) {
+            if (!caminoAristas.isRetrocediendo()) {
+                tmpPasoActual = caminoAristas.avanzarCamino();
+                System.out.println("PASO ACTUAL " + tmpPasoActual.toStringConexion());
+                if (tmpPasoActual.isActivo()) {
+                    if (!caminoAristas.camino.isEmpty()){   // Caso en el que el ultimo elemento que se saco era el ultimo
+                        System.out.println("Este es el siguiente en la lista enlazada = " + caminoAristas.camino.peek().getOrigen().getNombre());
+                        if (tmpPasoActual.getDestino().equals(caminoAristas.camino.peek().getOrigen()))
+                            avanzarAdelante(tmpPasoActual);
                         else {
-                            Out.msg("Termino de retroceder");
-                            camino.setRetrocediendo(false);
+                            // Tiene que retroceder pues X-Y U-Z por ejemplo
+                            avanzarAdelante(tmpPasoActual);
+                            Out.pushNotification("Regresando","se develve", NotificationType.NOTICE);
+                            caminoAristas.setRetrocediendo(true);
                         }
                     }
-                    // Esto es para no perder el recorrido del ultimo paso registrado antes del proceso de regreso
-                    else if (tmpPasoPendiente != null) {
-                        avanzarAdelante(tmpPasoPendiente);
-                        tmpPasoPendiente = null;
-                    }
-                    // Caso de avance usual, cuando de la arista X-Y sigue Y-Z por ejemplo
-                    else if (tmpPasoActual.getDestino().equals(tmpPasoNuevo.getOrigen())) {
-                        avanzarAdelante(tmpPasoNuevo);
-                        if (tmpPasoNuevo.getAristaSiguiente() == null)
-                            camino.setLlegoAlFinal(true);
-                    }
-                    // Si ninguno de los anteriores se cumple quiere decir que hay que retroceder
-                    else {
-                        Out.msg("Retrocediendo");
-                        camino.setRetrocediendo(true);
-                        tmpPasoPendiente = camino.recorridoPrevio.pop();   // Se desecha el ultimo agregado, porque es el actual
-                        System.out.println("El paso actual quedo en: " + tmpPasoActual.getAristaActual().toStringConexion());
-                        System.out.println("El paso nuevo quedo en: " + tmpPasoNuevo.getAristaActual().toStringConexion());
-                    /*Esto para que despues de terminar el regreso, se vuelva a colocar
-                    en la posicion en la que quedo el recorrido  a partir de aqui*/
-                        camino.indexOfNextStep--;
-                    }
+                    else {avanzarAdelante(tmpPasoActual);}
                 }
                 else {
-                    if (!regresandoPorInactivo) {
-                        Out.msg("Algo anda mal ...", "No puede seguir avanzando por aqui, regresando");
-                        camino.recorridoPrevio.pop();   // Saca
+                    Out.msg("Algo anda mal", "No puede seguir avanzando por aqui, regresando");
+                    caminoAristas.setCaminoInterrumpido(true);
+                    caminoAristas.setRetrocediendo(true);
+                    caminoAristas.retrocederCamino();   // Esto para sacar al actual inactivo que se agrego por defecto
+                }
+            }
+            else {
+                if (!caminoAristas.recorridoPrevio.isEmpty())
+                    avanzarAtras(caminoAristas.retrocederCamino());
+                else{
+                    Out.msg("Informacion","Fin del retroceso");
+                    caminoAristas.setRetrocediendo(false);
+                    while (!caminoAristas.camino.isEmpty() && caminoAristas.isCaminoInterrumpido()){
+                        if (caminoAristas.camino.peek() != null && caminoAristas.camino.peek().isActivo()){
+                            // Si el origen del siguiente en la lista es DIFERENTE a el origen de la ultima arista sacada de
+                            // la pila de aristas para el retroceso
+                            if (caminoAristas.camino.peek().getOrigen().equals(caminoAristas.getUltimoSacadoRecorridoPrevio().getOrigen())){
+                                    caminoAristas.avanzarCamino();
+                            }
+                            else {
+                                System.out.println("Salio porque si se encontro un camino por donde seguir");
+                                break;
+                            }
+                        }
+                        Out.msg("Informacion","El camino de aristas esta vacio");
                     }
-                    // Se devuelve los pasos que lleva acumulados en la pila "recorridoPrevio"
-                    Vertice origenBifurcacion = camino.recorridoPrevio.get(0).getOrigen();
-                    if (!camino.recorridoPrevio.isEmpty()){
-                        regresandoPorInactivo = true;
-                        avanzarAtras(camino.recorridoPrevio.pop());
-                    }
-                    else {
-                        regresandoPorInactivo = false;
+                    if (caminoAristas.camino.isEmpty()){
+                        Out.msg("Informacion","Fin del recorrido, no pudo seguir avanzando");
                     }
                 }
             }
-            else
-                Out.msg("Fin del camino");
         }
         else
-            Out.msg("No se creado ningun camino para recorrer");
-
+            Out.msg("Fin del camino");
     }
 
     @FXML
@@ -338,9 +311,7 @@ public class Controller implements ViewController {
                     lstCaminosMinimos.refresh();
                     lstCaminosMinimos.setCellFactory(caminoVerticesListView -> new VistaCamino());
                     // TODO IMPORTANTISIMO Antes de setear el recorrido se debe reestablecer los "pasos" locales
-                    tmpPasoNuevo = null;
                     tmpPasoActual = null;
-                    tmpPasoPendiente = null;
                     app.getActualModificado().setRecorridoActual(caminoTotal);
                 }
             }
@@ -457,9 +428,7 @@ public class Controller implements ViewController {
         }
         else
             Out.msg("Algo anda mal ...", "Por favor ingrese el origen para obtener el " + tipoRecorrido);
-        tmpPasoNuevo = null;
         tmpPasoActual = null;
-        tmpPasoPendiente = null;
         app.getActualModificado().setRecorridoActual(camino);
     }
     @FXML

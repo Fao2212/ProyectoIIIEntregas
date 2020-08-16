@@ -287,7 +287,6 @@ public class Grafo {
                         minimos.get(vertice).addCamino(pilaAristas.pop());
                     }
                 }
-
                 //TODO: Impresion para desarrollo, borrar luego
                 System.out.println("RESULTADO FINAL DE LA TABLA - ALGORITMO DE DIJKSTRA");
                 for (Vertice vertice : minimos.keySet()) {
