@@ -297,10 +297,14 @@ public class Grafo {
                     for (Arista arista : actual.aristas){
                         if (!arista.destino.isVisitadoActivo()){
                             ponderacionAcumulada = minimos.get(arista.destino).getDistanciaTotal();
+                            System.out.println("Ponderacion acumulada en:" + arista.getDestino().getNombre() + " " +ponderacionAcumulada);
                             nuevaPonderacion = minimos.get(actual).getDistanciaTotal() + arista.getPonderacion(tipoPonderacion);
+                            System.out.println("Posible nuevaPonderacion en:" + arista.getDestino().getNombre() + " " +ponderacionAcumulada);
                             if (ponderacionAcumulada > nuevaPonderacion) {
                                 previos.put(arista.destino,arista);  // Agrega la arista del anterior al vertice actual
-                                minimos.get(arista.destino).setDistanciaTotal(nuevaPonderacion);  // Se actualiza la distancia desde el origen al vertice
+                                CaminoAristas tmp = new CaminoAristas(minimos.get(arista.destino));
+                                minimos.put(arista.destino,tmp);
+                                //minimos.get(arista.destino).setDistanciaTotal(nuevaPonderacion);  // Se actualiza la distancia desde el origen al vertice
                             }
                         }
                     }

@@ -88,27 +88,8 @@ public class CaminoAristas implements Comparable<CaminoAristas>{
         if (!camino.isEmpty()){
             Arista paso = camino.removeFirst();
             System.out.println("Paso actual = " + paso.toStringConexion());
-//            if(currentIndex == 0) {
-//                anterior = null;
-//                System.out.println("Anterior = null ");
-//            }
-//            else {
-//                anterior = camino.get(currentIndex - 1);
-//                System.out.println("Anterior = " + anterior.toStringConexion());
-//            }
-//            if(currentIndex == (camino.size()-1)) {
-//                siguiente = null;
-//                System.out.println("Siguiente = null ");
-//            }
-//            else {
-//                siguiente = camino.get(currentIndex + 1);
-//                System.out.println("Siguiente = " + siguiente.toStringConexion());
-//            }
-//            Paso paso = new Paso(actual,siguiente,anterior);
             this.recorridoPrevio.push(paso);
             this.ultimoSacadoCamino = paso;
-            //currentIndex++; // Se acomoda para la siguiente iteracion
-//            if(currentIndex < (camino.size()-1);
             return paso;
         }
         return null;
@@ -147,6 +128,9 @@ public class CaminoAristas implements Comparable<CaminoAristas>{
         return distanciaTotal;
     }
 
+    public void sumarEnDistanciaTotal(double cantidad){
+        this.distanciaTotal += cantidad;
+    }
     public void setDistanciaTotal(double distanciaTotal) {
         this.distanciaTotal = distanciaTotal;
     }

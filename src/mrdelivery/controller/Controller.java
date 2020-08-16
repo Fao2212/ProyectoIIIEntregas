@@ -241,7 +241,7 @@ public class Controller implements ViewController {
                                 avanzarAdelante(tmpPasoActual);
                                 totalRecorrido += tmpPasoActual.getPonderacionActual();
                                 lstCaminoAvanzado.getItems().add(toStringPasoCamino(tmpPasoActual.getOrigen(),tmpPasoActual.getDestino()));
-                                Out.pushNotification("Llego al final del camino","Intentando regresar", NotificationType.INFORMATION);
+                                Out.msg("Llego al final del camino","Intentando regresar");
                                 caminoAristas.setRetrocediendo(true);
                             }
                         }
@@ -265,7 +265,7 @@ public class Controller implements ViewController {
                         lstCaminoAvanzado.getItems().add(toStringPasoCamino(tmpPasoActual.getDestino(),tmpPasoActual.getOrigen()));
                     }
                     else {
-                        Out.pushNotification("Informacion","Fin del retroceso",NotificationType.INFORMATION);
+                        Out.msg("Informacion","Fin del retroceso");
                         caminoAristas.setRetrocediendo(false);
                         while (!caminoAristas.camino.isEmpty() && caminoAristas.isCaminoInterrumpido()){
                             if (caminoAristas.camino.peek() != null && caminoAristas.camino.peek().isActivo()){
