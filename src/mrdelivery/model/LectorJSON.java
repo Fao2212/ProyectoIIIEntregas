@@ -141,8 +141,10 @@ public class LectorJSON implements Lector {
         System.out.println(json);
         JSONArray vertices = json.getJSONArray("vertices");
         JSONArray aristas = json.getJSONArray("aristas");
-        if(vertices.isEmpty()|| aristas.isEmpty())
+        if(vertices.isEmpty()|| aristas.isEmpty()) {
+            System.out.println("ARISTAS O VERTICES VACIOS");
             return false;
+        }
         HashSet<String > nombresVertices = new HashSet<>();
         try {
             for (int i = 0;i < vertices.length();i++){
@@ -174,8 +176,10 @@ public class LectorJSON implements Lector {
                 arista.getDouble("km");
                 arista.getDouble("minutos");
                 origenDestino.add(origen+destino);
-                if(origen == destino)//Validacion lazos
+                if(origen == destino) {//Validacion lazos}
+                    System.out.println("ARISTAS CON LAZOS");
                     return false;
+                }
                 if(!(vertices.contains(origen) && vertices.contains(destino))) {
                     System.out.println("NO EXISTE EL VERTICE PARA ASIGNAR LA ARISTA");
                     return false;

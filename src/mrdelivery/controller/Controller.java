@@ -406,6 +406,10 @@ public class Controller implements ViewController {
     @FXML
     void btnEjecutarPrim(ActionEvent event) {
         app.getActualModificado().prim();
+        for (int i = 0;i<app.getActualModificado().getVertices().size();i++){  
+            System.out.println(i);
+            System.out.println( app.getActualModificado().recorridoEnProfundidad(app.getActualModificado().getVertices().get(i)));
+        }
         cargarGrafoActual(app.getActualModificado());
         Out.msg("El grafo actual ha sido recreado");
     }
@@ -418,8 +422,8 @@ public class Controller implements ViewController {
 
     @FXML
     void regresarAlGrafoNormal(ActionEvent event) {
-        app.setActualModificado(app.getActualOriginal());
-        cargarGrafoActual(app.getActualOriginal().clonarGrafo());
+        app.setActualModificado(app.getActualOriginal().clonarGrafo());
+        cargarGrafoActual(app.getActualOriginal());
         Out.msg("El grafo se ha revertido a su forma original");
     }
 

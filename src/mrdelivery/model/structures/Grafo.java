@@ -105,9 +105,12 @@ public class Grafo {
     }
 
     public ArrayList<CaminoAristas> todosLosCaminos(Vertice inicio, Vertice destino){
+        if(inicio != destino){
         ArrayList<CaminoAristas> caminoAristas = new ArrayList<>();
         imprimirListaAdyacenciaGrafo();
         return buscarCamino(inicio,inicio,destino, caminoAristas,new CaminoAristas(),true,null);
+        }
+        return null;
     }
 
     private ArrayList<CaminoAristas> buscarCamino(Vertice original, Vertice inicio, Vertice destino, ArrayList<CaminoAristas> caminos, CaminoAristas camino, boolean primero, Arista aristaActual) {

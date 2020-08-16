@@ -60,6 +60,7 @@ public class CaminoAristas implements Comparable<CaminoAristas>{
     }
 
     public void addCamino(Arista arista){
+        distanciaTotal += arista.getPonderacionActual();
         camino.add(arista);
     }
 
