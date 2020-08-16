@@ -126,9 +126,15 @@ public class CaminoAristas implements Comparable<CaminoAristas>{
         return ultimoSacadoRecorridoPrevio;
     }
 
-    public boolean compararCamino(CaminoVertices caminoVertices){
-        //TODO:Pendiente compararCaminoAristas
-        return true;
+    public boolean compararCamino(CaminoAristas caminoAristas){
+        if(camino.size() == caminoAristas.camino.size()) {
+            for (int i = 0;i < camino.size();i++) {
+                if(camino.get(i).destino != caminoAristas.camino.get(i).destino || camino.get(i).origen != caminoAristas.camino.get(i).origen)
+                    return false;
+            }
+            return true;
+        }
+        return false;
     }
 
     public boolean caminoValido(Vertice start,Vertice end){

@@ -13,6 +13,7 @@ public class Grafo {
     Arista[][] representacionMatriz;
     int ponderacionActiva;
     CaminoAristas caminoPorRecorrer;
+    boolean busquedaTerminada;
 
     public Grafo(ArrayList<Vertice> vertices,ArrayList<Arista> aristas){
         this.vertices = vertices;
@@ -105,20 +106,28 @@ public class Grafo {
         if(inicio != destino){
         ArrayList<CaminoAristas> caminoAristas = new ArrayList<>();
         imprimirListaAdyacenciaGrafo();
+        busquedaTerminada = false;
         return buscarCamino(inicio,inicio,destino, caminoAristas,new CaminoAristas(),true,null);
         }
         return null;
     }
 
     private ArrayList<CaminoAristas> buscarCamino(Vertice original, Vertice inicio, Vertice destino, ArrayList<CaminoAristas> caminos, CaminoAristas camino, boolean primero, Arista aristaActual) {
-        // Caso en que el origen y el destino sean iguales, no se permiten lazos
+         //inicio.setVisitado(true);
+        //resetvisitados
+        System.out.println(inicio.nombre);
         if(!primero && (inicio == original)) {
+            System.out.println("Encontre un igual");
             return null;
         }
         if (!primero)
             camino.addCamino(aristaActual);
         if (inicio == destino) {
-            caminos.add(camino);
+            if(caminoRepetido(camino,caminos))
+                busquedaTerminada = true;
+            else
+                caminos.add(camino);
+            reestablecerVisitados();
             return null;
         }
         if (!inicio.isActivo()){ // Por si un vertice esta inactivo
@@ -126,10 +135,25 @@ public class Grafo {
         }
         for(Arista arista: inicio.aristas){
             if(arista.activo) {
-                buscarCamino(original, arista.destino, destino, caminos, new CaminoAristas(camino), false, arista);
-            }
+                if(!arista.destino.isVisitado() && !busquedaTerminada) {
+                    inicio.setVisitado(true);
+                    buscarCamino(original, arista.destino, destino, caminos, new CaminoAristas(camino), false, arista);
+                }
+                else{
+                    System.out.println("Termina");
+                }
+                }
         }
         return caminos;
+    }
+
+    private boolean caminoRepetido(CaminoAristas camino,ArrayList<CaminoAristas> caminos) {
+        System.out.println("REPETIDOS");
+        for (CaminoAristas caminoTemp:caminos){
+            if(caminoTemp.compararCamino(camino))
+                return true;
+        }
+        return false;
     }
 
     public CaminoAristas caminoOptimo(Vertice origen,Vertice destino,int tipoPonderacion){
