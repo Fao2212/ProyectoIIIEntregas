@@ -107,7 +107,10 @@ public class Grafo {
         ArrayList<CaminoAristas> caminoAristas = new ArrayList<>();
         imprimirListaAdyacenciaGrafo();
         busquedaTerminada = false;
-        return buscarCamino(inicio,inicio,destino, caminoAristas,new CaminoAristas(),true,null);
+        reestablecerVisitados();
+        buscarCamino(inicio,inicio,destino, caminoAristas,new CaminoAristas(),true,null);
+        reestablecerVisitados();
+        return caminoAristas;
         }
         return null;
     }
@@ -120,29 +123,37 @@ public class Grafo {
             System.out.println("Encontre un igual");
             return null;
         }
-        if (!primero)
+        if (!primero) {
+            System.out.println("Entra!primero");
             camino.addCamino(aristaActual);
+        }
         if (inicio == destino) {
-            if(caminoRepetido(camino,caminos))
+            if(caminoRepetido(camino,caminos)) {
                 busquedaTerminada = true;
-            else
+                System.out.println("Camino repetido");
+            }
+            else {
                 caminos.add(camino);
+                System.out.println("Camino sin repetir");
+            }
             reestablecerVisitados();
             return null;
         }
         if (!inicio.isActivo()){ // Por si un vertice esta inactivo
+            System.out.println("No es activo");
             return null;
         }
         for(Arista arista: inicio.aristas){
+            System.out.println(busquedaTerminada);
             if(arista.activo) {
+                System.out.println(arista.destino.isVisitado());
                 if(!arista.destino.isVisitado() && !busquedaTerminada) {
+                    System.out.println("condicion arriba");
                     inicio.setVisitado(true);
                     buscarCamino(original, arista.destino, destino, caminos, new CaminoAristas(camino), false, arista);
                 }
-                else{
-                    System.out.println("Termina");
-                }
-                }
+                System.out.println("Fium");
+            }
         }
         return caminos;
     }
