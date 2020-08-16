@@ -12,12 +12,13 @@ import mrdelivery.model.structures.Grafo;
 import mrdelivery.model.structures.Vertice;
 import mrdelivery.view.Out;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.swing.text.html.CSS;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.ArrayList;
+import java.util.*;
 
 public class App {
 
@@ -81,7 +82,8 @@ public class App {
 
     public void iniciarThreadLector(){
         LectorJSON lectorGrafos = new LectorJSON(config.getString("carpeta_rutas"),
-                                                 config.getString("carpeta_leidos"));
+                                                 config.getString("carpeta_leidos"),
+                                                 config.getString("carpeta_errores"));
         threadLector = new ThreadLector(lectorGrafos);
         threadLector.start();
     }
@@ -106,28 +108,21 @@ public class App {
                 listaVertices.add(new Vertice(vertices.getString(i)));
             }
             for (int i = 0; i < aristas.length(); i++) {
-                //TODO:Si encuentra un nulo puede enviarse a errores
-                //TODO:Si encuentra un nulo puede considerarse como que no tiene camino
                 JSONObject arista = aristas.getJSONObject(i);
                 Vertice origen = buscarVertice(arista.getString("origen"), listaVertices);
                 Vertice destino = buscarVertice(arista.getString("destino"), listaVertices);
-                if(validarArista(origen,destino)) {
                     Arista nuevaArista = new Arista(origen, destino, arista.getBoolean("activo"),
                                                     arista.getDouble("costo"), arista.getDouble("km"),
                                                     arista.getDouble("minutos"));
                     nuevaArista.setGrafoAsociado(actualOriginal);
                     origen.addArista(nuevaArista);
                     listaAristas.add(nuevaArista);
-                }
             }
             actualOriginal = new Grafo(listaVertices, listaAristas);
             actualModificado = actualOriginal.clonarGrafo();
         }
     }
-    public boolean validarArista(Vertice origen,Vertice destino){
-        return origen != null && destino != null;
-        //TODO:Se puede agregar mas validadcion aca. lo de estar repetido
-    }
+
 
     public Vertice buscarVertice(String nombre,ArrayList<Vertice> vertices){
         for (Vertice vertice:vertices){
@@ -147,4 +142,6 @@ public class App {
     public void setActualModificado(Grafo actualOriginal) {
         this.actualModificado = actualOriginal;
     }
+
+
 }
