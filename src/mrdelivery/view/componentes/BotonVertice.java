@@ -12,7 +12,7 @@ public class BotonVertice extends Boton {
             this.pseudoClassStateChanged(Boton.seleccionado,true);
         this.setOnMouseClicked((evento)->{
             if (vertice != null) {
-                vertice.setActivo(!vertice.isActivo());
+                vertice.modificarActividad(!vertice.isActivo());
                 this.pseudoClassStateChanged(Boton.seleccionado, !vertice.isActivo());
             }
         });
