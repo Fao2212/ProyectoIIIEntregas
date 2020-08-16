@@ -12,8 +12,6 @@ public class Grafo {
     ArrayList<Arista> aristas;
     Arista[][] representacionMatriz;
     int ponderacionActiva;
-    int numeroAristasDesactivadas;
-    int numeroVerticesDesactivados;
     CaminoAristas caminoPorRecorrer;
 
     public Grafo(ArrayList<Vertice> vertices,ArrayList<Arista> aristas){
@@ -37,7 +35,6 @@ public class Grafo {
     public void resetGrafo(ArrayList<Vertice> vertices,ArrayList<Arista> aristas){
         this.aristas = aristas;
         this.vertices = vertices;
-        this.ponderacionActiva = 0;
         grafoAMatriz();
     }
 
@@ -63,7 +60,7 @@ public class Grafo {
         for(Arista arista:aristas){
             Vertice clonOrigen = buscarVertice(arista.origen,copiaVertices);
             Vertice clonDestino = buscarVertice(arista.destino,copiaVertices);
-            Arista copiaArista = new Arista(clonOrigen,clonDestino,arista.activo, arista.distancia, arista.tiempo, arista.precio);
+            Arista copiaArista = new Arista(clonOrigen,clonDestino,arista.activo, arista.precio, arista.distancia, arista.tiempo);
 //            copiaArista.setGrafoAsociado(clon);
             clonOrigen.addArista(copiaArista);
             copiaAristas.add(copiaArista);
@@ -370,9 +367,14 @@ public class Grafo {
     }
 
     public CaminoAristas recorridoEnProfundidad(Vertice origen){
+        System.out.println("Entro a hacer el recorrido en profundidad");
         reestablecerVisitados();
         CaminoAristas camino = new CaminoAristas();
         recorridoEnProfundidad(origen,camino);
+        if (camino == null)
+            System.out.println("El camino resultante de el algoritmo es nulo");
+        else
+            System.out.println("El camino no esta nulo");
         return camino;
     }
 

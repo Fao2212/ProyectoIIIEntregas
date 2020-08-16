@@ -170,12 +170,23 @@ public class Arista implements  Comparable<Arista>{
 
     @Override
     public int compareTo(Arista o) {
-        if(ponderacionActual == o.ponderacionActual)
-            return 0;
-        else if(ponderacionActual > o.ponderacionActual)
-            return 1;
-        else
-            return -1;
+        double a1, a2;
+        System.out.println("ponderacionActual en la arista" + ponderacionActual);
+        if (ponderacionActual == Const.PRECIO){
+            a1 = precio;
+            a2 = o.precio;
+        }
+        else if (ponderacionActual == Const.DISTANCIA){
+            a1 = distancia;
+            a2 = o.distancia;
+        }
+        else {
+            a1 = tiempo;
+            a2 = o.tiempo;
+        }
+
+        return Double.compare(a1, a2);
+
     }
 
     public void setBoton(BotonArista btnArista) {

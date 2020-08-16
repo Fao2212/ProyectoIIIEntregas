@@ -39,7 +39,7 @@ public class CaminoAristas implements Comparable<CaminoAristas>{
 
     public CaminoAristas(CaminoAristas copiar){
         // TODO: Chequear si lo de sumaParcial esta bien
-        camino = new ArrayList<Arista>();
+        camino = new LinkedList<>();
         int sumaParcial = 0;
         for (Arista arista : copiar.camino){
             sumaParcial += arista.getPonderacionActual();
@@ -55,6 +55,7 @@ public class CaminoAristas implements Comparable<CaminoAristas>{
     }
 
     public void addCamino(Arista arista){
+        distanciaTotal += arista.getPonderacionActual();
         camino.addLast(arista);
     }
 
